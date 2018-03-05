@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-border panel-custom" >
+                <header class="panel-heading text-center">
+                    <h1 class="panel-title">Création d'un module</h1>
+                </header>
+                <div class="panel-body purple" style="margin-bottom: 6%;">
+                    {{ form_start(form) }}
+                    <div class="login-wrap col-md-12" style="input{ margin-top: 12%}">
+                        {# <p>Informations personnelles</p> #}
+                        {#
+                        {{ form_widget(form) }}
+                        #}
+
+                        <div class="col-md-8 col-md-offset-2">
+
+                            {{ form_errors(form) }}
+
+                            {{ form_label(form.nom, "Nom du module") }}
+                            {{ form_widget(form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: Gestion des utilisateurs', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+                            {{ form_label(form.description, "Description") }}
+                            {{ form_widget(form.description, {'attr':{'class':'form-control','placeholder': 'La description du module', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+                            {{ form_label(form.application, "Application concerné") }}
+                            {{ form_widget(form.application, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+                            {{ form_label(form.actif, "Actif (S'il est actif il pourra être affiché dans d'autres formulaires)") }}<br>
+                            {{ form_widget(form.actif, {'attr':{'class':'', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-md-offset-3">
+                        <button type="submit" class="btn  btn-custom btn-primary btn-rounded waves-effect waves-lightr" value="">Ajouter</button>
+                        {{ form_end(form) }}
+                        <a class="btn btn-danger col-md-offset-5 btn-custom btn-inverse btn-rounded waves-effect waves-lightr" href="{{ path('module_index') }}">Retourner à la liste</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

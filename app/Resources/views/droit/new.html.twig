@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block content -%}
+    <h2>Creation d'un droit</h2>
+
+    {#{{ form(form) }}#}
+
+    {{ form_start(form)}}
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Nom du droit</label>
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control'}})  }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Membres du Droit</label>
+                {{ form_widget(form.membreDuDroit, {'attr': {'class': 'form-control'}})  }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Description</label>
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}})  }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Token</label>
+                {{ form_widget(form.rightToken, {'attr': {'class': 'form-control'}})  }}
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form)}}
+{% endblock %}

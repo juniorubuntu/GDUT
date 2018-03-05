@@ -1,0 +1,78 @@
+demande_index:
+    path:     /Demandes
+    defaults: { _controller: "DemandeBundle:Demande:index" }
+    methods:  GET
+    
+demande_enPrepa:
+    path:     /dashboard
+    defaults: { _controller: "DemandeBundle:Demande:enPrepa" }
+    methods:  GET
+    
+demande_recherche:
+    path:     /recherche
+    defaults: { _controller: "DemandeBundle:Demande:search" }
+    methods:  [GET, POST]
+
+demande_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Demande:show" }
+    methods:  GET
+
+demande_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:Demande:new" }
+    methods:  [GET, POST]
+
+demande_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Demande:edit" }
+    methods:  [GET, POST]
+
+demande_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Demande:delete" }
+    methods:  DELETE
+    
+demande_moduleApp:
+    path:     module-de-/{id}/
+    defaults: { _controller: "DemandeBundle:Demande:moduleApp" }
+    methods:  [GET, POST]
+    
+    
+#Affichage des demande Par: Cote admin et traireur
+demande_parApp:
+    path:     demande-par/application/
+    defaults: { _controller: "DemandeBundle:Demande:demandeParAppl" }
+    methods:  [GET, POST]
+    
+demande_parObj:
+    path:     demande-par/type/
+    defaults: { _controller: "DemandeBundle:Demande:demandeParObj" }
+    methods:  [GET, POST]
+    
+demande_parUrg:
+    path:     demande-par/urgence/
+    defaults: { _controller: "DemandeBundle:Demande:demandeParUrg" }
+    methods:  [GET, POST]
+    
+#Suivi du tritement des demandes
+demande_nonTraite:
+    path:     demande-non-traitees/
+    defaults: { _controller: "DemandeBundle:Demande:demandeNonTrait" }
+    methods:  [GET, POST]
+    
+    
+demande_Traite:
+    path:     demande-traitees/
+    defaults: { _controller: "DemandeBundle:Demande:demandeTrait" }
+    methods:  [GET, POST]
+    
+demande_EnCours:
+    path:     demande-En-Cours/
+    defaults: { _controller: "DemandeBundle:Demande:demandeEnCours" }
+    methods:  [GET, POST]
+    
+demande_rejete:
+    path:     demande-Rejetees/
+    defaults: { _controller: "DemandeBundle:Demande:demandeRejete" }
+    methods:  [GET, POST]

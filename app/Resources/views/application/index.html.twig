@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <h3><b>Liste des types d'application </b></h3>
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('application_new')}}">Ajouter une application</a>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table  class="records_list table table-hover panel panel-inverse panel-custom table-bordered table-striped datatable-responsive" id="datatable-buttons">
+                            <thead class="panel-heading">
+                                <tr>
+                                    <th class="panel-title">Actions</th>
+                                    <th class="panel-title">id</th>
+                                    <th class="panel-title">Nom</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in applications %}
+                                    <tr>
+                                        <td>
+                                            <div class="input-group-btn">
+                                                <button  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                                                    <span class="fa fa-caret-down"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a <a href="{{ path('application_show', { 'id': application.id }) }}"><i class="fa fa-eye"></i> Voir le type</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ path('application_edit', { 'id': application.id }) }}"><i class="fa fa-edit"></i> Editer le type</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td><a href="{{ path('application_show', { 'id': application.id }) }}">{{ application.id }}</a></td>
+                                        <td>{{ application.nom }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

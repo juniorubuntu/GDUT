@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-border panel-custom" >
+                <header class="panel-heading text-center">
+                    <h1 class="panel-title">Création d'une nouvelle demande</h1>
+                </header>
+                <div class="panel-body purple" style="margin-bottom: 6%;">
+                    <div class="col-md-8 col-md-offset-2">
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 3%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Identification de l'utilisateur
+                            </legend>
+                            <label>Nom du demandeur</label>
+                            <input disabled="disabled" class="form-control" value="{{app.user.nom}}">
+                            <br>
+                            <label>Téléphone</label>
+                            <input disabled="disabled" class="form-control" value="{{app.user.telephone}}">
+                            <br>
+                            <label>Entreprise</label>
+                            <input disabled="disabled" class="form-control" value="{{app.user.entreprise}}">
+                            <br>
+                        </fieldset>
+
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 3%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Informations sur la demande
+                            </legend>
+                            {{ form_errors(form) }}
+                            {{ form_start(form) }}
+
+                            {{ form_label(form.libele, "Libele de la demande") }}
+                            {{ form_widget(form.libele, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+
+                            {{ form_label(form.application, "Application concernée") }}
+                            {{ form_widget(form.application, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'onchange':'appModule(value);', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+
+                            {{ form_label(form.module, "Module concernée") }}
+                            <div class="applMod">
+                                {{ form_widget(form.module, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+                            </div>
+
+                            {{ form_label(form.type, "Type de demande") }}
+                            {{ form_widget(form.type, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+                            {{ form_label(form.niveauUrgence, "Niveau d'urgence") }}
+                            {{ form_widget(form.niveauUrgence, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+                            {{ form_label(form.description, "Description de la demande") }}
+                            {{ form_widget(form.description, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+
+                        </fieldset>
+
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 2%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Autres informations
+                            </legend>
+                            {{ form_label(form.personnesSupplementaires, "Personnes supplémentaires") }}
+                            {{ form_widget(form.personnesSupplementaires, {'attr':{'class':'form-control', 'data-role':'tagsinput', 'placeholder': 'Choisissez les personnes à identifier', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+
+                            <br>
+                            <br>
+                            {{ form_label(form.fichier, "Ajouter un fichier") }}
+                            {{ form_widget(form.fichier, {'attr':{'class':'form-control bootstrap-filestyle','title':'Joindre un fichier à votre demande ?', 'style': '; color: black;'}}) }}
+
+                            <datalist id="pers">
+                                <option value="Atemgoua">
+                                <option value="Brumel">
+                                <option value="Ubuntu">
+                                <option value="Tatiana">
+                                <option value="Armel">
+                            </datalist>
+                        </fieldset>
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 8%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Options de validation
+                            </legend>
+                            <div class="col-md-12">
+                                <input type="text" class="hide" name="trash" id="trash" value="0"/>
+                                <button type="submit" onclick="trashed(1);" class="btn col-md-3 btn-custom btn-inverse btn-rounded waves-effect waves-lightr" value=""><span class="glyphicon glyphicon-trash"></span> Brouillon</button>
+                                <button type="submit" onclick="trashed(2);" class="btn col-md-3 col-md-offset-1 btn-custom btn-primary btn-rounded waves-effect waves-lightr" value=""><span class="glyphicon glyphicon-send"></span> Envoyer</button>
+                                {{ form_end(form) }}
+                                <a class="btn btn-danger col-md-offset-3 btn-custom btn-danger btn-rounded waves-effect waves-lightr" href="{{ path('demande_index') }}">Annuler</a>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{{asset('assets/js/indexTag.js')}}">
+
+        </script>
+        <script>
+            var fichier = document.getElementById('demandebundle_demande_fichier');
+            fichier.name = 'fichier';
+            $(document).ready(function () {
+                console.log("Ready");
+                $('input[placeholder="Choisissez les personnes à identifier"]').css('width', '600px');
+                $('input[placeholder="Choisissez les personnes à identifier"]').attr('list', 'pers');
+            });
+            function trashed(id) {
+                document.getElementById('trash').value = id;
+            }
+
+            var lien = "{{path('demande_moduleApp', {'id': 'APPL'})}}";
+            id = document.getElementById('demandebundle_demande_application').value;
+            lien = lien.replace('APPL', id);
+            $('.applMod').load(lien);
+
+            function appModule(id) {
+                var lien = "{{path('demande_moduleApp', {'id': 'APPL'})}}";
+                lien = lien.replace('APPL', id);
+                $('.applMod').load(lien);
+            }
+        </script>
+    </div>
+{% endblock %}

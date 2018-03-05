@@ -1,0 +1,24 @@
+application_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Application:index" }
+    methods:  GET
+
+application_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Application:show" }
+    methods:  GET
+
+application_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:Application:new" }
+    methods:  [GET, POST]
+
+application_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Application:edit" }
+    methods:  [GET, POST]
+
+application_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Application:delete" }
+    methods:  DELETE

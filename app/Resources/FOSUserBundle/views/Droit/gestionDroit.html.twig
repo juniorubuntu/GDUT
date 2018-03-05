@@ -1,0 +1,94 @@
+{% extends 'SchoolGestionBundle:Default:index.html.twig' %}
+
+{% block content -%}
+    <h2>Page de configuration des droits d'accès</h2>
+    <div class="col-md-8">
+        <table class="records_list table table-hover panel-primary" id="right">
+            <thead class="panel-heading">
+                <tr>
+                    <th>Nom et et prénoms</th>
+                    <th>Grade </th>
+                    <th>Privilège actuel</th>
+                    <th>Modifier / Annuler</th>
+                </tr>
+            </thead>
+            <tbody>
+            <script>choix = 0;</script>
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{path('user_show', {'id': user.id})}}">{{user}}</a></td>
+                    <td>{{user.grade}}</td>
+                    <td class="alert-success">
+                        <span class="level_{{user.id}}"><b>{{user.level}}</b></span>
+                        <select class="form-control hide list_{{user.id}}" onchange="detailRight(value, {{user.id}});">
+                            <option value="0">Chosissez le droit</option>
+                            {% for droit in droits %}
+                                <option {% if user.level == droit.nom %} selected="selected" {% endif %} value="{{droit.id}}">{{droit}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-grey modif_{{user.id}}" onclick="edit({{user.id}}, 1)"><span class="glyphicon glyphicon-edit"></span></button>
+                        <a href="" id="lien_{{user.id}}" class="btn btn-green hide ok_{{user.id}}" onclick="edit({{user.id}}, 0)"><span class="glyphicon glyphicon-ok"></span></a>
+                        <button class="btn btn-blue hide ok_{{user.id}}" onclick="edit({{user.id}}, 0)"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                    </td>
+                </tr>
+            {% endfor%}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4 panel-primary" style="margin-top: 3%">
+        <div class="panel-heading">
+            <b>Aperçue et description des privillèges</b>
+        </div>
+        <div class="detail">
+            <img src="{{asset('animate/loader.gif')}}" style="margin: 50%">
+        </div>
+    </div>
+    <script>
+                $('#right').DataTable({
+        "pagingType": "full_numbers",
+                "lengthMenu": [[10, 20], [10, 20]],
+                "language": {
+                "url": "{{ asset('DataTables/French.json') }}"
+                }
+
+        });
+                modif = 0;
+                function edit(id, bool) {
+                if (bool === 1) {
+                if (modif === 1){
+                alert("Vous ne pouvez modifier qu'une seule instane à la fois!");
+                } else{
+                $('.modif_' + id).addClass('hide');
+                        $('.ok_' + id).removeClass('hide');
+                        $('.list_' + id).removeClass('hide');
+                        $('.level_' + id).addClass('hide');
+                        modif = 1;
+                }
+                } else {
+                $('.ok_' + id).addClass('hide');
+                        $('.modif_' + id).removeClass('hide');
+                        $('.list_' + id).addClass('hide');
+                        $('.level_' + id).removeClass('hide');
+                        modif = 0;
+                }
+                }
+
+
+        function detailRight(val, id){
+        lien = "{{path('change_droit', {'idUser': 'USER', 'idRight': 'RIGHT'})}}";
+                lien = lien.replace('RIGHT', val);
+                lien = lien.replace('USER', id);
+                var test = document.getElementById('lien_' + id);
+                if(val !=0){
+                    test.setAttribute('href', lien);
+                }else{
+                    test.setAttribute('href', '');
+                }
+                url = "{{path('detail_droit', {'id': "ID"})}}";
+                url = url.replace('ID', val);
+                $('.detail').load(url);
+        }
+    </script>
+{% endblock %}

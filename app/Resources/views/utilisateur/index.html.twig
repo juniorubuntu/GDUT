@@ -1,0 +1,90 @@
+{# utilisateur #}
+
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{parent()}} Gestion des utilisateurs
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <h3 class="text-center"><b>Liste des comptes utilisateurs </b></h3>
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('enseignant_register')}}">Ajouter un utilisateur</a>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body col-md-12">
+                    <div class="adv-table">
+                        <table   class="col-md-12 table table-hover panel panel-custom table-bordered table-striped" id="dynamic-table">
+                            <thead class="panel-heading">
+                                <tr>
+                                    <th class="panel-title">Actions</th>
+                                    <th class="panel-title">Nom</th>
+                                    <th class="panel-title">Sexe</th>
+                                    <th class="panel-title">Type</th>
+                                    <th class="panel-title">Tél.</th>
+                                    <th class="panel-title">Adresse</th>
+                                    <th class="panel-title">Email</th>
+                                    <th class="panel-title">Act. / Désact.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for utilisateur in utilisateurs %}
+                                    <tr>
+
+                                        <td>
+                                            {% if app.user.username != utilisateur.username %}
+                                                <div class="input-group-btn">
+                                                    <button  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                                                        <span class="fa fa-caret-down"></span></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a <a href="{{ path('utilisateur_show', { 'id': utilisateur.id }) }}"><i class="fa fa-eye"></i> Voir Utilisateur</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ path('utilisateur_edit', { 'id': utilisateur.id }) }}"><i class="fa fa-edit"></i> Editer Utilisateur</a>
+                                                        </li>
+                                                        {#
+                                                        <li>
+                                                            <a href="{{ path('utilisateur_show', { 'id': utilisateur.id }) }}"><i class="fa fa-trash"></i> Supprimer Utilisateur</a>
+                                                        </li>
+                                                        #}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ utilisateur.nom }}</td>
+                                        <td>{{ utilisateur.sexe }}</td>
+                                        <td>{{ utilisateur.level }}</td>
+                                        {# <td>{{ utilisateur.dateNaissance | date('d-m-Y') }}</td> #}
+                                        <td>{{ utilisateur.telephone }}</td>
+                                        <td>{{ utilisateur.adresse }}</td>
+                                        <td>{{ utilisateur.email }}</td>
+                                        <td>
+                                            {% if app.user.username == utilisateur.username %}
+                                                <span class="label label-success">Utilisateur Connecté</span>                        
+
+                                            {% else %}
+                                                {% if utilisateur.enabled %}
+                                                    <a href="{{ path('utilisateur_disable', { 'id': utilisateur.id }) }}" class="btn btn-danger btn-custom btn-rounded waves-effect waves-lightr" > Désactiver
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ path('utilisateur_enable', { 'id': utilisateur.id }) }}" class="btn btn-info btn-custom btn-rounded waves-effect waves-light">Activer</a>
+                                                {% endif %}
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    {% include './utilisateur/extras.css.html.twig' %}
+    {% include './utilisateur/extras.js.html.twig' %}
+{% endblock %}
+

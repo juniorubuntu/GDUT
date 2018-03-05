@@ -1,0 +1,50 @@
+
+imports:
+   # - { resource: default_access_control.yml }
+   # - { resource: access_control.yml }
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_DEMANDEUR: ROLE_USER
+        ROLE_TRAITEUR:  ROLE_DEMANDEUR
+        ROLE_ADMIN:     ROLE_TRAITEUR
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+       
+
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        main:
+            pattern: ^/
+            form_login:
+                remember_me: true
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                # if you are using Symfony < 2.8, use the following config instead:
+                # csrf_provider: form.csrf_provider
+
+            logout:       true
+            anonymous:    true
+            remember_me:
+                secret: "%secret%"
+                lifetime: 31536000 # 365 days in seconds
+                path: /
+                domain: ~ # Defaults to the current domain from $_SERVER
+
+    access_control:
+     # - { path: ^/, role: ROLE_USER }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/account/$, role: ROLE_ADMIN }
+        - { path: ^/account/profile, role: ROLE_DEMANDEUR }
+        - { path: ^/demande-par/, role: ROLE_TRAITEUR }
+        - { path: ^/typedemande/, role: ROLE_ADMIN }

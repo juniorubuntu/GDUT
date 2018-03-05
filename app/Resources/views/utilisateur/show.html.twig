@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-border panel-custom" style="background: #ebeff2">
+            <header class="panel-heading">
+                <h1 class="panel-title">Détail sur un utilisateur</h1>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ utilisateur.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ utilisateur.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Sexe</th>
+                    <td>{{ utilisateur.sexe }}</td>
+                </tr>
+                <tr>
+                    <th>Date de naissance</th>
+                    <td>{{ utilisateur.dateNaissance | date('D, d-M-Y')}}</td>
+                </tr>
+                <tr>
+                    <th>Lie de naissance</th>
+                    <td>{{ utilisateur.lieu }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ utilisateur.email }}</td>
+                </tr>
+                <tr>
+                    <th>Numero de téléphone</th>
+                    <td>{{ utilisateur.telephone }}</td>
+                </tr>
+                <tr>
+                    <th>Type d'utilisateur</th>
+                    <td>{{ utilisateur.level }}</td>
+                </tr>
+                <tr>
+                    <th>Adresse</th>
+                    <td>{{ utilisateur.adresse }}</td>
+                </tr>
+                <tr>
+                    <th>Login</th>
+                    <td>{{ utilisateur.username }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <table>
+        <tr>
+            <td>
+                <a class="btn btn-default" href="{{ path('utilisateur_index') }}">Retour à la liste</a>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                <a class="btn btn-success" href="{{ path('utilisateur_edit', { 'id': utilisateur.id }) }}">Modifier</a>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                {% if app.user.username != utilisateur.username %}
+                    <input data-toggle="modal" data-target=".modaldel" class="btn btn-danger" type="button" value="Supprimer">
+
+                    {#
+                    {{ form_start(delete_form) }}
+                    <div class="modal fade modaldel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                        <div class="modal-dialog modal-md">
+                            <div class="panel panel-color ">
+                                <div class="panel-heading" style="background: ">
+                                    <h1 class="alert-danger text-uppercase">Alerte suppression</h1>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Confirmer la suppression de l'utilisateur <strong class="text-uppercase">{{utilisateur.nom}}</strong> ?
+                                    </p>
+                                    <input class="btn btn-danger pull-right" type="submit" value="Valider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    #}
+                    {{ form_end(delete_form) }}
+                {% endif%}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

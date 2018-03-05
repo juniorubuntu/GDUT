@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="panel-heading text-center">
+            <h1 class="panel-title">Modifier un type de demande</h1>
+        </div>
+        {{ form_start(edit_form) }}
+
+
+        <div class="login-wrap col-md-12" style="input{ margin-top: 12%}">
+            {# <p>Informations personnelles</p> #}
+            {#
+            {{ form_widget(form) }}
+            #}
+
+            <div class="col-md-6 col-md-offset-3">
+
+                {{ form_errors(edit_form) }}
+
+                {{ form_label(edit_form.nom, "Intitulé du type") }}
+                {{ form_widget(edit_form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: XXXXXXXXXXX', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(edit_form.description, "Description") }}
+                {{ form_widget(edit_form.description, {'attr':{'class':'form-control', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <button type="submit" class="btn col-md-2 btn-custom btn-primary btn-rounded waves-effect waves-lightr" value="">Modifier</button>
+            {{ form_end(edit_form) }}
+            {{ form_start(delete_form) }}
+            <button class="btn btn-danger col-md-offset-4 btn-custom btn-rounded waves-effect waves-lightr" type="submit">Supprimer</button>
+            <a class="btn col-md-offset-1 btn-custom btn-inverse btn-rounded waves-effect waves-lightr" href="{{ path('typedemande_index') }}">Annuler</a>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+{% endblock %}

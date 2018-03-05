@@ -1,0 +1,24 @@
+rejet_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Rejet:index" }
+    methods:  GET
+
+rejet_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Rejet:show" }
+    methods:  GET
+
+rejet_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:Rejet:new" }
+    methods:  [GET, POST]
+
+rejet_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Rejet:edit" }
+    methods:  [GET, POST]
+
+rejet_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Rejet:delete" }
+    methods:  DELETE

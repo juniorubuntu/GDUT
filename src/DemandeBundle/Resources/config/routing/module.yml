@@ -1,0 +1,24 @@
+module_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Module:index" }
+    methods:  GET
+
+module_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Module:show" }
+    methods:  GET
+
+module_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:Module:new" }
+    methods:  [GET, POST]
+
+module_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Module:edit" }
+    methods:  [GET, POST]
+
+module_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Module:delete" }
+    methods:  DELETE

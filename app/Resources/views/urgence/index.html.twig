@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <h3><b>Liste des niveaux d'urgence </b></h3>
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('urgence_new')}}">Ajouter un niveau</a>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table  class="records_list table table-hover panel panel-inverse panel-custom table-bordered table-striped datatable-responsive" id="datatable-buttons">
+                            <thead class="panel-heading">
+                                <tr>
+                                    <th class="panel-title">Actions</th>
+                                    <th class="panel-title">Id</th>
+                                    <th class="panel-title">Nom</th>
+                                    <th class="panel-title">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for urgence in urgences %}
+                                    <tr>
+                                        <td>
+                                            <div class="input-group-btn">
+                                                <button  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                                                    <span class="fa fa-caret-down"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a <a href="{{ path('urgence_show', { 'id': urgence.id }) }}"><i class="fa fa-eye"></i> Voir le niveau</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ path('urgence_edit', { 'id': urgence.id }) }}"><i class="fa fa-edit"></i> Editer le niveau</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td><a href="{{ path('urgence_show', { 'id': urgence.id }) }}">{{ urgence.id }}</a></td>
+                                        <td>{{ urgence.nom }}</td>
+                                        <td>{{ urgence.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

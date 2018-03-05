@@ -1,0 +1,42 @@
+{% extends 'SchoolGestionBundle:Default:index.html.twig' %}
+
+{% block content -%}
+  <h2>Liste des droits</h2>
+
+    <table class="records_list table table-hover panel-primary table-bordered">
+        <thead class="panel-heading">
+            <tr>
+                <th>Id</th>
+                <th>Nom du privillège(Droit)</th>
+                <th>Ayant(s) droit</th>
+                <th>Description</th>
+                <th>Détails</th>
+                <th>Modifier</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('proviseur_droit_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity }}</td>
+                    <td><b>{{ entity.membreDuDroit }}</b></td>
+                    <td>{{ entity.description }}</td>
+                    <td>
+                        <a href="{{ path('proviseur_droit_show', { 'id': entity.id }) }}">show</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('proviseur_droit_edit', { 'id': entity.id }) }}">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('proviseur_droit_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+{% endblock %}

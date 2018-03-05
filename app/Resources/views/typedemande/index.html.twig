@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <h3><b>Liste des types de demandes </b></h3>
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('typedemande_new')}}">Ajouter un type</a>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table  class="records_list table table-hover panel panel-inverse panel-custom table-bordered table-striped datatable-responsive" id="datatable-buttons">
+                            <thead class="panel-heading">
+                            <th class="panel-title">Actions</th>
+                            <th class="panel-title">Id</th>
+                            <th class="panel-title">Nom</th>
+                            <th class="panel-title">Description du type de demande</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for typeDemande in typeDemandes %}
+                                    <tr>
+                                        <td>
+                                            <div class="input-group-btn">
+                                                <button  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                                                    <span class="fa fa-caret-down"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a <a href="{{ path('typedemande_show', { 'id': typeDemande.id }) }}"><i class="fa fa-eye"></i> Voir le type</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ path('typedemande_edit', { 'id': typeDemande.id }) }}"><i class="fa fa-edit"></i> Editer le type</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td><a href="{{ path('typedemande_show', { 'id': typeDemande.id }) }}">{{ typeDemande.id }}</a></td>
+                                        <td>{{ typeDemande.nom }}</td>
+                                        <td>{{ typeDemande.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script type = "text/javascript" >
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable();
+                TableManageButtons.init();
+            });
+        </script>
+    </div>
+{% endblock %}

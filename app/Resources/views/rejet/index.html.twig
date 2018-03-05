@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Rejets list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Motif</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rejet in rejets %}
+            <tr>
+                <td><a href="{{ path('rejet_show', { 'id': rejet.id }) }}">{{ rejet.id }}</a></td>
+                <td>{{ rejet.motif }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('rejet_show', { 'id': rejet.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('rejet_edit', { 'id': rejet.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('rejet_new') }}">Create a new rejet</a>
+        </li>
+    </ul>
+{% endblock %}

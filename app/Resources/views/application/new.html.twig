@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="panel-heading text-center">
+            <h1 class="panel-title">Créer un type de demande</h1>
+        </div>
+        {{ form_start(form) }}
+
+
+        <div class="login-wrap col-md-12" style="input{ margin-top: 12%}">
+            {# <p>Informations personnelles</p> #}
+            {#
+            {{ form_widget(form) }}
+            #}
+
+            <div class="col-md-6 col-md-offset-3">
+
+                {{ form_errors(form) }}
+
+                {{ form_label(form.nom, "Nom de l'application") }}
+                {{ form_widget(form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <button type="submit" class="btn col-md-2 btn-custom btn-primary btn-rounded waves-effect waves-lightr" value="">Ajouter</button>
+            {{ form_end(form) }}
+            <a class="btn btn-danger col-md-offset-6 btn-custom btn-inverse btn-rounded waves-effect waves-lightr" href="{{ path('typedemande_index') }}">Retourner à la liste</a>
+        </div>
+    </div>
+{% endblock %}

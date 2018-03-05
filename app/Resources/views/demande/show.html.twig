@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-border panel-custom" style="background: #ebeff2">
+            <header class="panel-heading">
+                <h1 class="panel-title">Détail sur une demandes</h1>
+            </header>
+        </div>
+        <table class=" table table-hover table-striped panel panel-border" style="font-size: 16px;">
+            <tbody>
+                <tr>
+                    <th>Ticket</th>
+                    <td><b>GDUT#{{ demande.id }}</b></td>
+                </tr>
+                <tr>
+                    <th>Libele</th>
+                    <td>{{ demande.libele }}</td>
+                </tr>
+                <tr>
+                    <th>Type de demande</th>
+                    <td>{{ demande.type }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ demande.description }}</td>
+                </tr>
+                <tr>
+                    <th>Application concernée</th>
+                    <td>{{ demande.application }}</td>
+                </tr>
+                <tr>
+                    <th>Module de l'application</th>
+                    <td>{{ demande.module }}</td>
+                </tr>
+                <tr>
+                    <th>Niveau d'urgence</th>
+                    <td>{{ demande.niveauUrgence }}</td>
+                </tr>
+                <tr>
+                    <th>Personnes supplementaires</th>
+                    <td>{{ demande.personnesSupplementaires }}</td>
+                </tr>
+                <tr>
+                    <th>Fichier joint</th>
+                    <td>
+                        {% if demande.fichier != '' %}
+                            {{asset('Uploads/Fichier/'~demande.fichier)}}
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if app.user.level.rightToken() != "ROLE_DEMANDEUR" %}
+            <div class=" panel panel-border panel-custom" style="background: #ebeff2">
+                <header class="panel-heading">
+                    <h1 class="panel-title">Options de Traitement de la demande</h1>
+                </header>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 panel-footer">
+                    <a href="#rejet-modal" class="btn btn-primary btn-custom waves-effect waves-light" data-animation="slidetogether" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Rejéter la demande</a>
+                    <a href="#planif-modal" class="btn btn-inverse col-md-offset-2 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Planifier la demande</a>
+                    <a href="#" class="btn btn-purple col-md-offset-3 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Associer à un projet</a>
+                </div>
+                <div id="rejet-modal" class="modal-demo">
+                    <button type="button" class="close" onclick="Custombox.close();">
+                        <span>×</span><span class="sr-only">Close</span>
+                    </button>
+                    <div class="panel panel-custom">
+                        <h4 class="custom-modal-title panel-title text-center">Formulaire du rejet de la demande</h4>
+                        <div class="" style="padding: 2%; width: 100%">
+
+                            <label class="pull-left">Nom du traiteur</label>
+                            <input class="form-control" value="{{app.user.nom}}" disabled="disabled"/>
+                            <br>
+                            <label class="pull-left">Objet de la demande</label>
+                            <input class="form-control" disabled="disabled" value="{{demande.libele}}"/>
+                            <br>
+                            <label class="pull-left">Motif du rejet</label>
+                            <textarea class="form-control" placeholder="Ex: Demande mal formuler."></textarea>
+                            <br>
+                            <a class="btn btn-custom btn-primary pull-left">Valider</a>
+                            <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="planif-modal" class="modal-demo">
+                    <button type="button" class="close" onclick="Custombox.close();">
+                        <span>×</span><span class="sr-only">Close</span>
+                    </button>
+                    <div class="panel panel-custom">
+                        <h4 class="custom-modal-title panel-title text-center">Formulaire de planification d'une demande</h4>
+                        <div class="" style="padding: 2%; width: 100%">
+
+                            <label class="pull-left">Nom du traiteur</label>
+                            <input class="form-control" value="{{app.user.nom}}" disabled="disabled"/>
+                            <br>
+                            <label class="pull-left">Objet de la demande</label>
+                            <input class="form-control" disabled="disabled" value="{{demande.libele}}"/>
+                            <br>
+                            <label class="pull-left">La demande sera gérer par:</label>
+                            <select class="form-control btn btn-custom btn-purple">
+                                <option>Choisir le réalisateur</option>
+                            </select>
+                            <br>
+                            <br>
+                            <label class="pull-left">Durée</label>
+                            <input class="form-control" type="number" value=""/>
+                            <br>
+                            <br>
+                            <a class="btn btn-custom btn-primary pull-left">Valider</a>
+                            <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-md-12" style="margin-bottom: 8%">
+            <b> <a class="" href="{{ path('demande_index') }}">Retourner à la liste</a></b>
+        </div>
+    </div>
+    <script>
+
+    </script>
+
+    {#
+<ul>
+<li>
+    <a href="{{ path('demande_index') }}">Back to the list</a>
+</li>
+<li>
+    <a href="{{ path('demande_edit', { 'id': demande.id }) }}">Edit</a>
+</li>
+<li>
+    {{ form_start(delete_form) }}
+    <input type="submit" value="Delete">
+    {{ form_end(delete_form) }}
+</li>
+</ul>
+    #}
+{% endblock %}

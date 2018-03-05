@@ -1,0 +1,24 @@
+typedemande_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:TypeDemande:index" }
+    methods:  GET
+
+typedemande_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:TypeDemande:show" }
+    methods:  GET
+
+typedemande_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:TypeDemande:new" }
+    methods:  [GET, POST]
+
+typedemande_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:TypeDemande:edit" }
+    methods:  [GET, POST]
+
+typedemande_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:TypeDemande:delete" }
+    methods:  DELETE

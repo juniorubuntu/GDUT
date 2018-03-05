@@ -1,0 +1,5 @@
+<select id="demandebundle_demande_module" name="demandebundle_demande[module]" class="form-control btn dropdown-toggle btn-default btn-custom" style="text-transform: uppercase; margin-bottom: 25px;">
+    {% for module in modules %}
+        <option value="{{module.id}}">{{module}}</option>
+    {% endfor%}
+</select>

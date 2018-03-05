@@ -1,0 +1,23 @@
+demande_typedemande:
+    resource: "@DemandeBundle/Resources/config/routing/typedemande.yml"
+    prefix:   /typedemande
+    
+demande_urgence:
+    resource: "@DemandeBundle/Resources/config/routing/urgence.yml"
+    prefix:   /urgence
+
+demande_application:
+        resource: "@DemandeBundle/Resources/config/routing/application.yml"
+        prefix:   /application
+
+demande_demande:
+    resource: "@DemandeBundle/Resources/config/routing/demande.yml"
+    prefix:   /
+        
+demande_module:
+    resource: "@DemandeBundle/Resources/config/routing/module.yml"
+    prefix:   /module
+    
+demande_rejet:
+    resource: "@DemandeBundle/Resources/config/routing/rejet.yml"
+    prefix:   /rejet

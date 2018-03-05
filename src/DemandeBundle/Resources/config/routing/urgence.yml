@@ -1,0 +1,24 @@
+urgence_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Urgence:index" }
+    methods:  GET
+
+urgence_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Urgence:show" }
+    methods:  GET
+
+urgence_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:Urgence:new" }
+    methods:  [GET, POST]
+
+urgence_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Urgence:edit" }
+    methods:  [GET, POST]
+
+urgence_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Urgence:delete" }
+    methods:  DELETE

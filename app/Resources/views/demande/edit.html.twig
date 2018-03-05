@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-border panel-custom" >
+                <header class="panel-heading text-center">
+                    <h1 class="panel-title">Modification d'une demande</h1>
+                </header>
+                <div class="panel-body purple" style="margin-bottom: 6%;">
+                    <div class="col-md-8 col-md-offset-2">
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 3%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Idendification de l'utilisateur
+                            </legend>
+                            <label>Nom utiliateur</label>
+                            <input disabled="disabled" class="form-control" value="{{app.user.nom}}">
+                            <br>
+                            <label>Téléphone</label>
+                            <input disabled="disabled" class="form-control" value="{{app.user.telephone}}">
+                            <br>
+                            <label>Entreprise</label>
+                            <input disabled="disabled" class="form-control" value="{{app.user.entreprise}}">
+                            <br>
+                        </fieldset>
+
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 3%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Informations sur la demande
+                            </legend>
+                            {{ form_errors(edit_form) }}
+                            {{ form_start(edit_form) }}
+
+                            {{ form_label(edit_form.libele, "Libele de la demande") }}
+                            {{ form_widget(edit_form.libele, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+
+
+                            {{ form_label(edit_form.type, "Type de demande") }}
+                            {{ form_widget(edit_form.type, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+
+                            {{ form_label(edit_form.application, "Application concenée") }}
+                            {{ form_widget(edit_form.application, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+
+                            {{ form_label(edit_form.niveauUrgence, "Niveau d'urgence") }}
+                            {{ form_widget(edit_form.niveauUrgence, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+
+                            {{ form_label(edit_form.description, "Description de la demande") }}
+                            {{ form_widget(edit_form.description, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+
+                        </fieldset>
+
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 2%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Autres informations
+                            </legend>
+                            {{ form_label(edit_form.personnesSupplementaires, "Personnes supplémentaires") }}
+                            {{ form_widget(edit_form.personnesSupplementaires, {'attr':{'class':'form-control', 'data-role':'tagsinput', 'placeholder': 'Choisissez les personnes à identifier', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+
+                            <br>
+                            <br>
+                            {{ form_label(edit_form.fichier, "Ajouter un fichier ['.rar', '.jpg', '.jpeg', '.png', '.pdf', '.docx', '.xls', '.odt', '.zip', '.tar.gz']") }}
+                            {{ form_widget(edit_form.fichier, {'attr':{'class':'form-control bootstrap-filestyle', 'title':'Joindre un fichier à votre demande ?', 'style': '; color: black;'}}) }}
+
+                            <datalist id="pers">
+                                <option value="Atemgoua">
+                                <option value="Brumel">
+                                <option value="Ubuntu">
+                                <option value="Tatiana">
+                                <option value="Armel">
+                            </datalist>
+                        </fieldset>
+                        <fieldset style="border: 1px solid; padding: 2%; margin-bottom: 8%;" class="col-md-12">
+                            <legend class="panel-title">
+                                Options de validation
+                            </legend>
+                            <div class="col-md-12">
+                                <input type="text" class="hide" name="trash" id="trash" value="0"/>
+                                <button type="submit" onclick="trashed(1);" class="btn col-md-3 btn-custom btn-inverse btn-rounded waves-effect waves-lightr" value=""><span class="glyphicon glyphicon-trash"></span> Brouillon</button>
+                                <button type="submit" onclick="trashed(2);" class="btn col-md-3 col-md-offset-1 btn-custom btn-primary btn-rounded waves-effect waves-lightr" value=""><span class="glyphicon glyphicon-send"></span> Envoyer</button>
+                                {{ form_end(edit_form) }}
+                                <button data-toggle="modal" data-target=".modaldel" class="btn-custom col-md-offset-2 btn-danger btn-rounded waves-effect waves-lightr">Supprimer</button>
+                                {{ form_start(delete_form) }}
+                                <div class="modal fade modaldel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                    <div class="modal-dialog modal-md">
+                                        <div class="panel panel-color ">
+                                            <div class="panel-heading" style="background: ">
+                                                <h1 class="alert-danger text-uppercase">Alerte suppression</h1>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p>
+                                                    Confirmer la suppression de cette demande <br> <strong class="text-uppercase">{{demande.libele}}</strong> ?
+                                                </p>
+                                                <button type="submit" class="btn-custom pull-right btn-danger btn-rounded waves-effect waves-lightr"><span class="glyphicon glyphicon-remove"></span> Supprimer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ form_end(delete_form) }}
+                            </div>
+                        </fieldset>
+                        <b><a class="pull-right" href="{{path('demande_enPrepa')}}">Retourner à la liste</a></b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{{asset('assets/js/indexTag.js')}}">
+
+        </script>
+        <script>
+            var fichier = document.getElementById('demandebundle_demande_fichier');
+            fichier.name = 'fichier';
+            $(document).ready(function () {
+                console.log("Ready");
+                $('input[placeholder="Choisissez les personnes à identifier"]').css('width', '600px');
+                $('input[placeholder="Choisissez les personnes à identifier"]').attr('list', 'pers');
+            });
+            function trashed(id) {
+                document.getElementById('trash').value = id;
+            }
+        </script>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <h3><b> Liste des demandes en création </b></h3>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table  class="records_list table table-hover panel panel-inverse panel-custom table-bordered table-striped datatable-responsive" id="datatable-buttons">
+                            <thead class="panel-heading">
+                                <tr>
+                                    <th class="panel-title">Actions</th>
+                                    <th class="panel-title">Date envoie</th>
+                                    <th class="panel-title">Libele</th>
+                                    <th class="panel-title">Type de demande</th>
+                                    <th class="panel-title">Niveau d'urgence</th>
+                                    <th class="panel-title">Application concernée</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for demande in demandes %}
+                                    <tr>
+                                        <td>
+                                            <div class="input-group-btn">
+                                                <button  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                                                    <span class="fa fa-caret-down"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-eye"></i> Voir la demande en détail</a>
+                                                        <a <a href="{{ path('demande_edit', { 'id': demande.id }) }}"><i class="fa fa-edit"></i> Modifier la demande</a>
+                                                            <a <a href="{{ path('demande_edit', { 'id': demande.id }) }}"><i class="fa fa-trash"></i> Supprimer la demande</a>
+                                                                </li>
+                                                                </ul>
+                                                                </div>
+                                                                </td>
+                                                                <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                                                                <td>{{ demande.libele }}</td>
+                                                                <td>{{ demande.type }}</td>
+                                                                <td>{{ demande.niveauUrgence }}</td>
+                                                                <td>{{ demande.application }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                            </table>
+                                                            </div>
+                                                            </div>
+                                                            </section>
+                                                            </div>
+                                                            </div>
+                                                        {% endblock %}

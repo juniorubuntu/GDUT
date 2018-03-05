@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <br>
+                    <h3 class="text-center"><b>Liste des niveau d'urgence </b></h3>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+
+                        {% for urgence in urgences %}
+
+                            <fieldset class="col-md-12" style="background: transparent">
+                                <legend class="col-md-12 btn btn-custom btn-purple" style="cursor: default;">
+                                    <span class="pull-left"><span class="panel-title"> {{ urgence }}</span></span><span onclick="detailler({{urgence.id}})" class="ubuntu_{{urgence.id}} pull-right btn btn-purple glyphicon glyphicon-plus-sign"></span>
+                                </legend>
+                                <span class="text-primary">Total: {{urgence.listDemandes | length }} demande(s) trouvées. </span>
+                                <br>
+                                <br>
+                                <div class="col-md-12 hide appDemande_{{urgence.id}}">
+                                    <div class="demandes">
+                                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped">
+                                            <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
+                                                <tr>
+                                                    <th class="panel-title">N<u>°</u></th>
+                                            <th class="panel-title">Détail</th>
+                                            <th class="panel-title">Tickect</th>
+                                            <th class="panel-title">Date envoie</th>
+                                            <th class="panel-title">Entreprise</th>
+                                            <th class="panel-title">Objet</th>
+                                            <th class="panel-title">Type de demande</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% set num = 0 %}
+                                                {% for demande in urgence.listDemandes %}
+                                                    {% set num = num+1 %}
+                                                    <tr>
+                                                        <td>{{num}}</td>
+                                                        <td class="">
+                                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Détails</a>
+                                                        </td>
+                                                        <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
+                                                        <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                                                        <td>{{ demande.user.entreprise }}</td>
+                                                        <td>{{ demande.libele }}</td>
+                                                        <td>{{ demande.type }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script>
+            function detailler(id) {
+
+                if ($('.appDemande_' + id).hasClass('hide')) {
+                    $('.appDemande_' + id).removeClass('hide');
+                    $('.ubuntu_' + id).removeClass('glyphicon-plus-sign');
+                    $('.ubuntu_' + id).addClass('glyphicon-minus-sign');
+
+                } else {
+                    $('.appDemande_' + id).addClass('hide');
+                    $('.ubuntu_' + id).addClass('glyphicon-plus-sign');
+                    $('.ubuntu_' + id).removeClass('glyphicon-minus-sign');
+                }
+            }
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable();
+                TableManageButtons.init();
+            });
+        </script>
+    </div>
+{% endblock %}
+{# empty Twig template #}

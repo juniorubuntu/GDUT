@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h3 class=" text-center"><b>RECHERCHER UNE DEMANDE</b></h3>
+    <div class="col-md-10 col-md-offset-1">
+        <form action="{{path('demande_recherche')}}" method="POST">
+            <div class="input-group">
+                <span class="input-group-addon text-bold text-purple btn btn-purple" id="sizing-addon1"><b>GDUT#</b></span>
+                <input name="recherche" type="text" class="form-control" placeholder="Entrer le numéro juste après la clé GDUT#." aria-describedby="basic-addon2">
+                <span class="input-group-addon btn btn-purple" id="basic-addon2"><span class="glyphicon glyphicon-search"></span> <button type="submit" class="btn-purple">RECHERCHER</button></span>
+            </div>
+        </form>
+    </div>
+    {% if search is defined %}
+        <h3 style="margin-top: 12%;" class=" text-center"><b>RESULTATS TROUVES</b></h3>
+        <div class="col-md-12" style="margin-bottom: 8%">
+            <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable-buttons">
+                <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
+                    <tr>
+                        <th class="panel-title">Détail</th>
+                        <th class="panel-title">Ticket</th>
+                        <th class="panel-title">Date envoie</th>
+                        <th class="panel-title">Entreprise</th>
+                        <th class="panel-title">Objet</th>
+                        <th class="panel-title">Type de demande</th>
+                        <th class="panel-title">Niveau d'urgence</th>
+                        <th class="panel-title">Application concernée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for demande in demandes %}
+                        <tr>
+                            <td class="">
+                                <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Détails</a>
+                            </td>
+                            <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
+                            <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                            <td>{{ demande.user.entreprise }}</td>
+                            <td>{{ demande.libele }}</td>
+                            <td>{{ demande.type }}</td>
+                            <td>{{ demande.niveauUrgence }}</td>
+                            <td>{{ demande.application }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#datatable-responsive').DataTable();
+                    TableManageButtons.init();
+                });
+            </script>
+        </div>
+    {% endif%}
+{% endblock body %}

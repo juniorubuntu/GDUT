@@ -1,0 +1,101 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+<head>
+    <title>Création de compte!</title>
+
+    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+
+</head>
+<body style="background: url('{{asset('images/login-bg.jpg')}}') fixed">
+
+    <div class="col-md-8 col-md-offset-2" style="background: rgba(2, 5, 25, 0.46)">
+
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register form-signin', 
+    'style': 'background: rgba(2, 5, 25, 0.46);
+    padding: 40px;
+    color: rgba(204, 204, 204, 0.42);'}}) }}
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">Créer votre compte</h1>
+        </div>
+
+        <div class="login-wrap col-md-12" style="input{ margin-top: 12%}">
+            {# <p>Informations personnelles</p> #}
+            {#
+            {{ form_widget(form) }}
+            #}
+
+            <div class="col-md-6">
+
+                {{ form_errors(form) }}
+
+                {{ form_label(form.nom, "Votre nom") }}
+                {{ form_widget(form.nom, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.username, "Login (Il sera utilisé pour vous connecter)") }}
+                {{ form_widget(form.username, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.sexe, "Sexe") }}
+                {{ form_widget(form.sexe, {'attr':{'style': 'background: transparent; color: white;margin-bottom: 42px;;'}}) }}
+
+                {{ form_label(form.email, "Votre email") }}
+                {{ form_widget(form.email, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.dateNaissance, "Date de Naissance") }}
+                {{ form_widget(form.dateNaissance, {'attr':{'class':'form-control','style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.lieu, "Lieu de naissance") }}
+                {{ form_widget(form.lieu, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.cni, "Numéro de CNI/Passport") }}
+                {{ form_widget(form.cni, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.telephone, "Votre téléphone") }}
+                {{ form_widget(form.telephone, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.adresse, "Votre adresse") }}
+                {{ form_widget(form.adresse, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.level, "Type d'utilisateur") }}
+                {{ form_widget(form.level, {'attr':{'class':'form-control', 'style': 'background: rgb(71, 51, 39); color: white;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(form.plainPassword.first, "Votre mot de passe") }}
+                {{ form_widget(form.plainPassword.first, {'attr':{'class': 'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;', 'placeholder': 'Ex: junior'}}) }}
+                {{ form_errors(form.plainPassword.first) }}
+
+                {{ form_label(form.plainPassword.second, "Verification du mot de passe") }}
+                {{ form_widget(form.plainPassword.second, {'attr':{'class': 'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+                {{ form_errors(form.plainPassword.second) }}
+            </div>
+            <br>
+            <button type="submit" class="btn btn-small btn-success btn-block" value="" 
+                    style="width: 23%;
+                    margin-left: 39%;">{{ 'registration.submit'|trans }}</button>
+            <br>
+            <div class="registration">
+                Déjà enregistré(e).
+                <a href="{{path('fos_user_security_login')}}" class="pull-right btn btn-link">
+                    Se Connecter
+                </a>
+            </div>
+
+        </div>
+
+        {{ form_end(form) }}
+
+        <script>
+            document.getElementById('fos_user_registration_form_dateNaissance').type = 'date';
+
+            document.getElementById('fos_user_registration_form_sexe_1').style.marginLeft = '40px';
+
+            document.getElementById('fos_user_registration_form_sexe_0').style.marginRight = '8px';
+            document.getElementById('fos_user_registration_form_sexe_0').style.cursor = 'pointer';
+
+            document.getElementById('fos_user_registration_form_sexe_1').style.marginRight = '8px';
+            document.getElementById('fos_user_registration_form_sexe_1').style.cursor = 'pointer';
+        </script>
+
+    </div>
+</body>
