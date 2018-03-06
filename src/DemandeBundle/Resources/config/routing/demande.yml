@@ -76,3 +76,15 @@ demande_rejete:
     path:     demande-Rejetees/
     defaults: { _controller: "DemandeBundle:Demande:demandeRejete" }
     methods:  [GET, POST]
+    
+    
+demande_abandon:
+    path:     demande-Abandonnees/
+    defaults: { _controller: "DemandeBundle:Demande:demandeAbandon" }
+    methods:  [GET, POST]
+    
+    
+demande_abandonNew:
+    path:     demande-Abandonn-new/{id}
+    defaults: { _controller: "DemandeBundle:Demande:abandonNew" }
+    methods:  [GET, POST]

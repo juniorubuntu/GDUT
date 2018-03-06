@@ -5,6 +5,7 @@ namespace DemandeBundle\Controller;
 use DemandeBundle\Entity\Demande;
 use DemandeBundle\Entity\Rejet;
 use DemandeBundle\Entity\Planif;
+use DemandeBundle\Entity\Integration;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -205,10 +206,17 @@ class DemandeController extends Controller {
         $planif->setDemande($demande);
         $planifForm = $this->createForm('DemandeBundle\Form\PlanifType', $planif);
 
+        //Gestion de l'intégration projet
+        $projet = new Integration();
+        $projet->setUser($user);
+        $projet->setDemande($demande);
+        $projetForm = $this->createForm('DemandeBundle\Form\IntegrationType', $projet);
+
         return $this->render('demande/show.html.twig', array(
                     'demande' => $demande,
                     'form' => $rejetForm->createView(),
                     'formPlanif' => $planifForm->createView(),
+                    'formProjet' => $projetForm->createView(),
         ));
     }
 
@@ -310,6 +318,19 @@ class DemandeController extends Controller {
                         ->setMethod('DELETE')
                         ->getForm()
         ;
+    }
+
+    /**
+     * Affiche les demandes par application
+     * 
+     */
+    function abandonNewAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $demande = new Demande();
+        $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
+        $demande->setTraitement('3');
+        $em->flush();
+        return $this->redirectToRoute('demande_abandon');
     }
 
     /**
@@ -422,7 +443,7 @@ class DemandeController extends Controller {
                     'traitement' => '2'
         ));
         return $this->render('demande/demandeEnCours.html.twig', array(
-                    'demandes' => $demandes
+                    'demandes' => array_reverse($demandes)
         ));
     }
 
@@ -439,6 +460,23 @@ class DemandeController extends Controller {
                     'valide' => false
         ));
         return $this->render('demande/demandeRejete.html.twig', array(
+                    'demandes' => array_reverse($demandes)
+        ));
+    }
+
+    /**
+     * Affiche les demandes abandonnée
+     * 
+     */
+    public function demandeAbandonAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                array(
+                    'trash' => false,
+                    'traitement' => '3'
+        ));
+        return $this->render('demande/abandon.html.twig', array(
                     'demandes' => array_reverse($demandes)
         ));
     }

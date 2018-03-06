@@ -1,0 +1,5 @@
+<select id="demandebundle_planif_gerant" name="demandebundle_planif[gerant]" class="form-control btn btn-custom btn-purple text-uppercase">
+    {% for user in users %}
+        <option value="{{user.id}}">{{user}}</option>
+    {% endfor %}
+</select>

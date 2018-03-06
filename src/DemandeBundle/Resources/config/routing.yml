@@ -25,3 +25,7 @@ demande_rejet:
 demande_planif:
     resource: "@DemandeBundle/Resources/config/routing/planif.yml"
     prefix:   /planif
+    
+demande_integration:
+    resource: "@DemandeBundle/Resources/config/routing/integration.yml"
+    prefix:   /integration

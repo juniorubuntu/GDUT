@@ -103,7 +103,7 @@
                             <br>
                             <h3 class="panel-title"><b><u>INFORMATIONS SUR LA GESTION</u></b></h3>
                             <span class="pull-left">{{ form_label(formPlanif.gerant, "La demande sera gérer par", {'attr':{'class':'pull-left'}}) }}</span>
-                            {{ form_widget(formPlanif.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple text-uppercase'}}) }}
+                            {{ form_widget(formPlanif.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple text-uppercase gerant'}}) }}
                             <br>
                             <br>
                             <span class="pull-left">{{ form_label(formPlanif.duree, "Durée de la gestion", {'attr':{'class':'pull-left'}}) }}</span>
@@ -128,56 +128,79 @@
                     <div class="panel panel-custom">
                         <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Formulaire d'intégration d'une demande à un projet</h4>
                         <div class="" style="padding: 2%; width: 100%">
+                            {{ form_errors(formProjet) }}
+                            {{ form_start(formProjet) }}
+                            <span class="pull-left">{{ form_label(formProjet.user, "Nom du traiteur", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formProjet.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
+                            <br>
+                            <span class="pull-left">{{ form_label(formProjet.demande, "Objet de la demande", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formProjet.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
+                            <br>
+                            <h3 class="panel-title"><b><u>INFORMATIONS SUR LA GESTION</u></b></h3>
+                            <span class="pull-left">{{ form_label(formProjet.chefProjet, "Le chef de projet", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formProjet.chefProjet, {'attr':{'class':'form-control btn btn-custom btn-purple text-uppercase'}}) }}
+                            <br>
+                            <br>
+                            <span class="pull-left">{{ form_label(formProjet.code, "Code du projet", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formProjet.code, {'attr':{'class':'form-control pull-left'}}) }}
+                            <br>
+                            <br>
+                            <span class="pull-left" style="margin-top: 3%">{{ form_label(formProjet.libele, "Libele du projet", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formProjet.libele, {'attr':{'class':'form-control pull-left'}}) }}
 
-                            <label class="pull-left">Nom du traiteur</label>
-                            <input class="form-control" value="{{app.user.nom}}" disabled="disabled"/>
-                            <br>
-                            <label class="pull-left">Objet de la demande</label>
-                            <input class="form-control" disabled="disabled" value="{{demande.libele}}"/>
-                            <br>
-                            <h3 class="panel-title"><b><u>INFORMATIONS SUR LE PROJET</u></b></h3>
-                            <label class="pull-left">Code projet</label>
-                            <input class="form-control" />
-                            <br>
-                            <label class="pull-left">Libele du Projet</label>
-                            <input class="form-control" />
-                            <br>
-                            <label class="pull-left">Projet dirigé par:</label>
-                            <select class="form-control btn btn-custom btn-purple">
-                                <option>Choisir le Chef de projet</option>
-                            </select>
-                            <br>
-                            <br>
-                            <a class="btn btn-custom btn-primary pull-left">Valider</a>
+                            <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Integration au projet</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                            <hr>
+                            <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
                             <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                            {{ form_end(formProjet) }}
                         </div>
                     </div>
                 </div>
             </div>
-            <script>
-                $('[name="demandebundle_rejet"]').attr('action', '{{path('rejet_new', {'id': demande.id})}}');
-                $('[name="demandebundle_planif"]').attr('action', '{{path('planif_new', {'id': demande.id})}}');
-            </script>
-        {% endif %}
-        <div class="col-md-12" style="margin-bottom: 8%">
-            <b> <a class="" href="{{ path('demande_index') }}">Retourner à la liste</a></b>
+            <div id="abandon-modal" class="modal-demo">
+                <button type="button" class="close" onclick="Custombox.close();">
+                    <span>×</span><span class="sr-only">Close</span>
+                </button>
+                <div class="panel panel-custom">
+                    <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Confirmation de l'abandon d'une demande</h4>
+                    <div class="" style="padding: 2%; width: 100%">
+                        <h1 class="panel-title"><b>Confirmer l'abandon ?</b></h1>
+                        <br>
+                        <br>
+                        <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Abandon</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                        <hr>
+                        <a class="btn btn-custom btn-primary pull-left" href="{{path('demande_abandonNew', {'id': demande.id})}}">Valider</a>
+                        <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                    </div>
+                </div>
+            </div>
         </div>
+        <script>
+            $('[name="demandebundle_rejet"]').attr('action', '{{path('rejet_new', {'id': demande.id})}}');
+            $('[name="demandebundle_planif"]').attr('action', '{{path('planif_new', {'id': demande.id})}}');
+            $('[name="demandebundle_integration"]').attr('action', '{{path('integration_new', {'id': demande.id})}}');
+            $('.gerant').load('{{path('planif_traiteur')}}');
+        </script>
+    {% endif %}
+    <div class="col-md-12" style="margin-bottom: 8%">
+        <b> <a class="" href="{{ path('demande_index') }}">Retourner à la liste</a></b>
     </div>
+</div>
 
 
-    {#
+{#
 <ul>
 <li>
-    <a href="{{ path('demande_index') }}">Back to the list</a>
+<a href="{{ path('demande_index') }}">Back to the list</a>
 </li>
 <li>
-    <a href="{{ path('demande_edit', { 'id': demande.id }) }}">Edit</a>
+<a href="{{ path('demande_edit', { 'id': demande.id }) }}">Edit</a>
 </li>
 <li>
-    {{ form_start(delete_form) }}
-    <input type="submit" value="Delete">
-    {{ form_end(delete_form) }}
+{{ form_start(delete_form) }}
+<input type="submit" value="Delete">
+{{ form_end(delete_form) }}
 </li>
 </ul>
-    #}
+#}
 {% endblock %}

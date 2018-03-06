@@ -3,6 +3,7 @@
 namespace DemandeBundle\Controller;
 
 use DemandeBundle\Entity\Planif;
+use UserBundle\Entity\Utilisateur;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -10,20 +11,19 @@ use Symfony\Component\HttpFoundation\Request;
  * Planif controller.
  *
  */
-class PlanifController extends Controller
-{
+class PlanifController extends Controller {
+
     /**
      * Lists all planif entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $planifs = $em->getRepository('DemandeBundle:Planif')->findAll();
 
         return $this->render('planif/index.html.twig', array(
-            'planifs' => $planifs,
+                    'planifs' => $planifs,
         ));
     }
 
@@ -31,23 +31,34 @@ class PlanifController extends Controller
      * Creates a new planif entity.
      *
      */
-    public function newAction(Request $request, $id)
-    {
+    public function newAction(Request $request, $id) {
         $planif = new Planif();
         $form = $this->createForm('DemandeBundle\Form\PlanifType', $planif);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
+
+            //On complete les infos sur le rejet
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+
+            $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
+            $planif->setUser($user);
+            $planif->setDemande($demande);
+            $demande->setTraitement('2');
+            $demande->setValide(true);
+
+            //On enregistre
             $em->persist($planif);
             $em->flush();
 
-            return $this->redirectToRoute('planif_show', array('id' => $planif->getId()));
+            return $this->redirectToRoute('demande_EnCours');
         }
 
         return $this->render('planif/new.html.twig', array(
-            'planif' => $planif,
-            'form' => $form->createView(),
+                    'planif' => $planif,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -55,13 +66,12 @@ class PlanifController extends Controller
      * Finds and displays a planif entity.
      *
      */
-    public function showAction(Planif $planif)
-    {
+    public function showAction(Planif $planif) {
         $deleteForm = $this->createDeleteForm($planif);
 
         return $this->render('planif/show.html.twig', array(
-            'planif' => $planif,
-            'delete_form' => $deleteForm->createView(),
+                    'planif' => $planif,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -69,8 +79,7 @@ class PlanifController extends Controller
      * Displays a form to edit an existing planif entity.
      *
      */
-    public function editAction(Request $request, Planif $planif)
-    {
+    public function editAction(Request $request, Planif $planif) {
         $deleteForm = $this->createDeleteForm($planif);
         $editForm = $this->createForm('DemandeBundle\Form\PlanifType', $planif);
         $editForm->handleRequest($request);
@@ -82,9 +91,9 @@ class PlanifController extends Controller
         }
 
         return $this->render('planif/edit.html.twig', array(
-            'planif' => $planif,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'planif' => $planif,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -92,8 +101,7 @@ class PlanifController extends Controller
      * Deletes a planif entity.
      *
      */
-    public function deleteAction(Request $request, Planif $planif)
-    {
+    public function deleteAction(Request $request, Planif $planif) {
         $form = $this->createDeleteForm($planif);
         $form->handleRequest($request);
 
@@ -113,12 +121,31 @@ class PlanifController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Planif $planif)
-    {
+    private function createDeleteForm(Planif $planif) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('planif_delete', array('id' => $planif->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
+                        ->setAction($this->generateUrl('planif_delete', array('id' => $planif->getId())))
+                        ->setMethod('DELETE')
+                        ->getForm()
         ;
     }
+
+    /**
+     * Voir les triateur
+     * 
+     */
+    function traiteurAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $users = $em->getRepository('UserBundle:Utilisateur')->findAll();
+        $listUser = [];
+        foreach ($users as $user) {
+            if ($user->getLevel()->getRightToken() == "ROLE_TRAITEUR") {
+                $listUser[] = $user;
+            }
+        }
+        return $this->render('planif/traiteur.html.twig', array(
+                    'users' => $listUser,
+        ));
+    }
+
 }

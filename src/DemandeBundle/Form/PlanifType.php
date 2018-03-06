@@ -14,11 +14,7 @@ class PlanifType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('duree')
                 ->add('user')
-                ->add('gerant', \Symfony\Bridge\Doctrine\Form\Type\EntityType::class, array(
-                    'class' => 'UserBundle\Entity\Utilisateur',
-                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
-                        return $repository->createQueryBuilder('c')->where('c.level = 3');
-                    }))
+                ->add('gerant')
                 ->add('demande');
     }
 

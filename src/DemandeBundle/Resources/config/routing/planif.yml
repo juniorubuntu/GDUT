@@ -22,3 +22,9 @@ planif_delete:
     path:     /{id}/delete
     defaults: { _controller: "DemandeBundle:Planif:delete" }
     methods:  DELETE
+
+
+planif_traiteur:
+    path:     /traiteur
+    defaults: { _controller: "DemandeBundle:Planif:traiteur" }
+    methods:  [GET, POST]
