@@ -223,7 +223,7 @@
                                         <ul class="dropdown-menu">
                                             <li><a title="Cliquez pour modifier mos informations" href="{{path('fos_user_profile_show')}}"><i class="ti-user m-r-10 text-custom"></i> 
                                                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                                       {{ app.user.nom }}
+                                                        {{ app.user.nom }}
                                                     {% endif %}
                                                 </a></li>
                                                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -247,22 +247,23 @@
 
                 <!-- ========== Left Sidebar Start ========== -->
 
-                <div class="left side-menu purple" style="background: transparent; font-size: 16px">
+                <div class="left side-menu purple" style="background: #2b0b3d; font-size: 16px">
 
                     <div class="sidebar-inner slimscrollleft">
                         <!--- Divider -->
                         <div id="sidebar-menu">
                             <ul>
                                 <li class="text-muted menu-title text-bold"><marquee behavior="alternate"><b style="color: blueviolet">TABLEAU DE BORD</b></marquee></li>
-                                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                        {% if app.user.level.rightToken == "ROLE_ADMIN" %}
-                                            {% include 'menus/admin.html.twig' %}
-                                        {% elseif app.user.level.rightToken == "ROLE_TRAITEUR"%}
-                                            {% include 'menus/traiteur.html.twig' %}
-                                        {% else%}
-                                            {% include 'menus/demandeur.html.twig' %}
-                                        {% endif %}
+
+                                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                    {% if app.user.level.rightToken == "ROLE_ADMIN" %}
+                                        {% include 'menus/admin.html.twig' %}
+                                    {% elseif app.user.level.rightToken == "ROLE_TRAITEUR"%}
+                                        {% include 'menus/traiteur.html.twig' %}
+                                    {% else%}
+                                        {% include 'menus/demandeur.html.twig' %}
                                     {% endif %}
+                                {% endif %}
                                 <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
@@ -365,8 +366,8 @@
 
             <script src="{{asset('assets/pages/datatables.init.js')}}"></script>
             <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-            
-            
+
+
             <script src="{{asset('assets/plugins/custombox/js/custombox.min.js')}}"></script>
             <script src="{{asset('assets/plugins/custombox/js/legacy.min.js')}}"></script>
 

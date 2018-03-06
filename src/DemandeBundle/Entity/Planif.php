@@ -7,12 +7,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity;
 
 /**
- * Rejet
- *
+ * Planif
+ * 
  * @ORM\Table()
  * @ORM\Entity
  */
-class Rejet {
+class Planif {
 
     /**
      * @var integer
@@ -27,8 +27,17 @@ class Rejet {
      * @var \stdClass
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
+     * @Assert\NotBlank()
      */
     private $user;
+
+    /**
+     * @var \stdClass
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
+     * @Assert\NotBlank()
+     */
+    private $gerant;
 
     /**
      * @var \stdClass
@@ -39,12 +48,10 @@ class Rejet {
     private $demande;
 
     /**
-     * @var text
-     * 
-     * @ORM\Column(type="text", length=255)
-     * @Assert\NotBlank()
+     * @var int
+     * @ORM\Column(name="duree", type="integer")
      */
-    private $motif;
+    private $duree;
 
     /**
      * Get id
@@ -55,29 +62,26 @@ class Rejet {
         return $this->id;
     }
 
-
     /**
-     * Set motif
+     * Set duree
      *
-     * @param string $motif
+     * @param integer $duree
      *
-     * @return Rejet
+     * @return Planif
      */
-    public function setMotif($motif)
-    {
-        $this->motif = $motif;
+    public function setDuree($duree) {
+        $this->duree = $duree;
 
         return $this;
     }
 
     /**
-     * Get motif
+     * Get duree
      *
-     * @return string
+     * @return int
      */
-    public function getMotif()
-    {
-        return $this->motif;
+    public function getDuree() {
+        return $this->duree;
     }
 
     /**
@@ -85,10 +89,9 @@ class Rejet {
      *
      * @param \UserBundle\Entity\Utilisateur $user
      *
-     * @return Rejet
+     * @return Planif
      */
-    public function setUser(\UserBundle\Entity\Utilisateur $user = null)
-    {
+    public function setUser(\UserBundle\Entity\Utilisateur $user = null) {
         $this->user = $user;
 
         return $this;
@@ -99,9 +102,30 @@ class Rejet {
      *
      * @return \UserBundle\Entity\Utilisateur
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
+    }
+
+    /**
+     * Set gerant
+     *
+     * @param \UserBundle\Entity\Utilisateur $gerant
+     *
+     * @return Planif
+     */
+    public function setGerant(\UserBundle\Entity\Utilisateur $gerant = null) {
+        $this->gerant = $gerant;
+
+        return $this;
+    }
+
+    /**
+     * Get gerant
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getGerant() {
+        return $this->gerant;
     }
 
     /**
@@ -109,10 +133,9 @@ class Rejet {
      *
      * @param \DemandeBundle\Entity\Demande $demande
      *
-     * @return Rejet
+     * @return Planif
      */
-    public function setDemande(\DemandeBundle\Entity\Demande $demande = null)
-    {
+    public function setDemande(\DemandeBundle\Entity\Demande $demande = null) {
         $this->demande = $demande;
 
         return $this;
@@ -123,8 +146,8 @@ class Rejet {
      *
      * @return \DemandeBundle\Entity\Demande
      */
-    public function getDemande()
-    {
+    public function getDemande() {
         return $this->demande;
     }
+
 }

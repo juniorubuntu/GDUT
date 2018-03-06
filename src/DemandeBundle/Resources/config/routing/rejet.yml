@@ -9,7 +9,7 @@ rejet_show:
     methods:  GET
 
 rejet_new:
-    path:     /new
+    path:     /new/{id}
     defaults: { _controller: "DemandeBundle:Rejet:new" }
     methods:  [GET, POST]
 

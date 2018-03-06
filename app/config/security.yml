@@ -48,3 +48,5 @@ security:
         - { path: ^/account/profile, role: ROLE_DEMANDEUR }
         - { path: ^/demande-par/, role: ROLE_TRAITEUR }
         - { path: ^/typedemande/, role: ROLE_ADMIN }
+        - { path: ^/rejet/, role: ROLE_TRAITEUR }
+        - { path: ^/planif/, role: ROLE_TRAITEUR }

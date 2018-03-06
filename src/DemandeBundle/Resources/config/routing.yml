@@ -21,3 +21,7 @@ demande_module:
 demande_rejet:
     resource: "@DemandeBundle/Resources/config/routing/rejet.yml"
     prefix:   /rejet
+    
+demande_planif:
+    resource: "@DemandeBundle/Resources/config/routing/planif.yml"
+    prefix:   /planif

@@ -1,0 +1,24 @@
+planif_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Planif:index" }
+    methods:  GET
+
+planif_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Planif:show" }
+    methods:  GET
+
+planif_new:
+    path:     /new/{id}
+    defaults: { _controller: "DemandeBundle:Planif:new" }
+    methods:  [GET, POST]
+
+planif_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Planif:edit" }
+    methods:  [GET, POST]
+
+planif_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Planif:delete" }
+    methods:  DELETE

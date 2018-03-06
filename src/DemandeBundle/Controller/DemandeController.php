@@ -3,6 +3,8 @@
 namespace DemandeBundle\Controller;
 
 use DemandeBundle\Entity\Demande;
+use DemandeBundle\Entity\Rejet;
+use DemandeBundle\Entity\Planif;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -188,11 +190,25 @@ class DemandeController extends Controller {
      *
      */
     public function showAction(Demande $demande) {
-        $deleteForm = $this->createDeleteForm($demande);
+        //$deleteForm = $this->createDeleteForm($demande);
+
+        $user = $this->getUser();
+        //Gestion du rejet
+        $rejet = new Rejet();
+        $rejet->setUser($user);
+        $rejet->setDemande($demande);
+        $rejetForm = $this->createForm('DemandeBundle\Form\RejetType', $rejet);
+
+        //Gestion de la planification
+        $planif = new Planif();
+        $planif->setUser($user);
+        $planif->setDemande($demande);
+        $planifForm = $this->createForm('DemandeBundle\Form\PlanifType', $planif);
 
         return $this->render('demande/show.html.twig', array(
                     'demande' => $demande,
-                    'delete_form' => $deleteForm->createView(),
+                    'form' => $rejetForm->createView(),
+                    'formPlanif' => $planifForm->createView(),
         ));
     }
 
@@ -423,7 +439,7 @@ class DemandeController extends Controller {
                     'valide' => false
         ));
         return $this->render('demande/demandeRejete.html.twig', array(
-                    'demandes' => $demandes
+                    'demandes' => array_reverse($demandes)
         ));
     }
 

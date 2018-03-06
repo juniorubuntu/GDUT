@@ -10,20 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
  * Rejet controller.
  *
  */
-class RejetController extends Controller
-{
+class RejetController extends Controller {
+
     /**
      * Lists all rejet entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $rejets = $em->getRepository('DemandeBundle:Rejet')->findAll();
 
         return $this->render('rejet/index.html.twig', array(
-            'rejets' => $rejets,
+                    'rejets' => $rejets,
         ));
     }
 
@@ -31,23 +30,36 @@ class RejetController extends Controller
      * Creates a new rejet entity.
      *
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request, $id) {
         $rejet = new Rejet();
         $form = $this->createForm('DemandeBundle\Form\RejetType', $rejet);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+            //On complete les infos sur le rejet
+            $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
+
+            $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
+            $rejet->setUser($user);
+            $rejet->setDemande($demande);
+            $demande->setTraitement(true);
+            $demande->setValide(false);
+
             $em->persist($rejet);
             $em->flush();
 
-            return $this->redirectToRoute('rejet_show', array('id' => $rejet->getId()));
+            $to = $demande->getUser()->getEmail();
+            $subject = 'Traitement de votre demande de code GDUT#' . $demande->getId();
+            $message = 'Votre demade à été rejetée\nConnectez vous à themis-it.pro/gdutnew/web/ pour plus d\'informaion';
+            mail($to, $subject, $message);
+
+            return $this->redirectToRoute('demande_rejete');
         }
 
         return $this->render('rejet/new.html.twig', array(
-            'rejet' => $rejet,
-            'form' => $form->createView(),
+                    'rejet' => $rejet,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -55,13 +67,12 @@ class RejetController extends Controller
      * Finds and displays a rejet entity.
      *
      */
-    public function showAction(Rejet $rejet)
-    {
+    public function showAction(Rejet $rejet) {
         $deleteForm = $this->createDeleteForm($rejet);
 
         return $this->render('rejet/show.html.twig', array(
-            'rejet' => $rejet,
-            'delete_form' => $deleteForm->createView(),
+                    'rejet' => $rejet,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -69,8 +80,7 @@ class RejetController extends Controller
      * Displays a form to edit an existing rejet entity.
      *
      */
-    public function editAction(Request $request, Rejet $rejet)
-    {
+    public function editAction(Request $request, Rejet $rejet) {
         $deleteForm = $this->createDeleteForm($rejet);
         $editForm = $this->createForm('DemandeBundle\Form\RejetType', $rejet);
         $editForm->handleRequest($request);
@@ -82,9 +92,9 @@ class RejetController extends Controller
         }
 
         return $this->render('rejet/edit.html.twig', array(
-            'rejet' => $rejet,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'rejet' => $rejet,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -92,8 +102,7 @@ class RejetController extends Controller
      * Deletes a rejet entity.
      *
      */
-    public function deleteAction(Request $request, Rejet $rejet)
-    {
+    public function deleteAction(Request $request, Rejet $rejet) {
         $form = $this->createDeleteForm($rejet);
         $form->handleRequest($request);
 
@@ -113,12 +122,12 @@ class RejetController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Rejet $rejet)
-    {
+    private function createDeleteForm(Rejet $rejet) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('rejet_delete', array('id' => $rejet->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
+                        ->setAction($this->generateUrl('rejet_delete', array('id' => $rejet->getId())))
+                        ->setMethod('DELETE')
+                        ->getForm()
         ;
     }
+
 }

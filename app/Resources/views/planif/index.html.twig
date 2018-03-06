@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Planifs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Duree</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for planif in planifs %}
+            <tr>
+                <td><a href="{{ path('planif_show', { 'id': planif.id }) }}">{{ planif.id }}</a></td>
+                <td>{{ planif.duree }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('planif_show', { 'id': planif.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('planif_edit', { 'id': planif.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('planif_new') }}">Create a new planif</a>
+        </li>
+    </ul>
+{% endblock %}

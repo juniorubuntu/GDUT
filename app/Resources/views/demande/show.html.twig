@@ -4,15 +4,11 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel panel-border panel-custom" style="background: #ebeff2">
             <header class="panel-heading">
-                <h1 class="panel-title">Détail sur une demandes</h1>
+                <h1 class="panel-title">Détail sur la demande: <b class="btn btn-purple">GDUT#{{ demande.id }}</b></h1>
             </header>
         </div>
         <table class=" table table-hover table-striped panel panel-border" style="font-size: 16px;">
             <tbody>
-                <tr>
-                    <th>Ticket</th>
-                    <td><b>GDUT#{{ demande.id }}</b></td>
-                </tr>
                 <tr>
                     <th>Libele</th>
                     <td>{{ demande.libele }}</td>
@@ -52,7 +48,7 @@
             </tbody>
         </table>
 
-        {% if app.user.level.rightToken() != "ROLE_DEMANDEUR" %}
+        {% if (app.user.level.rightToken() != "ROLE_DEMANDEUR") and (demande.traitement != 1) %}
             <div class=" panel panel-border panel-custom" style="background: #ebeff2">
                 <header class="panel-heading">
                     <h1 class="panel-title">Options de Traitement de la demande</h1>
@@ -60,27 +56,33 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 panel-footer">
                     <a href="#rejet-modal" class="btn btn-primary btn-custom waves-effect waves-light" data-animation="slidetogether" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Rejéter la demande</a>
                     <a href="#planif-modal" class="btn btn-inverse col-md-offset-2 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Planifier la demande</a>
-                    <a href="#" class="btn btn-purple col-md-offset-3 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Associer à un projet</a>
+                    <a href="#projet-modal" class="btn btn-purple col-md-offset-2 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Associer à un projet</a>
+                    <a href="#abandon-modal" class="btn btn-danger pull-right btn-custom waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Abandonner</a>
                 </div>
-                <div id="rejet-modal" class="modal-demo">
+                <div id="rejet-modal" class="modal-demo" style="font-family: 15px;">
                     <button type="button" class="close" onclick="Custombox.close();">
                         <span>×</span><span class="sr-only">Close</span>
                     </button>
                     <div class="panel panel-custom">
-                        <h4 class="custom-modal-title panel-title text-center">Formulaire du rejet de la demande</h4>
+                        <h4 style="background: blueviolet" class="custom-modal-title panel-title text-center">Formulaire du rejet de la demande</h4>
                         <div class="" style="padding: 2%; width: 100%">
-
-                            <label class="pull-left">Nom du traiteur</label>
-                            <input class="form-control" value="{{app.user.nom}}" disabled="disabled"/>
+                            {{ form_errors(form) }}
+                            {{ form_start(form) }}
+                            <span class="pull-left">{{ form_label(form.user, "Nom du traiteur", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(form.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
                             <br>
-                            <label class="pull-left">Objet de la demande</label>
-                            <input class="form-control" disabled="disabled" value="{{demande.libele}}"/>
+                            <span class="pull-left">{{ form_label(form.demande, "Objet de la demande", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(form.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
                             <br>
-                            <label class="pull-left">Motif du rejet</label>
-                            <textarea class="form-control" placeholder="Ex: Demande mal formuler."></textarea>
+                            <span class="pull-left">{{ form_label(form.motif, "Motif du rejet", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(form.motif, {'attr':{'class':'form-control', 'placeholder': 'Ex: Demande mal formulée, Merci de bien vouloir la reformuler.'}}) }}
                             <br>
-                            <a class="btn btn-custom btn-primary pull-left">Valider</a>
+                            <span class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>rejet</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                            <br>
+                            <hr>
+                            <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
                             <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                            {{ form_end(form) }}
                         </div>
                     </div>
                 </div>
@@ -89,7 +91,42 @@
                         <span>×</span><span class="sr-only">Close</span>
                     </button>
                     <div class="panel panel-custom">
-                        <h4 class="custom-modal-title panel-title text-center">Formulaire de planification d'une demande</h4>
+                        <h4 style="background: green" class="custom-modal-title panel-title text-center">Formulaire de planification d'une demande</h4>
+                        <div class="" style="padding: 2%; width: 100%">
+                            {{ form_errors(formPlanif) }}
+                            {{ form_start(formPlanif) }}
+                            <span class="pull-left">{{ form_label(formPlanif.user, "Nom du traiteur", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formPlanif.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
+                            <br>
+                            <span class="pull-left">{{ form_label(formPlanif.demande, "Objet de la demande", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formPlanif.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
+                            <br>
+                            <h3 class="panel-title"><b><u>INFORMATIONS SUR LA GESTION</u></b></h3>
+                            <span class="pull-left">{{ form_label(formPlanif.gerant, "La demande sera gérer par", {'attr':{'class':'pull-left'}}) }}</span>
+                            {{ form_widget(formPlanif.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple text-uppercase'}}) }}
+                            <br>
+                            <br>
+                            <span class="pull-left">{{ form_label(formPlanif.duree, "Durée de la gestion", {'attr':{'class':'pull-left'}}) }}</span>
+                            <br>
+                            <div class="input-group pull-left" style="margin-bottom: 5%">
+                                {{ form_widget(formPlanif.duree, {'attr':{'class':'form-control', 'min':'0'}}) }}
+                                <span class="input-group-addon" id="basic-addon1">Jours</span>
+                            </div>
+                            <span style="margin-bottom: 5%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Planification</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                            <hr>
+                            <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
+                            <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                            {{ form_end(formPlanif) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div id="projet-modal" class="modal-demo">
+                    <button type="button" class="close" onclick="Custombox.close();">
+                        <span>×</span><span class="sr-only">Close</span>
+                    </button>
+                    <div class="panel panel-custom">
+                        <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Formulaire d'intégration d'une demande à un projet</h4>
                         <div class="" style="padding: 2%; width: 100%">
 
                             <label class="pull-left">Nom du traiteur</label>
@@ -98,14 +135,17 @@
                             <label class="pull-left">Objet de la demande</label>
                             <input class="form-control" disabled="disabled" value="{{demande.libele}}"/>
                             <br>
-                            <label class="pull-left">La demande sera gérer par:</label>
+                            <h3 class="panel-title"><b><u>INFORMATIONS SUR LE PROJET</u></b></h3>
+                            <label class="pull-left">Code projet</label>
+                            <input class="form-control" />
+                            <br>
+                            <label class="pull-left">Libele du Projet</label>
+                            <input class="form-control" />
+                            <br>
+                            <label class="pull-left">Projet dirigé par:</label>
                             <select class="form-control btn btn-custom btn-purple">
-                                <option>Choisir le réalisateur</option>
+                                <option>Choisir le Chef de projet</option>
                             </select>
-                            <br>
-                            <br>
-                            <label class="pull-left">Durée</label>
-                            <input class="form-control" type="number" value=""/>
                             <br>
                             <br>
                             <a class="btn btn-custom btn-primary pull-left">Valider</a>
@@ -114,14 +154,16 @@
                     </div>
                 </div>
             </div>
+            <script>
+                $('[name="demandebundle_rejet"]').attr('action', '{{path('rejet_new', {'id': demande.id})}}');
+                $('[name="demandebundle_planif"]').attr('action', '{{path('planif_new', {'id': demande.id})}}');
+            </script>
         {% endif %}
         <div class="col-md-12" style="margin-bottom: 8%">
             <b> <a class="" href="{{ path('demande_index') }}">Retourner à la liste</a></b>
         </div>
     </div>
-    <script>
 
-    </script>
 
     {#
 <ul>
