@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="panel-title">
+                    <br>
+                    <h3 class="text-center" style="color: black; background: coral;"><b>Page d'erreur</b></h3>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <br><span class="btn btn-danger">code: {{code}}</span>
+                    <h4>Vous n'avez pas le droit d'accéder à ce fichier</h4>
+                </div>
+            </section>
+        </div>
+        <script>
+            $('#exampleModal').modal('show');
+        </script>
+    </div>
+{% endblock %}
+{# empty Twig template #}

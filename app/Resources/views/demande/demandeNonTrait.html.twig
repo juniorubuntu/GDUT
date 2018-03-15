@@ -4,25 +4,25 @@
     <div class="row">
         <div class="col-sm-12">
             <section class="panel panel-border panel-inverse">
-                <header class="panel-title">
+                <header class="">
                     <br>
-                    <h3 class="text-center"><b>Liste de toutes les demandes utilisateurs non traitées</b></h3>
+                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste de toutes les demandes utilisateurs non traitées</b></h3>
                     <br>
                     <br>
                 </header>
                 <div class="panel-body">
                     <div class="adv-table">
-                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable-buttons">
+                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                                 <tr>
-                                    <th class="panel-title">Traiter</th>
-                                    <th class="panel-title">Tickect</th>
-                                    <th class="panel-title">Date envoie</th>
-                                    <th class="panel-title">Entreprise</th>
-                                    <th class="panel-title">Objet</th>
-                                    <th class="panel-title">Type de demande</th>
-                                    <th class="panel-title">Niveau d'urgence</th>
-                                    <th class="panel-title">Application concernée</th>
+                                    <th class="">Traiter</th>
+                                    <th class="">Ticket</th>
+                                    <th class="">Date envoie</th>
+                                    <th class="">Entreprise</th>
+                                    <th class="">Objet</th>
+                                    <th class="">Type de demande</th>
+                                    <th class="">Niveau d'urgence</th>
+                                    <th class="">Application concernée</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,14 +72,7 @@
             </section>
         </div>
         <script>
-            $(document).ready(function () {
-                $('#datatable-responsive').DataTable({
-                    "language": {
-                        "url": "{{asset('assets/French.json')}}"
-                    }
-                });
-                TableManageButtons.init();
-            });
+            
             $('#exampleModal').modal('show');
         </script>
     </div>

@@ -27,6 +27,7 @@ security:
             form_login:
                 remember_me: true
                 provider: fos_userbundle
+                default_target_path: /dashboard
                 csrf_token_generator: security.csrf.token_manager
                 # if you are using Symfony < 2.8, use the following config instead:
                 # csrf_provider: form.csrf_provider
@@ -40,13 +41,16 @@ security:
                 domain: ~ # Defaults to the current domain from $_SERVER
 
     access_control:
-     # - { path: ^/, role: ROLE_USER }
+        - { path: ^/,   role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/account/$, role: ROLE_ADMIN }
+        - { path: ^/account$, role: ROLE_ADMIN }
+        - { path: ^/Demandes/, role: ROLE_DEMANDEUR }
         - { path: ^/account/profile, role: ROLE_DEMANDEUR }
         - { path: ^/demande-par/, role: ROLE_TRAITEUR }
         - { path: ^/typedemande/, role: ROLE_ADMIN }
         - { path: ^/rejet/, role: ROLE_TRAITEUR }
         - { path: ^/planif/, role: ROLE_TRAITEUR }
+        - { path: ^/abandon/, role: ROLE_TRAITEUR }
+        - { path: ^/demande-par/, role: ROLE_TRAITEUR }

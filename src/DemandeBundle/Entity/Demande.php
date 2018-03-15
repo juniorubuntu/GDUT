@@ -125,6 +125,13 @@ class Demande {
     private $traitement;
 
     /**
+     * @var boolean
+     * 
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $fini;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateEnvoie", type="datetime", nullable=true)
@@ -448,4 +455,28 @@ class Demande {
         return $this->module;
     }
 
+
+    /**
+     * Set fini
+     *
+     * @param boolean $fini
+     *
+     * @return Demande
+     */
+    public function setFini($fini)
+    {
+        $this->fini = $fini;
+
+        return $this;
+    }
+
+    /**
+     * Get fini
+     *
+     * @return boolean
+     */
+    public function getFini()
+    {
+        return $this->fini;
+    }
 }

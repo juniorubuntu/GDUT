@@ -44,15 +44,36 @@ class RejetController extends Controller {
             $rejet->setUser($user);
             $rejet->setDemande($demande);
             $demande->setTraitement(true);
+            $demande->setFini(true);
             $demande->setValide(false);
 
             $em->persist($rejet);
             $em->flush();
 
-            $to = $demande->getUser()->getEmail();
-            $subject = 'Traitement de votre demande de code GDUT#' . $demande->getId();
-            $message = 'Votre demade à été rejetée\nConnectez vous à themis-it.pro/gdutnew/web/ pour plus d\'informaion';
-            mail($to, $subject, $message);
+            //Envoie des mails
+            //gestion de l'entête
+            $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                    ->setDisposition('inline');
+            $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+            $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+            //envoie
+            $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
+            $texte = 'Votre ticket a été rejeté.';
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('support@themis-it.com')
+                    ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                    ->setCharset('utf-8')
+                    ->setContentType('text/html')
+                    ->setSubject($titre)
+                    ->setBody($this->render('mails/mailTrait.html.twig', array(
+                                'contenu' => $texte,
+                                'titre' => $titre,
+                                'motif' => $rejet->getMotif()
+                    )))
+                    ->attach($attachment)
+            ;
+            $this->get('mailer')->send($message);
+            //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
             return $this->redirectToRoute('demande_rejete');
         }

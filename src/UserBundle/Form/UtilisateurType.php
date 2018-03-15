@@ -28,7 +28,8 @@ class UtilisateurType extends AbstractType {
                 ->add('cni')
                 ->add('telephone')
                 ->add('adresse')
-                ->add('level');
+                ->add('level')
+                ->add('entreprise');
     }
 
     public function getParent() {

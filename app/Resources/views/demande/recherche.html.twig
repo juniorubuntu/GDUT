@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h3 class=" text-center"><b>RECHERCHER UNE DEMANDE</b></h3>
+    <h3 class=" text-center" style="color: white; background: #7e57c2;margin-bottom: 5%"><b>Rechercher une demande</b></h3>
     <div class="col-md-10 col-md-offset-1">
         <form action="{{path('demande_recherche')}}" method="POST">
             <div class="input-group">
@@ -11,19 +11,19 @@
         </form>
     </div>
     {% if search is defined %}
-        <h3 style="margin-top: 12%;" class=" text-center"><b>RESULTATS TROUVES</b></h3>
+        <h3 style="margin-top: 12%; color: white; background: rgba(12, 64, 6, 0.69);" class=" text-center"><b>RESULTATS TROUVES</b></h3>
         <div class="col-md-12" style="margin-bottom: 8%">
-            <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable-buttons">
+            <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                 <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                     <tr>
-                        <th class="panel-title">Détail</th>
-                        <th class="panel-title">Ticket</th>
-                        <th class="panel-title">Date envoie</th>
-                        <th class="panel-title">Entreprise</th>
-                        <th class="panel-title">Objet</th>
-                        <th class="panel-title">Type de demande</th>
-                        <th class="panel-title">Niveau d'urgence</th>
-                        <th class="panel-title">Application concernée</th>
+                        <th class="">Détail</th>
+                        <th class="">Ticket</th>
+                        <th class="">Date envoie</th>
+                        <th class="">Entreprise</th>
+                        <th class="">Objet</th>
+                        <th class="">Type de demande</th>
+                        <th class="">Niveau d'urgence</th>
+                        <th class="">Application concernée</th>
                     </tr>
                 </thead>
                 <tbody>

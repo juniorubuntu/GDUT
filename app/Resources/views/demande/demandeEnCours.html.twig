@@ -4,32 +4,35 @@
     <div class="row">
         <div class="col-sm-12">
             <section class="panel panel-border panel-inverse">
-                <header class="panel-title">
+                <header class="">
                     <br>
-                    <h3 class="text-center"><b>Liste de toutes les demandes utilisateurs en cours de traitement</b></h3>
+                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste de toutes {{texte}} en cours de traitement</b></h3>
                     <br>
                     <br>
                 </header>
                 <div class="panel-body">
                     <div class="adv-table">
-                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable-buttons">
+                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                                 <tr>
-                                    <th class="panel-title">Détail</th>
-                                    <th class="panel-title">Tickect</th>
-                                    <th class="panel-title">Date envoie</th>
-                                    <th class="panel-title">Entreprise</th>
-                                    <th class="panel-title">Objet</th>
-                                    <th class="panel-title">Type de demande</th>
-                                    <th class="panel-title">Niveau d'urgence</th>
-                                    <th class="panel-title">Application concernée</th>
+                                    <th class="">Détail</th>
+                                    <th class="">Ticket</th>
+                                    <th class="">Date envoie</th>
+                                    <th class="">Entreprise</th>
+                                    <th class="">Objet</th>
+                                    <th class="">Type de demande</th>
+                                    <th class="">Niveau d'urgence</th>
+                                    <th class="">Application concernée</th>
+                                        {% if app.user.level.rightToken != "ROLE_DEMANDEUR" %}
+                                        <th class="">Terminé ?</th>
+                                        {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for demande in demandes %}
                                     <tr>
                                         <td class="">
-                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Détails</a>
+                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Voir</a>
                                         </td>
                                         <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
                                         <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
@@ -38,6 +41,27 @@
                                         <td>{{ demande.type }}</td>
                                         <td>{{ demande.niveauUrgence }}</td>
                                         <td>{{ demande.application }}</td>
+                                        {% if app.user.level.rightToken != "ROLE_DEMANDEUR"%}
+                                            <td class="">
+                                                <a href="#fin-modal" class="btn btn-primary pull-right btn-custom waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Terminer</a>
+                                                <div id="fin-modal" class="modal-demo">
+                                                    <button type="button" class="close" onclick="Custombox.close();">
+                                                        <span>×</span><span class="sr-only">Close</span>
+                                                    </button>
+                                                    <div class="panel panel-custom">
+                                                        <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Confirmation de la fin du traitement d'une demande</h4>
+                                                        <div class="" style="padding: 2%; width: 100%">
+                                                            <h1 class="panel-title"><b>Confirmer la fin du traitement de la demande ?</b></h1>
+                                                            <br>
+                                                            <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de <b>la fin du traitement</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                                                            <hr>
+                                                            <a class="btn btn-custom btn-primary pull-left" href="{{path('demande_finir', {'id': demande.id})}}">Valider</a>
+                                                            <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -72,14 +96,7 @@
             </section>
         </div>
         <script>
-            $(document).ready(function () {
-                $('#datatable-responsive').DataTable({
-                    "language": {
-                        "url": "{{asset('assets/French.json')}}"
-                    }
-                });
-                TableManageButtons.init();
-            });
+
             $('#exampleModal').modal('show');
         </script>
     </div>

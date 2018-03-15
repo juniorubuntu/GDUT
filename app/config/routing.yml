@@ -1,7 +1,13 @@
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation 
+
 demande:
     resource: "@DemandeBundle/Resources/config/routing.yml"
     prefix:   /
-
 
 
 user_utilisateur:
@@ -13,9 +19,4 @@ user:
     type:     annotation
     prefix:   /
 
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
     
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

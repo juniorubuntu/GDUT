@@ -41,7 +41,9 @@
                     <th>Fichier joint</th>
                     <td>
                         {% if demande.fichier != '' %}
-                            {{asset('Uploads/Fichier/'~demande.fichier)}}
+                            <a target="blank" href="{{asset('Uploads/Fichier/'~demande.fichier)}}"><i class="fa fa-download"> </i> Télécharger</a></span>
+                        {% else %}
+                            Aucun
                         {% endif %}
                     </td>
                 </tr>

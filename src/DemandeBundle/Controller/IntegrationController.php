@@ -50,6 +50,32 @@ class IntegrationController extends Controller {
             $em->persist($integration);
             $em->flush();
 
+            //Envoie des mails
+            //gestion de l'entête
+            $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                    ->setDisposition('inline');
+            $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+            $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+            //envoie
+            $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
+            $texte = 'Votre ticket a été intégré au projet ' . $integration->getCode() . ' de libelé: ' . $integration->getLibele();
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('support@themis-it.com')
+                    ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                    ->setCharset('utf-8')
+                    ->setContentType('text/html')
+                    ->setSubject($titre)
+                    ->setBody($this->render('mails/mailPlan.html.twig', array(
+                                'contenu' => $texte,
+                                'titre' => $titre,
+                                'motif' => 'Vous pouvez vous rendre sur www.themis-it.pro pour suivre l\'évolution du projet .'
+                    )))
+                    ->attach($attachment)
+            ;
+            $this->get('mailer')->send($message);
+            //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
+
+
             return $this->redirectToRoute('demande_EnCours');
         }
 

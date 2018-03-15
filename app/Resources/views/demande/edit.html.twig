@@ -14,13 +14,13 @@
                                 Idendification de l'utilisateur
                             </legend>
                             <label>Nom utiliateur</label>
-                            <input disabled="disabled" class="form-control" value="{{app.user.nom}}">
+                            <input disabled="disabled" class="form-control" value="{{demande.user}}">
                             <br>
                             <label>Téléphone</label>
-                            <input disabled="disabled" class="form-control" value="{{app.user.telephone}}">
+                            <input disabled="disabled" class="form-control" value="{{demande.user.telephone}}">
                             <br>
                             <label>Entreprise</label>
-                            <input disabled="disabled" class="form-control" value="{{app.user.entreprise}}">
+                            <input disabled="disabled" class="form-control" value="{{demande.user.entreprise}}">
                             <br>
                         </fieldset>
 
@@ -40,8 +40,12 @@
 
 
                             {{ form_label(edit_form.application, "Application concenée") }}
-                            {{ form_widget(edit_form.application, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+                            {{ form_widget(edit_form.application, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'onchange':'appModule(value);', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
 
+                            {{ form_label(edit_form.module, "Module concernée") }}
+                            <div class="applMod">
+                                {{ form_widget(edit_form.module, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
+                            </div>
 
                             {{ form_label(edit_form.niveauUrgence, "Niveau d'urgence") }}
                             {{ form_widget(edit_form.niveauUrgence, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
@@ -118,6 +122,17 @@
             });
             function trashed(id) {
                 document.getElementById('trash').value = id;
+            }
+            
+            var lien = "{{path('demande_moduleApp', {'id': 'APPL'})}}";
+            id = document.getElementById('demandebundle_demande_application').value;
+            lien = lien.replace('APPL', id);
+            $('.applMod').load(lien);
+
+            function appModule(id) {
+                var lien = "{{path('demande_moduleApp', {'id': 'APPL'})}}";
+                lien = lien.replace('APPL', id);
+                $('.applMod').load(lien);
             }
         </script>
     </div>

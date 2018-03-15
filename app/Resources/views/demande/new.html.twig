@@ -32,7 +32,7 @@
                             {{ form_start(form) }}
 
                             {{ form_label(form.libele, "Libele de la demande") }}
-                            {{ form_widget(form.libele, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+                            {{ form_widget(form.libele, {'attr':{'class':'form-control', 'placeholder': 'Ex: Problème de connexion', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
 
                             {{ form_label(form.application, "Application concernée") }}
                             {{ form_widget(form.application, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'onchange':'appModule(value);', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
@@ -50,7 +50,7 @@
                             {{ form_widget(form.niveauUrgence, {'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom', 'style': 'text-transform: uppercase; margin-bottom: 25px;'}}) }}
 
                             {{ form_label(form.description, "Description de la demande") }}
-                            {{ form_widget(form.description, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
+                            {{ form_widget(form.description, {'attr':{'class':'form-control', 'placeholder': 'Ex: On ne parvient plus à se connecter depuis la dernière mise à jour.', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
 
                         </fieldset>
 

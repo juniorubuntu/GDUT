@@ -53,6 +53,32 @@ class PlanifController extends Controller {
             $em->persist($planif);
             $em->flush();
 
+            //Envoie des mails
+            //gestion de l'entête
+            $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                    ->setDisposition('inline');
+            $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+            $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+            //envoie
+            $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
+            $texte = 'Votre ticket a été planifié pour ' . $planif->getDuree() . ' jour(s) de traitement';
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('support@themis-it.com')
+                    ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                    ->setCharset('utf-8')
+                    ->setContentType('text/html')
+                    ->setSubject($titre)
+                    ->setBody($this->render('mails/mailPlan.html.twig', array(
+                                'contenu' => $texte,
+                                'titre' => $titre,
+                                'motif' => 'la demande est traitée pas notre agent ' . strtoupper($planif->getGerant()) . ' Contact: ' . $planif->getGerant()->getTelephone() . ' ' . $planif->getGerant()->getEmail() . ' Vous pouvez la contacter plus d\'information.'
+                    )))
+                    ->attach($attachment)
+            ;
+            $this->get('mailer')->send($message);
+            //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
+
+
             return $this->redirectToRoute('demande_EnCours');
         }
 

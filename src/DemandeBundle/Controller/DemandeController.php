@@ -24,20 +24,37 @@ class DemandeController extends Controller {
 
         $userConnected = $this->getUser();
 
+        $texte = '';
+
         if ($userConnected->getLevel()->getRightToken() == 'ROLE_ADMIN' || $userConnected->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
-            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(array('trash' => false));
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false
+            ));
+            $texte = 'les demandes utilisateurs';
         } else if ($userConnected->getLevel()->getRightToken() == 'ROLE_DEMANDEUR') {
-            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(array('user' => $userConnected));
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'user' => $userConnected,
+                        'trash' => false
+            ));
+            $texte = 'mes demandes';
         }
         if (isset($_GET['creation'])) {
             return $this->render('demande/index.html.twig', array(
                         'demandes' => array_reverse($demandes),
-                        'creation' => 'ok'
+                        'creation' => 'ok',
+                        'texte' => $texte
             ));
         }
 
+        $flashBack = $this->get('session')->getFlashBag();
+        $flashBack->add("success", "Un mail a été envoyé au demandeur. Vous allez recevoir un mail de confirmation");
+
+
         return $this->render('demande/index.html.twig', array(
                     'demandes' => array_reverse($demandes),
+                    'texte' => $texte
         ));
     }
 
@@ -77,12 +94,29 @@ class DemandeController extends Controller {
 
 
 
-                //  Envoie des mails
+
+                //Envoie des mails
+                //gestion de l'entête
+                $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                        ->setDisposition('inline');
+                $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+                $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+                //envoie
+                $titre = 'Creation du ticket: GDUT#' . $demande->getId() . ' ' . $demande->getLibele();
+                $texte = 'Votre ticket a été créé avec succès, vous serez informé par mail de la suite du traitement.';
                 $message = \Swift_Message::newInstance()
-                        ->setFrom('juniorubuntu54@gmail.com')
-                        ->setTo('juniorubuntu@gmail.com')
-                        ->setSubject('Creation du ticket: GDUT#' . $demande->getLibele())
-                        ->setBody('Voila ma demande');
+                        ->setFrom('support@themis-it.com')
+                        ->setTo(array($userConnected->getEmail(), 'dev@themis-it.com'))
+                        ->setCharset('utf-8')
+                        ->setContentType('text/html')
+                        ->setSubject($titre)
+                        ->setBody($this->render('mails/mailTemplate.html.twig', array(
+                                    'contenu' => $texte,
+                                    'titre' => $titre,
+                                    'message' => $demande->getDescription()
+                        )))
+                        ->attach($attachment)
+                ;
                 $this->get('mailer')->send($message);
                 //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
@@ -148,6 +182,15 @@ class DemandeController extends Controller {
                     ))
                     ->getQuery();
             $demandes = $query->getResult();
+            if ($userConnected->getLevel()->getRightToken() == "ROLE_DEMANDEUR") {
+                $retour = [];
+                foreach ($demandes as $demande) {
+                    if ($demande->getUser() == $userConnected) {
+                        $retour[] = $demande;
+                    }
+                }
+                $demandes = $retour;
+            }
             return $this->render('demande/recherche.html.twig', array(
                         'demandes' => $demandes,
                         'search' => 'search'
@@ -227,6 +270,14 @@ class DemandeController extends Controller {
     public function editAction(Request $request, Demande $demande) {
         $deleteForm = $this->createDeleteForm($demande);
 
+        $userConnecte = $this->getUser();
+
+        if (($demande->getUser() != $userConnecte) || $demande->getTrash() != 1) {
+            return $this->render('demande/erreur.html.twig', array(
+                        'code' => '#001'
+            ));
+        }
+
         //Verification si le la demande n'a pas encore de fichier
         $file = '';
         $ancien = '';
@@ -258,6 +309,7 @@ class DemandeController extends Controller {
                     $demande->setFichier($fichier);
                 }
             }
+
             if ($ancien == '') {
                 $fichier = '';
                 $fichier = $this->importation($fichier);
@@ -329,7 +381,37 @@ class DemandeController extends Controller {
         $demande = new Demande();
         $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
         $demande->setTraitement('3');
+        $demande->setFini(true);
         $em->flush();
+
+        //Envoie des mails
+        //gestion de l'entête
+        $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                ->setDisposition('inline');
+        $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+        $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+
+        //envoie
+        $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
+        $texte = 'Votre ticket a été abandonné';
+        $message = \Swift_Message::newInstance()
+                ->setFrom('support@themis-it.com')
+                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                ->setCharset('utf-8')
+                ->setContentType('text/html')
+                ->setSubject($titre)
+                ->setBody($this->render('mails/mailPlan.html.twig', array(
+                            'contenu' => $texte,
+                            'titre' => $titre,
+                            'motif' => 'Suite à votre souhait, votre demande a été abandonnée.'
+                )))
+                ->attach($attachment)
+        ;
+        $this->get('mailer')->send($message);
+        //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
+
+
+
         return $this->redirectToRoute('demande_abandon');
     }
 
@@ -423,10 +505,11 @@ class DemandeController extends Controller {
         $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
                 array(
                     'trash' => false,
-                    'traitement' => '1'
+                    'fini' => true
         ));
         return $this->render('demande/demandeTrait.html.twig', array(
-                    'demandes' => $demandes
+                    'demandes' => $demandes,
+                    'texte' => 'les demandes utilisateurs'
         ));
     }
 
@@ -443,7 +526,8 @@ class DemandeController extends Controller {
                     'traitement' => '2'
         ));
         return $this->render('demande/demandeEnCours.html.twig', array(
-                    'demandes' => array_reverse($demandes)
+                    'demandes' => array_reverse($demandes),
+                    'texte' => 'les demandes utilisateurs'
         ));
     }
 
@@ -460,7 +544,8 @@ class DemandeController extends Controller {
                     'valide' => false
         ));
         return $this->render('demande/demandeRejete.html.twig', array(
-                    'demandes' => array_reverse($demandes)
+                    'demandes' => array_reverse($demandes),
+                    'texte' => 'les demandes utilisateurs'
         ));
     }
 
@@ -477,7 +562,140 @@ class DemandeController extends Controller {
                     'traitement' => '3'
         ));
         return $this->render('demande/abandon.html.twig', array(
-                    'demandes' => array_reverse($demandes)
+                    'demandes' => array_reverse($demandes),
+                    'texte' => 'les demandes utilisateurs'
+        ));
+    }
+
+    //On gere un user preci
+    /**
+     * Affiche les demandes abandonnée
+     * 
+     */
+    public function MesdemandeAbandonAction() {
+        $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
+
+        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                array(
+                    'trash' => false,
+                    'traitement' => '3',
+                    'user' => $userConnecte
+        ));
+        return $this->render('demande/abandon.html.twig', array(
+                    'demandes' => array_reverse($demandes),
+                    'texte' => 'mes demandes'
+        ));
+    }
+
+    /**
+     * Affiche les demandes en cours de traitemnet
+     * 
+     */
+    public function MesdemandeEnCoursAction() {
+        $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
+
+        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                array(
+                    'trash' => false,
+                    'traitement' => '2',
+                    'user' => $userConnecte
+        ));
+        return $this->render('demande/demandeEnCours.html.twig', array(
+                    'demandes' => array_reverse($demandes),
+                    'texte' => 'mes demandes'
+        ));
+    }
+
+    /**
+     * Affiche les demandes rejetées
+     * 
+     */
+    public function MesdemandeRejeteAction() {
+        $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
+
+        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                array(
+                    'trash' => false,
+                    'valide' => false,
+                    'user' => $userConnecte
+        ));
+        return $this->render('demande/demandeRejete.html.twig', array(
+                    'demandes' => array_reverse($demandes),
+                    'texte' => 'mes demandes'
+        ));
+    }
+
+    /**
+     * Affiche les demandes Tritées
+     * 
+     */
+    public function MesdemandeTraitAction() {
+        $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
+
+        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                array(
+                    'trash' => false,
+                    'traitement' => '1',
+                    'user' => $userConnecte
+        ));
+        return $this->render('demande/demandeTrait.html.twig', array(
+                    'demandes' => $demandes,
+                    'texte' => 'mes demandes'
+        ));
+    }
+
+    /**
+     * Affiche les demandes Tritées
+     * 
+     */
+    public function demandefiniAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
+        $demande->setFini(true);
+        $demande->setTraitement('1');
+        $em->flush();
+
+        //Envoie des mails
+        //gestion de l'entête
+        $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                ->setDisposition('inline');
+        $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+        $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+        //envoie
+        $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
+        $texte = 'Fin de traitement de votre ticket';
+        $message = \Swift_Message::newInstance()
+                ->setFrom('support@themis-it.com')
+                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                ->setCharset('utf-8')
+                ->setContentType('text/html')
+                ->setSubject($titre)
+                ->setBody($this->render('mails/mailPlan.html.twig', array(
+                            'contenu' => $texte,
+                            'titre' => $titre,
+                            'motif' => 'Le traitement de votre demande est terminé, vous pouvez consulter les mises à jours au niveau du module concerné.'
+                )))
+                ->attach($attachment)
+        ;
+        $this->get('mailer')->send($message);
+        //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
+
+        return $this->redirectToRoute('demande_Traite');
+    }
+
+    /**
+     * Mail template
+     * 
+     */
+    public function mailTemplAction() {
+
+        return $this->render('mails/mailTemplate.html.twig', array(
+                    'texte' => 'Texte'
         ));
     }
 

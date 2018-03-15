@@ -5,21 +5,21 @@
         <div class="col-sm-12">
             <section class="panel panel-border panel-inverse">
                 <header class="panel-title">
-                    <h3 class="text-center"><b>Liste de toutes les modules</b></h3>
+                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste de toutes les modules</b></h3>
                     <a style="margin-right: 2%" class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('module_new')}}">Ajouter un module</a>
                     <br>
                     <br>
                 </header>
                 <div class="panel-body">
                     <div class="adv-table">
-                        <table  class="records_list table table-hover panel table-responsive panel-inverse panel-purple table-bordered table-striped" id="datatable-buttons">
+                        <table  class="records_list table table-hover panel table-responsive panel-inverse panel-purple table-bordered table-striped" id="datatable">
                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                                 <tr>
-                                    <th class="panel-title">Actions</th>
-                                    <th class="panel-title">Nom</th>
-                                    <th class="panel-title">Description</th>
-                                    <th class="panel-title">Application</th>
-                                    <th class="panel-title">Actif</th>
+                                    <th class="">Actions</th>
+                                    <th class="">Nom</th>
+                                    <th class="">Description</th>
+                                    <th class="">Application</th>
+                                    <th class="">Actif</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,10 +52,6 @@
             </section>
         </div>
         <script>
-            $(document).ready(function () {
-                $('#datatable-responsive').DataTable();
-                TableManageButtons.init();
-            });
         </script>
     </div>
 {% endblock %}

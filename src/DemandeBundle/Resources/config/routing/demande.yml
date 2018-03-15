@@ -1,10 +1,10 @@
 demande_index:
-    path:     /Demandes
+    path:     /dashboard
     defaults: { _controller: "DemandeBundle:Demande:index" }
     methods:  GET
     
 demande_enPrepa:
-    path:     /dashboard
+    path:     /Brouillon
     defaults: { _controller: "DemandeBundle:Demande:enPrepa" }
     methods:  GET
     
@@ -87,4 +87,36 @@ demande_abandon:
 demande_abandonNew:
     path:     demande-Abandonn-new/{id}
     defaults: { _controller: "DemandeBundle:Demande:abandonNew" }
+    methods:  [GET, POST]
+    
+demande_finir:
+    path:     demande-terminees/{id}/
+    defaults: { _controller: "DemandeBundle:Demande:demandefini" }
+    methods:  [GET, POST]
+
+#Pour un demandeur
+
+abandon:
+    path:     mes-demandes-traitees/
+    defaults: { _controller: "DemandeBundle:Demande:MesdemandeAbandon" }
+    methods:  [GET, POST]
+    
+enCours:
+    path:     mes-demandes-en-Cours/
+    defaults: { _controller: "DemandeBundle:Demande:MesdemandeEnCours" }
+    methods:  [GET, POST]
+    
+rejete:
+    path:     mes-demandes-rejetees/
+    defaults: { _controller: "DemandeBundle:Demande:MesdemandeRejete" }
+    methods:  [GET, POST]
+    
+cloture:
+    path:     mes-demandes-cloturees/
+    defaults: { _controller: "DemandeBundle:Demande:MesdemandeTrait" }
+    methods:  [GET, POST]
+    
+mail_templ:
+    path:     mail/
+    defaults: { _controller: "DemandeBundle:Demande:mailTempl" }
     methods:  [GET, POST]

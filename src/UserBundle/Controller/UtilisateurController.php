@@ -187,6 +187,7 @@ class UtilisateurController extends BaseController {
         $editForm->remove('adresse');
         $editForm->remove('cni');
         $editForm->remove('username');
+        $editForm->remove('entreprise');
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

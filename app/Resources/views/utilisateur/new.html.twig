@@ -93,10 +93,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">  
+                            <div class="form-group">
+                                {{ form_label(form.entreprise, "Entreprise de l'utilisateur") }}
+                                {{ form_widget(form.entreprise,{'attr':{'class':'form-control', 'style': 'text-transform: uppercase'}}) }}
+                            </div>
+                        </div>
+                    </div>
                     <table class="pull-right">
                         <tr>
                             <td>
-                                <input class="ladda-button ladda-button-demo btn btn-primary" type="submit" value="{{ 'registration.submit'|trans }}" />
+                                <input class="ladda-button btn-custom ladda-button-demo btn btn-primary" type="submit" value="{{ 'registration.submit'|trans }}" />
                             </td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>

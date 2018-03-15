@@ -4,12 +4,12 @@
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta name="description" content="GDUT Application">
-            <meta name="author" content="Coderthemes">
+            <meta name="description" content="GDUT, application de gestion des demande utilisateurs">
+            <meta name="author" content="Themis-it">
 
             <link rel="shortcut icon" href="assets/images/favicon_1.ico">
             {% block title %}
-                <title>GDUT-Start!</title>
+                <title>GDUT</title>
             {% endblock %}
 
             <link rel="stylesheet" href="{{asset('assets/plugins/morris/morris.css')}}">
@@ -79,7 +79,7 @@
 
                                 <ul class="nav navbar-nav hidden-xs">
 
-                                    <li><a href="#" class="waves-effect waves-light">Ici sera le menu rapide</a></li>
+                                    <li><a href="#" class="waves-effect waves-light">{#Ici sera le menu rapide#}</a></li>
 
                                     {#
                                      <li class="dropdown">
@@ -97,16 +97,15 @@
                                 </ul>
 
                                 <form role="search" class="navbar-left app-search pull-left hidden-xs">
-                                    <input type="text" placeholder="Search..." class="form-control">
-                                    <a href=""><i class="fa fa-search"></i></a>
+
                                 </form>
 
 
                                 <ul class="nav navbar-nav navbar-right pull-right">
                                     <li class="dropdown top-menu-item-xs">
-
-                                        ici sera affiché les notifications
                                         {#
+                                        ici sera affiché les notifications
+                                        
                                         <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
                                             <i class="icon-bell"></i> <span class="badge badge-xs badge-danger">3</span>
                                         </a>
@@ -216,12 +215,12 @@
                                         <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="icon-size-fullscreen"></i></a>
                                     </li>
                                     <li class="hidden-xs">
-                                        <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="icon-settings"></i></a>
+                                        {# <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="icon-settings"></i></a> #}
                                     </li>
                                     <li class="dropdown top-menu-item-xs">
                                         <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true"><img src="{{asset('assets/images/users/profil.png')}}" alt="user-img" class="img-circle"> </a>
                                         <ul class="dropdown-menu">
-                                            <li><a title="Cliquez pour modifier mos informations" href="{{path('fos_user_profile_show')}}"><i class="ti-user m-r-10 text-custom"></i> 
+                                            <li><a title="Cliquez pour modifier mos informations" href="{{path('fos_user_profile_show')}}"><i class="glyphicon glyphicon-user m-r-10 text-custom"></i> 
                                                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                                         {{ app.user.nom }}
                                                     {% endif %}
@@ -233,7 +232,7 @@
                                                     </li>
                                                 {% endif %}
                                             {% endif %}
-                                            <li><a href="{{path('fos_user_security_logout')}}"><i class="ti-power-off m-r-10 text-danger"></i> Déconnecter</a></li>
+                                            <li><a href="{{path('fos_user_security_logout')}}"><i class="glyphicon glyphicon-off m-r-10 text-danger"></i> Déconnecter</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -285,15 +284,13 @@
                                 <div class="container">
 
 
-
-
                                 </div> <!-- container -->
                             {% endblock %}
                         {% endblock %}
                     </div> <!-- content -->
 
                     <footer class="footer text-right" style="margin-top: 12px;">
-                        © 2016. <a href="http://www.themis-it.com/" target="blank">Themis-IT</a>, All rights reserved.
+                        © 2018. <a href="http://www.themis-it.com/" target="blank">Themis-IT</a>, Tout droit reservés.
                     </footer>
 
                 </div>
@@ -380,6 +377,29 @@
 
                     $(".knob").knob();
 
+                });
+
+                //Chargement de datatable
+                $(document).ready(function () {
+                    $('#datatable').DataTable({
+                        "language": {
+                            "url": "{{asset('assets/French.json')}}",
+                            buttons: {
+                                copy: 'Copier',
+                                print: 'Imprimer',
+                                copyTitle: 'Ajouté au presse-papiers',
+                                copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+                                copySuccess: {
+                                    _: '%d lignes copiées',
+                                    1: '1 ligne copiée'
+                                }
+                            }
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'excel', 'pdf', 'csv', 'print'
+                        ],
+                    });
                 });
             </script>
 
