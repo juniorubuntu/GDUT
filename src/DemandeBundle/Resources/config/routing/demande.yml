@@ -97,7 +97,7 @@ demande_finir:
 #Pour un demandeur
 
 abandon:
-    path:     mes-demandes-traitees/
+    path:     mes-demandes-abandonnees/
     defaults: { _controller: "DemandeBundle:Demande:MesdemandeAbandon" }
     methods:  [GET, POST]
     

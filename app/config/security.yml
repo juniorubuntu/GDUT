@@ -10,10 +10,11 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_DEMANDEUR: ROLE_USER
-        ROLE_TRAITEUR:  ROLE_DEMANDEUR
-        ROLE_ADMIN:     ROLE_TRAITEUR
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_USER: IS_AUTHENTICATED_FULLY
+        ROLE_DEMANDEUR: [ROLE_USER, ROLE_DEMANDEUR]
+        ROLE_TRAITEUR:  [ROLE_DEMANDEUR, ROLE_TRAITEUR]
+        ROLE_ADMIN:     [ROLE_TRAITEUR, ROLE_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
        
 
 
@@ -26,13 +27,17 @@ security:
             pattern: ^/
             form_login:
                 remember_me: true
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
                 provider: fos_userbundle
                 default_target_path: /dashboard
                 csrf_token_generator: security.csrf.token_manager
                 # if you are using Symfony < 2.8, use the following config instead:
                 # csrf_provider: form.csrf_provider
 
-            logout:       true
+            logout:       
+                path:       fos_user_security_logout
+                target:     /login
             anonymous:    true
             remember_me:
                 secret: "%secret%"
@@ -41,14 +46,24 @@ security:
                 domain: ~ # Defaults to the current domain from $_SERVER
 
     access_control:
-        - { path: ^/,   role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/account$, role: ROLE_ADMIN }
+#        - { path: ^/,   role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/dashboard/, role: ROLE_DEMANDEUR }
+        - { path: ^/mes-demandes-traitees/, role: ROLE_DEMANDEUR }
+        - { path: ^/mes-demandes-cloturees/, role: ROLE_DEMANDEUR }
+        - { path: ^/mes-demandes-rejetees/, role: ROLE_DEMANDEUR }
+        - { path: ^/mes-demandes-abandonnees/, role: ROLE_DEMANDEUR }
+        - { path: ^/account/, role: ROLE_ADMIN }
         - { path: ^/Demandes/, role: ROLE_DEMANDEUR }
         - { path: ^/account/profile, role: ROLE_DEMANDEUR }
         - { path: ^/demande-par/, role: ROLE_TRAITEUR }
+        - { path: ^/demande-En-Cours/, role: ROLE_TRAITEUR }
+        - { path: ^/demande-non-traitees/, role: ROLE_TRAITEUR }
+        - { path: ^/demande-traitees/, role: ROLE_TRAITEUR }
+        - { path: ^/demande-Abandonnees/, role: ROLE_TRAITEUR }
+        - { path: ^/demande-Rejetees/, role: ROLE_TRAITEUR }
         - { path: ^/typedemande/, role: ROLE_ADMIN }
         - { path: ^/rejet/, role: ROLE_TRAITEUR }
         - { path: ^/planif/, role: ROLE_TRAITEUR }
