@@ -12,7 +12,7 @@
     <div class="col-md-8 col-md-offset-2" style="background: rgba(2, 5, 25, 0.46)">
 
         {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register form-signin', 
-    'style': 'background: rgba(2, 5, 25, 0.46);
+    'style': '
     padding: 40px;
     color: rgba(204, 204, 204, 0.42);'}}) }}
         <div class="form-signin-heading text-center">
@@ -41,11 +41,8 @@
                 {{ form_label(form.email, "Votre email") }}
                 {{ form_widget(form.email, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
 
-                {{ form_label(form.dateNaissance, "Date de Naissance") }}
-                {{ form_widget(form.dateNaissance, {'attr':{'class':'form-control','style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
-
-                {{ form_label(form.lieu, "Lieu de naissance") }}
-                {{ form_widget(form.lieu, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
+                {{ form_label(form.entreprise, "Entreprise") }}
+                {{ form_widget(form.entreprise, {'attr':{'class':'form-control', 'style': 'background: transparent; color: white;margin-bottom: 35px;'}}) }}
 
             </div>
             <div class="col-md-6">
@@ -70,15 +67,17 @@
                 {{ form_errors(form.plainPassword.second) }}
             </div>
             <br>
-            <button type="submit" class="btn btn-small btn-success btn-block" value="" 
-                    style="width: 23%;
-                    margin-left: 39%;">{{ 'registration.submit'|trans }}</button>
-            <br>
-            <div class="registration">
-                Déjà enregistré(e).
-                <a href="{{path('fos_user_security_login')}}" class="pull-right btn btn-link">
-                    Se Connecter
-                </a>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-small btn-success btn-block" value="" 
+                        style="width: 23%;
+                        margin-left: 39%;">{{ 'registration.submit'|trans }}</button>
+                <br>
+                <div class="registration">
+                    Déjà enregistré(e).
+                    <a href="{{path('fos_user_security_login')}}" class="pull-right btn btn-link">
+                        Se Connecter
+                    </a>
+                </div>
             </div>
 
         </div>
@@ -86,7 +85,7 @@
         {{ form_end(form) }}
 
         <script>
-            document.getElementById('fos_user_registration_form_dateNaissance').type = 'date';
+            document.getElementById('fos_user_registration_form_telephone').type = 'number';
 
             document.getElementById('fos_user_registration_form_sexe_1').style.marginLeft = '40px';
 

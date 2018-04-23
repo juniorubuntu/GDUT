@@ -20,11 +20,6 @@ class UtilisateurType extends AbstractType {
                     'expanded' => true,
                     'multiple' => false
                 ))
-                ->add('dateNaissance', \Symfony\Component\Form\Extension\Core\Type\DateType::class, array(
-                    'widget' => 'single_text',
-                    'html5' => false
-                ))
-                ->add('lieu')
                 ->add('cni')
                 ->add('telephone')
                 ->add('adresse')

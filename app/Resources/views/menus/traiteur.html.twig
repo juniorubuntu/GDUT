@@ -1,5 +1,13 @@
 <li class="has_sub">
-    <a style="color: white" href="javascript:void(0);" class="waves-effect"><i class="ti-file"></i> <span><b> Demandes par</b></span> <span class="menu-arrow"></span></a>
+    <a style="color: white" href="javascript:void(0);" class="waves-effect"><i class="ti-archive"></i> <span><b> Mes demandes </b></span> <span class="menu-arrow"></span></a>
+    <ul class="list-unstyled">
+        <li><a class="" href="{{path('demande_new')}}">Créer ma demande </a></li>
+        <li><a class="" href="{{path('demande_enPrepa')}}">Brouillon </a></li>
+    </ul>
+</li>
+
+<li class="has_sub">
+    <a style="color: white" href="javascript:void(0);" class="waves-effect"><i class="ti-file"></i> <span><b> Demandes par </b></span> <span class="menu-arrow"></span> </a>
     <ul class="list-unstyled">
         <li><a class="" href="{{path('demande_parApp')}}">Application </a></li>
         <li><a class="" href="{{path('demande_parObj')}}">Objet / type </a></li>

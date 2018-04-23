@@ -53,20 +53,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">  
-                            <div class="form-group datepicker">
-                                {{ form_label(form.dateNaissance) }}
-                                {{ form_widget(form.dateNaissance,{'attr':{'class':'form-control', 'placeholder':'mm/dd/yyyy', 'id':'datepicker'}}) }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form_label(form.lieu) }}
-                                {{ form_widget(form.lieu,{'attr':{'class':'form-control'}}) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">  
                             <div class="form-group">
                                 {{ form_label(form.cni) }}
                                 {{ form_widget(form.cni,{'attr':{'class':'form-control'}}) }}
@@ -121,7 +107,7 @@
                 </div>
             </div>
             <script>
-                document.getElementById('fos_user_registration_form_dateNaissance').type = 'date';
+                document.getElementById('fos_user_registration_form_telephone').type = 'number';
 
                 document.getElementById('fos_user_registration_form_sexe_1').style.marginLeft = '40px';
 

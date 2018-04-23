@@ -47,17 +47,20 @@ security:
 
     access_control:
 #        - { path: ^/,   role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/dashboard/, role: ROLE_DEMANDEUR }
         - { path: ^/mes-demandes-traitees/, role: ROLE_DEMANDEUR }
+        - { path: ^/new, role: ROLE_DEMANDEUR }
+        - { path: ^/Brouillon, role: ROLE_DEMANDEUR }
+        - { path: ^/recherche, role: ROLE_DEMANDEUR }
         - { path: ^/mes-demandes-cloturees/, role: ROLE_DEMANDEUR }
         - { path: ^/mes-demandes-rejetees/, role: ROLE_DEMANDEUR }
         - { path: ^/mes-demandes-abandonnees/, role: ROLE_DEMANDEUR }
+        - { path: ^/account/profile/, role: ROLE_DEMANDEUR }
         - { path: ^/account/, role: ROLE_ADMIN }
         - { path: ^/Demandes/, role: ROLE_DEMANDEUR }
-        - { path: ^/account/profile, role: ROLE_DEMANDEUR }
         - { path: ^/demande-par/, role: ROLE_TRAITEUR }
         - { path: ^/demande-En-Cours/, role: ROLE_TRAITEUR }
         - { path: ^/demande-non-traitees/, role: ROLE_TRAITEUR }
@@ -65,6 +68,9 @@ security:
         - { path: ^/demande-Abandonnees/, role: ROLE_TRAITEUR }
         - { path: ^/demande-Rejetees/, role: ROLE_TRAITEUR }
         - { path: ^/typedemande/, role: ROLE_ADMIN }
+        - { path: ^/application/, role: ROLE_ADMIN }
+        - { path: ^/module/, role: ROLE_ADMIN }
+        - { path: ^/urgence/, role: ROLE_ADMIN }
         - { path: ^/rejet/, role: ROLE_TRAITEUR }
         - { path: ^/planif/, role: ROLE_TRAITEUR }
         - { path: ^/abandon/, role: ROLE_TRAITEUR }

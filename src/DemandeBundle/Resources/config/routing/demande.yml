@@ -41,7 +41,7 @@ demande_moduleApp:
     
 #Affichage des demande Par: Cote admin et traireur
 demande_parApp:
-    path:     demande-par/application/
+    path:     demande-par/application/{id}
     defaults: { _controller: "DemandeBundle:Demande:demandeParAppl" }
     methods:  [GET, POST]
     

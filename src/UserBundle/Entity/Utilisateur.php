@@ -39,18 +39,6 @@ class Utilisateur extends BaseUser {
      */
     private $sexe;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateNaissance", type="datetime")
-     */
-    private $dateNaissance;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lieu;
 
     /**
      * @var string
@@ -144,28 +132,6 @@ class Utilisateur extends BaseUser {
      */
     public function setDateNaissance($dateNaissance) {
         $this->dateNaissance = $dateNaissance;
-
-        return $this;
-    }
-
-    /**
-     * Get dateNaissance
-     *
-     * @return \DateTime
-     */
-    public function getDateNaissance() {
-        return $this->dateNaissance;
-    }
-
-    /**
-     * Set lieu
-     *
-     * @param string $lieu
-     *
-     * @return Utilisateur
-     */
-    public function setLieu($lieu) {
-        $this->lieu = $lieu;
 
         return $this;
     }

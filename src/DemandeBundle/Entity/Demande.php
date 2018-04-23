@@ -118,9 +118,9 @@ class Demande {
     private $valide;
 
     /**
-     * @var boolean
+     * @var integer
      * 
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $traitement;
 

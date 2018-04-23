@@ -12,55 +12,25 @@
                 </header>
                 <div class="panel-body">
                     <div class="adv-table">
-
-                        {% for application in applications %}
-
-                            <fieldset class="col-md-12" style="background: transparent">
-                                <legend class="col-md-12 btn btn-custom btn-purple" style="cursor: default;">
-                                    <span class="pull-left"><span class="panel-title"> {{ application.nom }}</span></span><span onclick="detailler({{application.id}})" class="ubuntu_{{application.id}} pull-right btn btn-purple glyphicon glyphicon-plus-sign"></span>
-                                </legend>
-                                <span class="text-primary">Total: {{application.listDemandes | length }} demande(s) trouvées. </span>
-                                <br>
-                                <br>
-                                <div class="col-md-12 hide appDemande_{{application.id}}">
-                                    <div class="demandes">
-                                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped">
-                                            <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
-                                                <tr>
-                                                    <th class="">N<u>°</u></th>
-                                            <th class="">Détail</th>
-                                            <th class="">Ticket</th>
-                                            <th class="">Date envoie</th>
-                                            <th class="">Entreprise</th>
-                                            <th class="">Objet</th>
-                                            <th class="">Type de demande</th>
-                                            <th class="">Niveau d'urgence</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% set num = 0 %}
-                                                {% for demande in application.listDemandes %}
-                                                    {% set num = num+1 %}
-                                                    <tr>
-                                                        <td>{{num}}</td>
-                                                        <td class="">
-                                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Voir</a>
-                                                        </td>
-                                                        <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
-                                                        <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
-                                                        <td>{{ demande.user.entreprise }}</td>
-                                                        <td>{{ demande.libele }}</td>
-                                                        <td>{{ demande.type }}</td>
-                                                        <td>{{ demande.niveauUrgence }}</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        {% endfor %}
-                        </tbody>
+                        <table class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
+                            <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44); color: white">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Nom de l'application</th>
+                                    <th>Nombre de demandes disponibles pour l'application</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set num = 0 %}
+                                {% for application in applications %}
+                                    {% set num = num+1 %}
+                                    <tr>
+                                        <td>{{num}}</td>
+                                        <td>{{application}}</td>
+                                        <td><a href="{{path('demande_parApp', {'id': application.id})}}">{{application.listDemandes | length }} demande(s) trouvées.</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
                         </table>
                     </div>
                 </div>

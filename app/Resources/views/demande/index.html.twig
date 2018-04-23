@@ -17,26 +17,29 @@
                         <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                                 <tr>
-                                    <th class="">Détail</th>
-                                    <th class="">Ticket</th>
-                                    <th class="">Date envoie</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Ticket</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Date envoie</th>
                                         {% if app.user.level.rightToken != "ROLE_DEMANDEUR" %}
-                                        <th class="">Entreprise</th>
+                                        <th class="" style="color: blue; font-weight: unset;">Entreprise</th>
                                         {% endif %}
-                                    <th class="">Objet</th>
-                                    <th class="">Type de demande</th>
-                                    <th class="">Niveau d'urgence</th>
-                                    <th class="">Application concernée</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Objet</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Type de demande</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Niveau d'urgence</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Application concernée</th>
+                                        {% if app.user.level.rightToken != "ROLE_DEMANDEUR" %}
+                                        <th class="" style="color: blue; font-weight: unset;">
+                                            Envoyé par:
+                                        </th>
+                                    {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for demande in demandes %}
                                     <tr>
                                         <td class="">
-                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Voir</a>
+                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><b class="btn btn-custom btn-purple">GDUT#{{ demande.id}}</b></a>
                                         </td>
-                                        <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
-                                        <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                                        <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
                                         {% if app.user.level.rightToken != "ROLE_DEMANDEUR" %}
                                             <td>{{ demande.user.entreprise }}</td>
                                         {% endif %}
@@ -44,6 +47,9 @@
                                         <td>{{ demande.type }}</td>
                                         <td>{{ demande.niveauUrgence }}</td>
                                         <td>{{ demande.application }}</td>
+                                        {% if app.user.level.rightToken != "ROLE_DEMANDEUR" %}
+                                            <td>{{ demande.user }}</td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                             </tbody>

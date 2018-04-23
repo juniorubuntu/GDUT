@@ -182,8 +182,6 @@ class UtilisateurController extends BaseController {
         $editForm->remove('sexe');
         $editForm->remove('email');
         $editForm->remove('telephone');
-        $editForm->remove('dateNaissance');
-        $editForm->remove('lieu');
         $editForm->remove('adresse');
         $editForm->remove('cni');
         $editForm->remove('username');
@@ -203,7 +201,7 @@ class UtilisateurController extends BaseController {
                     'delete_form' => $deleteForm->createView(),
         ));
     }
-    
+
     /**
      * Displays a form to edit an existing utilisateur entity.
      *
@@ -216,13 +214,14 @@ class UtilisateurController extends BaseController {
         $editForm->remove('plainPassword');
         $editForm->remove('level');
         $editForm->handleRequest($request);
-        
+
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $utilisateur->setRoles(array($utilisateur->getLevel()->getRightToken()));
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('fos_user_profile_show');
+            return $this->redirectToRoute('fos_user_profile_show', array(
+                        'modif' => 'ok'
+            ));
         }
 
         return $this->render('utilisateur/edit.html.twig', array(

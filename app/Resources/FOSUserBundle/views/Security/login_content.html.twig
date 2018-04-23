@@ -8,64 +8,79 @@
 
 <body class="login-body">
 
-<div class="container">
-    <form class="form-signin" action="{{ path("fos_user_security_check") }}" style="background: rgba(43, 11, 61, 0.15);" method="post">
-    {% if csrf_token %}
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    {% endif %}
-        <div class="form-signin-heading text-center">
-            <h1 class="sign-title">Se connecter</h1>
-            {# <img src="{{asset('images/login-logo.png')}}" alt=""/> #}
-            <h2 class="text-center" style="color:black">GDUT</h2>
-        </div>
-        <div class="login-wrap">
-            <label for="username">{{ 'security.login.username'|trans }}</label>
-            <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
-            <label for="password">{{ 'security.login.password'|trans }}</label>
-            <input class="form-control" type="password" id="password" name="_password" required="required" />
-
-            <button type="submit" id="_submit" class="btn btn-lg btn-login btn-block" name="_submit" value="{{ 'security.login.submit'|trans }}"><i class="fa fa-check"></i>
-            </button>
-            <div class="registration">
-                Pas de compte ?
-                <a class="" href="{{path('fos_user_registration_register')}}">
-                    S'enregistrer
-                </a>
+    <div class="container">
+        <form class="form-signin" action="{{ path("fos_user_security_check") }}" style=" 
+              max-width: 432px;
+              ;background: rgba(43, 11, 61, 0.15);
+              " method="post">
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            {% endif %}
+            <div class="form-signin-heading text-center">
+                <h1 class="sign-title" style="color: limegreen; text-transform: capitalize;">Se connecter</h1>
+                {# <img src="{{asset('images/login-logo.png')}}" alt=""/> #}
+                <h2 class="text-center" style="
+                    color:#7676e0; 
+                    font-family: SHSN; 
+                    font-size: 62px;
+                    font-stretch:100%;
+                    font-style:normal;
+                    font-variant-caps:normal;
+                    "><b>GDUT</b></h2>
+                <div class="col-md-12" style="margin-bottom: 15px">
+                    Thémis Support via son outils GDUT centralise toutes vos interactions avec les clients
+                    en un seul endroit, ainsi les communications sont homogènes, personnelles et efficaces.
+                    Le résultat ? Des agents productifs et des clients satisfaits.
+                </div>
             </div>
-            <label class="checkbox">
-                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+            <div class="login-wrap" style="color: aliceblue">
+                <label for="username">{{ 'security.login.username'|trans }}</label>
+                <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
 
-                <span class="pull-right">
-                    <a href="{{path('fos_user_resetting_request')}}"> Mot de passe oublié?</a>
+                <label for="password">{{ 'security.login.password'|trans }}</label>
+                <input class="form-control" type="password" id="password" name="_password" required="required" />
 
-                </span>
-            </label>
-        </div>
+                <button type="submit" id="_submit" class="btn btn-lg btn-login btn-block" name="_submit" value="{{ 'security.login.submit'|trans }}"><i class="fa fa-check"></i>
+                </button>
+                <div class="registration">
+                    Pas de compte ?
+                    <a class="" href="{{path('fos_user_registration_register')}}">
+                        S'enregistrer
+                    </a>
+                </div>
+                <label class="checkbox">
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
 
-        <!-- Modal -->
-        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Mot de passe Oublié ?</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Entrer votre mot addresse email pour reinitialiser votre mot de passe.</p>
-                        <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+                    <span class="pull-right">
+                        <a href="{{path('fos_user_resetting_request')}}"> Mot de passe oublié?</a>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-default" type="button">Annuler</button>
-                        <button class="btn btn-primary" type="button">Valider</button>
+                    </span>
+                </label>
+            </div>
+
+            <!-- Modal -->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Mot de passe Oublié ?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Entrer votre mot addresse email pour reinitialiser votre mot de passe.</p>
+                            <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">Annuler</button>
+                            <button class="btn btn-primary" type="button">Valider</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- modal -->
-    </form>        
+            <!-- modal -->
+        </form>        
     </div>
-    
+
 </body>

@@ -10,45 +10,50 @@
     </div>
 </form> -->
 
-	<body>
+<body>
 
-		<div class="account-pages"></div>
-		<div class="clearfix"></div>
-		<div class="wrapper-page">
-			<div class=" card-box">
-				<div class="panel-heading">
-					<h3 class="text-center"> Reinitialisation du mot de passe</h3>
-				</div>
+    <div class="account-pages"></div>
+    <div class="clearfix"></div>
+    <div class="col-md-6 col-md-offset-3" style="margin-top: 100px; background: rgba(1, 7, 37, 0.35)">
+        <div class="wrapper-page">
+            <div class=" card-box">
+                <div class="panel-heading">
+                    <h1 class="text-center text-bold" style="color: lightblue; font-weight: bold;">GDU<span style="color: blue; font-size: 65px;">T</span></h1>
+                </div>
 
-				<div class="panel-body">
-					<form action="{{ path('fos_user_resetting_send_email') }}" class="text-center" role="form" method="POST" class="fos_user_resetting_request">
-						<div class="alert alert-info alert-dismissable">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-								×
-							</button>
-							Entrez votre  <b>Nom d'utilisateur </b> ou <b>Email</b> et les instructions vous seront envoyées!
-						</div>
-						<div class="form-group m-b-0">
-							<div class="input-group">
-								<!-- <label for="username">{{ 'resetting.request.username'|trans }}</label> -->
-								<input placeholder="nom utilisateur ou email" class="form-control" type="text" id="username" name="username" required="required" />
-								<span class="input-group-btn">
-									<button type="submit" class="btn btn-pink w-sm waves-effect waves-light">
-										Reinitialiser
-									</button> 
-								</span>
-							</div>
-						</div>
+                <div class="panel-body">
+                    <form action="{{ path('fos_user_resetting_send_email') }}" class="text-bold" role="form" method="POST" class="fos_user_resetting_request">
+                        <div style="color: black" class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                ×
+                            </button>
+                            <span style="text-align: center; font-weight: bold">Vous avez oublié votre mot de passe? pas de panique!</span>
+                            <br>
+                            Demande de changement de mot de passe.
+                        </div>
+                        <div class="form-group m-b-0">
+                            <div class="col-md-12">
+                                    <!-- <label for="username">{{ 'resetting.request.username'|trans }}</label> -->
+                                <label style="color: white; ">Identifiant</label>
+                                <input style="color: black" placeholder="Nom utilisateur ou email" class="form-control" type="text" id="username" name="username" required="required" />
+                                <br>
+                                <a class="btn btn-danger btn-default" href="{{path('homepage')}}">Annuler</a>
+                                <button type="submit" class="btn btn-custom btn-primary pull-right">
+                                    Valider
+                                </button> 
+                            </div>
+                        </div>
 
-					</form>
-				</div>
-			</div>
-			
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		</div>
 
-		<script>
-			var resizefunc = [];
-		</script>
 
-	</body>
+    <script>
+        var resizefunc = [];
+    </script>
+
+</body>

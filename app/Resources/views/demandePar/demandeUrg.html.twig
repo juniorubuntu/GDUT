@@ -24,16 +24,14 @@
                                 <br>
                                 <div class="col-md-12 hide appDemande_{{urgence.id}}">
                                     <div class="demandes">
-                                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped">
+                                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="table_{{urgence.id}}">
                                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
-                                                <tr>
-                                                    <th class="">N<u>°</u></th>
-                                            <th class="">Détail</th>
-                                            <th class="">Ticket</th>
-                                            <th class="">Date envoie</th>
-                                            <th class="">Entreprise</th>
-                                            <th class="">Objet</th>
-                                            <th class="">Type de demande</th>
+                                            <th class="" style="color: blue; font-weight: unset;">Ticket</th>
+                                            <th class="" style="color: blue; font-weight: unset;">Créé par</th>
+                                            <th class="" style="color: blue; font-weight: unset;">Crée le</th>
+                                            <th class="" style="color: blue; font-weight: unset;">Client</th>
+                                            <th class="" style="color: blue; font-weight: unset;">Objet</th>
+                                            <th class="" style="color: blue; font-weight: unset;">Type de demande</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -41,12 +39,11 @@
                                                 {% for demande in urgence.listDemandes %}
                                                     {% set num = num+1 %}
                                                     <tr>
-                                                        <td>{{num}}</td>
                                                         <td class="">
-                                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Voir</a>
+                                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><b class="btn btn-custom btn-purple">GDUT#{{ demande.id}}</b></a>
                                                         </td>
-                                                        <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
-                                                        <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                                                        <td>{{ demande.user }}</td>
+                                                        <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
                                                         <td>{{ demande.user.entreprise }}</td>
                                                         <td>{{ demande.libele }}</td>
                                                         <td>{{ demande.type }}</td>

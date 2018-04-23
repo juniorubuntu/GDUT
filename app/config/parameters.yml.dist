@@ -3,15 +3,16 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 # This file is auto-generated during the composer install
 parameters:
+    database_driver: pdo_mysql
     database_host: 127.0.0.1
     database_port: 3306
-    database_name: cardlab
-    database_user: root
-    database_password: null
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: 'Junior Ubuntu'
-    mailer_password: null
+    database_name: themispr_gdutnew
+    database_user: themispr_ubuntu
+    database_password: Ubuntu@237
+    mailer_transport: gmail
+    mailer_host: 
+    mailer_user: juniorubuntu@gmail.com
+    mailer_password: 599130711995
     secret: ThisTokenIsNotSoSecretChangeIt
     session_max_idle_time: 3600
 

@@ -140,7 +140,11 @@ class DemandeController extends Controller {
     public function enPrepaAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(array('trash' => true));
+        $userConnected = $this->getUser();
+        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(array(
+            'trash' => true,
+            'user' => $userConnected
+        ));
 
         return $this->render('demande/enPrepas.html.twig', array(
                     'demandes' => array_reverse($demandes),
@@ -419,21 +423,35 @@ class DemandeController extends Controller {
      * Affiche les demandes par application
      * 
      */
-    public function demandeParApplAction() {
+    public function demandeParApplAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $applications = $em->getRepository('DemandeBundle:Application')->findAll();
-        foreach ($applications as $appli) {
+        if ($id == 0) {
+            $applications = $em->getRepository('DemandeBundle:Application')->findAll();
+            foreach ($applications as $appli) {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'application' => $appli
+                ));
+                $appli->setListDemandes($demandes);
+            }
+            return $this->render('demandePar/demandeAppl.html.twig', array(
+                        'applications' => $applications
+            ));
+        } else {
+            $application = $em->getRepository('DemandeBundle:Application')->find($id);
+
             $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
                     array(
                         'trash' => false,
-                        'application' => $appli
+                        'application' => $application
             ));
-            $appli->setListDemandes($demandes);
+            $application->setListDemandes($demandes);
+            return $this->render('demandePar/demandeApplList.html.twig', array(
+                        'application' => $application
+            ));
         }
-        return $this->render('demandePar/demandeAppl.html.twig', array(
-                    'applications' => $applications
-        ));
     }
 
     /**
@@ -567,7 +585,7 @@ class DemandeController extends Controller {
         ));
     }
 
-    //On gere un user preci
+//On gere un user preci
     /**
      * Affiche les demandes abandonnée
      * 
@@ -660,13 +678,13 @@ class DemandeController extends Controller {
         $demande->setTraitement('1');
         $em->flush();
 
-        //Envoie des mails
-        //gestion de l'entête
+//Envoie des mails
+//gestion de l'entête
         $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
                 ->setDisposition('inline');
         $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
         $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
-        //envoie
+//envoie
         $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
         $texte = 'Fin de traitement de votre ticket';
         $message = \Swift_Message::newInstance()
@@ -683,7 +701,7 @@ class DemandeController extends Controller {
                 ->attach($attachment)
         ;
         $this->get('mailer')->send($message);
-        //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
+//->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
         return $this->redirectToRoute('demande_Traite');
     }

@@ -48,7 +48,12 @@
                     <!-- LOGO -->
                     <div class="topbar-left">
                         <div class="text-center">
-                            <a href="{{path('homepage')}}" class="logo"><i class="icon-magnet icon-c-logo"></i><span><i class="md md-album"></i>GDUT</span></a>
+                            <a style="font-size: 44px;
+                               font-family: SHSN; 
+                               font-stretch:100%;
+                               font-style:normal;
+                               font-variant-caps:normal;
+                               " href="{{path('homepage')}}" class="logo"><i class="icon-magnet icon-c-logo"></i><span>GDUT</span></a>
                             <!-- Image Logo here -->
                             <!--<a href="index.html" class="logo">-->
                             <!--<i class="icon-c-logo"> <img src="assets/images/logo_sm.png" height="42"/> </i>-->
@@ -70,7 +75,14 @@
 
                                 <ul class="nav navbar-nav hidden-xs">
 
-                                    <li><a href="#" class="waves-effect waves-light">{#Ici sera le menu rapide#}</a></li>
+                                    <li><a href="#" class="waves-effect waves-light">
+                                            <h1 style="color: white;
+                                                font-stretch:100%;
+                                                font-style:normal;
+                                                font-family: SHSN;
+                                                font-variant-caps:normal;
+                                                ">Gestion des Demandes Utilisateur
+                                            </h1></a></li>
 
                                     {#
                                      <li class="dropdown">
@@ -237,13 +249,13 @@
 
                 <!-- ========== Left Sidebar Start ========== -->
 
-                <div class="left side-menu purple" style="background: #2b0b3d; font-size: 16px">
+                <div class="left side-menu purple" style="background: #2b0b3d; font-size: 16px; width: 266px;">
 
                     <div class="sidebar-inner slimscrollleft">
                         <!--- Divider -->
                         <div id="sidebar-menu">
                             <ul>
-                                <li class="text-muted menu-title text-bold"><marquee behavior="alternate"><b style="color: blueviolet">TABLEAU DE BORD</b></marquee></li>
+                                <li style="font-size: 20px;" class="text-muted menu-title text-bold"><i class=" text-bold fa fa-dashboard"></i> <span class="text-center"><b style="color: blueviolet">TABLEAU DE BORD</b></span></li>
 
                                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                     {% if app.user.level.rightToken == "ROLE_ADMIN" %}
@@ -267,7 +279,7 @@
                 <!-- ============================================================== -->
                 <!-- Start right Content here -->
                 <!-- ============================================================== -->
-                <div class="content-page">
+                <div class="content-page" style="padding-left: 10px">
                     <!-- Start content -->
                     <div class="content">
                         {% block body %}
@@ -281,7 +293,7 @@
                     </div> <!-- content -->
 
                     <footer class="footer text-right" style="margin-top: 12px;">
-                        © 2018. <a href="http://www.themis-it.com/" target="blank">Themis-IT</a>, Tout droit reservés.
+                        © 2018. <a href="http://www.themis-it.com/" target="blank"><b>Themis-IT</b></a>, Tous droits réservés.
                     </footer>
 
                 </div>

@@ -13,12 +13,12 @@
                         <table  class="records_list table table-hover panel panel-inverse panel-custom table-bordered table-striped datatable-responsive" id="datatable">
                             <thead class="panel-heading">
                                 <tr>
-                                    <th class="">Actions</th>
-                                    <th class="">Date envoie</th>
-                                    <th class="">Libele</th>
-                                    <th class="">Type de demande</th>
-                                    <th class="">Niveau d'urgence</th>
-                                    <th class="">Application concernée</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Actions</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Date envoie</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Libele</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Type de demande</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Niveau d'urgence</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Application concernée</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -30,7 +30,6 @@
                                                     <span class="fa fa-caret-down"></span></button>
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-eye"></i> Voir la demande en détail</a>
                                                         <a <a href="{{ path('demande_edit', { 'id': demande.id }) }}"><i class="fa fa-edit"></i> Modifier la demande</a>
                                                             <a <a href="{{ path('demande_edit', { 'id': demande.id }) }}"><i class="fa fa-trash"></i> Supprimer la demande</a>
                                                                 </li>

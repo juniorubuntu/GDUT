@@ -15,29 +15,29 @@
                         <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                                 <tr>
-                                    <th class="">Détail</th>
-                                    <th class="">Ticket</th>
-                                    <th class="">Date envoie</th>
-                                    <th class="">Entreprise</th>
-                                    <th class="">Objet</th>
-                                    <th class="">Type de demande</th>
-                                    <th class="">Niveau d'urgence</th>
-                                    <th class="">Application concernée</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Ticket</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Créé le</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Client</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Objet</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Type de demande</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Niveau d'urgence</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Application </th>
+                                    <th class="" style="color: blue; font-weight: unset;">Motif du rejet</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for demande in demandes %}
                                     <tr>
                                         <td class="">
-                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Voir</a>
+                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><b>GDUT#{{ demande.id}}</b></a>
                                         </td>
-                                        <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
                                         <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
                                         <td>{{ demande.user.entreprise }}</td>
                                         <td>{{ demande.libele }}</td>
                                         <td>{{ demande.type }}</td>
                                         <td>{{ demande.niveauUrgence }}</td>
                                         <td>{{ demande.application }}</td>
+                                        <td>RAS</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -72,7 +72,7 @@
             </section>
         </div>
         <script>
-            
+
             $('#exampleModal').modal('show');
         </script>
     </div>
