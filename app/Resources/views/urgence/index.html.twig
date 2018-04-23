@@ -16,8 +16,7 @@
                             <thead class="panel-heading">
                                 <tr>
                                     <th class="" style="color: blue; font-weight: unset;">Actions</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Id</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Nom</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Nom du type de l'urgence</th>
                                     <th class="" style="color: blue; font-weight: unset;">Description</th>
                                 </tr>
                             </thead>
@@ -38,7 +37,6 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td><a href="{{ path('urgence_show', { 'id': urgence.id }) }}">{{ urgence.id }}</a></td>
                                         <td>{{ urgence.nom }}</td>
                                         <td>{{ urgence.description }}</td>
                                     </tr>

@@ -4,12 +4,13 @@
     <div class="row">
         <div class="col-sm-12">
             <section class="panel panel-border panel-inverse">
-                <header class="panel-title">
-                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste de toutes les modules</b></h3>
-                    <a style="margin-right: 2%" class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('module_new')}}">Ajouter un module</a>
-                    <br>
-                    <br>
+                <header class="col-md-8 col-md-offset-1">
+                    <h3><b>Gestion des modules </b></h3>
                 </header>
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('application_new')}}">Ajouter une application</a>
+                    <hr>
+                </div>
                 <div class="panel-body">
                     <div class="adv-table">
                         <table  class="records_list table table-hover panel table-responsive panel-inverse panel-purple table-bordered table-striped" id="datatable">

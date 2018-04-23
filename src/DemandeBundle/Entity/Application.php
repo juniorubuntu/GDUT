@@ -44,6 +44,16 @@ class Application {
         $this->listDemandes = $listDemandes;
     }
 
+    private $listModules = [];
+
+    function getListModules() {
+        return $this->listModules;
+    }
+
+    function setListModules($listModules) {
+        $this->listModules = $listModules;
+    }
+
     /**
      * Get id
      *

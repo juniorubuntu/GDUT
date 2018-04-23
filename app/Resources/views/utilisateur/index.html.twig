@@ -20,13 +20,11 @@
                             <thead class="panel-heading">
                                 <tr>
                                     <th class="" style="color: blue; font-weight: unset;">Actions</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Nom</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Sexe</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Type</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Tél.</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Adresse</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Nom et prénom</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Rôle de l'utilisateur</th>
                                     <th class="" style="color: blue; font-weight: unset;">Email</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Act. / Désact.</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Entreprise</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Activer / Désactiver</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,12 +53,9 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ utilisateur.nom }}</td>
-                                        <td>{{ utilisateur.sexe }}</td>
                                         <td>{{ utilisateur.level }}</td>
-                                        {# <td>{{ utilisateur.dateNaissance | date('d-m-Y') }}</td> #}
-                                        <td>{{ utilisateur.telephone }}</td>
-                                        <td>{{ utilisateur.adresse }}</td>
                                         <td>{{ utilisateur.email }}</td>
+                                        <td>{{ utilisateur.entreprise }}</td>
                                         <td>
                                             {% if app.user.username == utilisateur.username %}
                                                 <span class="label label-success">Utilisateur Connecté</span>                        

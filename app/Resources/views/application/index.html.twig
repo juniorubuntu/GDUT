@@ -4,20 +4,21 @@
     <div class="row">
         <div class="col-sm-12">
             <section class="panel panel-border panel-inverse">
-                <header class="panel-title">
-                    <h3><b>Liste des types d'application </b></h3>
-                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('application_new')}}">Ajouter une application</a>
-                    <br>
-                    <br>
+                <header class="col-md-8 col-md-offset-1">
+                    <h3><b>Gestion des applications </b></h3>
                 </header>
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('application_new')}}">Ajouter une application</a>
+                    <hr>
+                </div>
                 <div class="panel-body">
                     <div class="adv-table">
                         <table  class="records_list table table-hover panel panel-inverse panel-custom table-bordered table-striped datatable-responsive" id="datatable">
                             <thead class="panel-heading">
                                 <tr>
                                     <th class="" style="color: blue; font-weight: unset;">Actions</th>
-                                    <th class="" style="color: blue; font-weight: unset;">id</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Nom</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Nom de l'application</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Modules de l'application</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -29,16 +30,24 @@
                                                     <span class="fa fa-caret-down"></span></button>
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a <a href="{{ path('application_show', { 'id': application.id }) }}"><i class="fa fa-eye"></i> Voir le type</a>
+                                                        <a <a href="{{ path('application_show', { 'id': application.id }) }}"><i class="fa fa-eye"></i> Voir l'application</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ path('application_edit', { 'id': application.id }) }}"><i class="fa fa-edit"></i> Editer le type</a>
+                                                        <a href="{{ path('application_edit', { 'id': application.id }) }}"><i class="fa fa-edit"></i> Editer l'application</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td><a href="{{ path('application_show', { 'id': application.id }) }}">{{ application.id }}</a></td>
-                                        <td>{{ application.nom }}</td>
+                                        <td>{{ application.nom }} <b class="pull-right" style="color: green">{{application.listModules | length}} modules trouvé(s)</b></td>
+                                        <td>
+                                            <ol>
+                                                {% for module in application.listModules %}
+                                                    <li>
+                                                        <a href="{{path('module_show', {'id': module.id})}}">{{module}}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ol>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

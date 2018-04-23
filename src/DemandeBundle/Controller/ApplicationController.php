@@ -21,6 +21,13 @@ class ApplicationController extends Controller {
 
         $applications = $em->getRepository('DemandeBundle:Application')->findAll();
 
+        foreach ($applications as $appli) {
+            $modules = $em->getRepository('DemandeBundle:Module')->findBy(array(
+                'application' => $appli
+            ));
+            $appli->setListModules($modules);
+        }
+
         return $this->render('application/index.html.twig', array(
                     'applications' => $applications,
         ));

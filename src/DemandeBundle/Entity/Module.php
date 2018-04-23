@@ -42,6 +42,7 @@ class Module {
      * @Assert\NotBlank()
      */
     private $application;
+   
 
     /**
      * @var text
