@@ -52,8 +52,9 @@
                                font-family: SHSN; 
                                font-stretch:100%;
                                font-style:normal;
+                               
                                font-variant-caps:normal;
-                               " href="{{path('homepage')}}" class="logo"><i class="icon-magnet icon-c-logo"></i><span>GDUT</span></a>
+                               " href="{{path('homepage')}}" class="logo"><i class="icon-magnet icon-c-logo"></i><span style="color: #7e57c2;">GDUT</span></a>
                             <!-- Image Logo here -->
                             <!--<a href="index.html" class="logo">-->
                             <!--<i class="icon-c-logo"> <img src="assets/images/logo_sm.png" height="42"/> </i>-->
@@ -81,7 +82,7 @@
                                                 font-style:normal;
                                                 font-family: SHSN;
                                                 font-variant-caps:normal;
-                                                ">Gestion des Demandes Utilisateur
+                                                ">Gestion des Demandes Utilisateurs
                                             </h1></a></li>
 
                                     {#
@@ -249,13 +250,13 @@
 
                 <!-- ========== Left Sidebar Start ========== -->
 
-                <div class="left side-menu purple" style="background: #2b0b3d; font-size: 16px; width: 266px;">
+                <div class="left side-menu purple" style="background: #2b0b3d; font-size: 16px; width: 280px;">
 
                     <div class="sidebar-inner slimscrollleft">
                         <!--- Divider -->
                         <div id="sidebar-menu">
                             <ul>
-                                <li style="font-size: 20px;" class="text-muted menu-title text-bold"><i class=" text-bold fa fa-dashboard"></i> <span class="text-center"><b style="color: blueviolet">TABLEAU DE BORD</b></span></li>
+                                <li style="font-size: 20px;" class="text-muted menu-title text-bold"><i class=" text-bold fa fa-dashboard"></i> <span class="text-center"><b style="color: lightblue">TABLEAU DE BORD</b></span></li>
 
                                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                     {% if app.user.level.rightToken == "ROLE_ADMIN" %}
@@ -279,7 +280,7 @@
                 <!-- ============================================================== -->
                 <!-- Start right Content here -->
                 <!-- ============================================================== -->
-                <div class="content-page" style="padding-left: 10px">
+                <div class="content-page" style="padding-left: 20px">
                     <!-- Start content -->
                     <div class="content">
                         {% block body %}
@@ -292,7 +293,7 @@
                         {% endblock %}
                     </div> <!-- content -->
 
-                    <footer class="footer text-right" style="margin-top: 12px;">
+                    <footer class="footer text-right" style="margin-top: 12px; margin-left: 25px;">
                         © 2018. <a href="http://www.themis-it.com/" target="blank"><b>Themis-IT</b></a>, Tous droits réservés.
                     </footer>
 

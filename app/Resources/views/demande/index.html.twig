@@ -31,6 +31,7 @@
                                             Envoyé par:
                                         </th>
                                     {% endif %}
+                                    <th class="" style="color: blue; font-weight: unset;">Etat de trait.</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,6 +51,17 @@
                                         {% if app.user.level.rightToken != "ROLE_DEMANDEUR" %}
                                             <td>{{ demande.user }}</td>
                                         {% endif %}
+                                        <td>
+                                            {% if demande.traitement == '1' %}
+                                                <label class="label label-success">Terminé</label>
+                                            {% elseif demande.traitement == '2' %}
+                                                <label class="label label-warning">En cours</label>
+                                            {% elseif demande.traitement == '0'%}
+                                                <label class="label label-danger">Non débuté</label>
+                                            {% elseif demande.traitement == '3'%}
+                                                <label class="label label-purple">Rejeté / Abandonné</label>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

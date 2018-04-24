@@ -17,7 +17,7 @@
                         {% elseif demande.traitement == '2' %}
                             <label class="label label-warning">En cours de traitement</label>
                         {% elseif demande.traitement == '0'%}
-                            <label class="label label-danger">Traitement non commencé</label>
+                            <label class="label label-danger">Traitement non débuté</label>
                         {% endif %}
                     </td>
                 </tr>
@@ -77,9 +77,15 @@
                 </header>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 panel-footer">
                     <a href="#rejet-modal" class="btn btn-primary btn-custom waves-effect waves-light" data-animation="slidetogether" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Rejéter la demande</a>
-                    <a href="#planif-modal" class="btn btn-inverse col-md-offset-2 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Planifier la demande</a>
-                    <a href="#projet-modal" class="btn btn-purple col-md-offset-2 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Associer à un projet</a>
-                    <a href="#abandon-modal" class="btn btn-danger pull-right btn-custom waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Abandonner</a>
+                    <a href="#planif-modal" class="btn btn-inverse col-md-offset-2 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre</a>
+                    <a href="#projet-modal" class="btn btn-purple col-md-offset-2 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Tranférer</a>
+                    {% if demande.traitement == '2' %}
+                        <a href="#abandon-modal" class="btn pull-right btn-custom btn-danger waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Abandonner</a>
+                    {% elseif demande.traitement == '1' %}
+                        <a href="#cloture-modal" class="btn pull-right btn-custom btn-primary waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Archiver</a>
+                    {% elseif demande.traitement == '2' %}
+                        <a href="#abandon-modal" class="btn pull-right btn-custom btn-success waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Clôturer</a>
+                    {% endif %}
                 </div>
                 <div id="rejet-modal" class="modal-demo" style="font-family: 15px;">
                     <button type="button" class="close" onclick="Custombox.close();">
@@ -205,6 +211,7 @@
         </script>
     {% endif %}
     <div class="col-md-12" style="margin-bottom: 8%">
+        <br>
         <b> <a class="pull-left" style="margin-left: 10px" href="{{ path('demande_index') }}">Retourner à la liste</a></b>
     </div>
 </div>

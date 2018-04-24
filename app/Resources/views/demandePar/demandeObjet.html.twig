@@ -31,9 +31,10 @@
                                                     <th class="" style="color: blue; font-weight: unset;">Créé par</th>
                                                     <th class="" style="color: blue; font-weight: unset;">Crée le</th>
                                                     <th class="" style="color: blue; font-weight: unset;">Client</th>
-                                                    <th class="" style="color: blue; font-weight: unset;">Objet</th>
+                                                    <th class="" style="color: blue; font-weight: unset;">Libelé</th>
                                                     <th class="" style="color: blue; font-weight: unset;">Application</th>
                                                     <th class="" style="color: blue; font-weight: unset;">Niveau d'urgence</th>
+                                                    <th class="" style="color: blue; font-weight: unset;">Etat de trait.</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -50,6 +51,17 @@
                                                         <td>{{ demande.libele }}</td>
                                                         <td>{{ demande.application }}</td>
                                                         <td>{{ demande.niveauUrgence }}</td>
+                                                        <td>
+                                                            {% if demande.traitement == '1' %}
+                                                                <label class="label label-success">Terminé</label>
+                                                            {% elseif demande.traitement == '2' %}
+                                                                <label class="label label-warning">En cours</label>
+                                                            {% elseif demande.traitement == '0'%}
+                                                                <label class="label label-danger">Non débuté</label>
+                                                            {% elseif demande.traitement == '3'%}
+                                                                <label class="label label-purple">Rejeté / Abandonné</label>
+                                                            {% endif %}
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
