@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Transferts list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User</th>
+                <th>Gerant</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transfert in transferts %}
+            <tr>
+                <td><a href="{{ path('transfert_show', { 'id': transfert.id }) }}">{{ transfert.id }}</a></td>
+                <td>{{ transfert.user }}</td>
+                <td>{{ transfert.gerant }}</td>
+                <td>{% if transfert.date %}{{ transfert.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('transfert_show', { 'id': transfert.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('transfert_edit', { 'id': transfert.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('transfert_new') }}">Create a new transfert</a>
+        </li>
+    </ul>
+{% endblock %}

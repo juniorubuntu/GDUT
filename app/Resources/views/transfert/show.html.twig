@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Transfert</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ transfert.id }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ transfert.user }}</td>
+            </tr>
+            <tr>
+                <th>Gerant</th>
+                <td>{{ transfert.gerant }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if transfert.date %}{{ transfert.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('transfert_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('transfert_edit', { 'id': transfert.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,24 @@
+reponse_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Reponse:index" }
+    methods:  GET
+
+reponse_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Reponse:show" }
+    methods:  GET
+
+reponse_new:
+    path:     /new/{id}
+    defaults: { _controller: "DemandeBundle:Reponse:new" }
+    methods:  [GET, POST]
+
+reponse_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Reponse:edit" }
+    methods:  [GET, POST]
+
+reponse_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Reponse:delete" }
+    methods:  DELETE

@@ -6,16 +6,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PlanifType extends AbstractType {
+class ReponseType extends AbstractType {
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('duree')
+        $builder->add('fichier', \Symfony\Component\Form\Extension\Core\Type\FileType::class, ['required' => false])
                 ->add('user')
-                ->add('gerant')
-                ->add('demande');
+                ->add('demande')
+                ->add('texte');
     }
 
     /**
@@ -23,7 +23,7 @@ class PlanifType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'DemandeBundle\Entity\Planif'
+            'data_class' => 'DemandeBundle\Entity\Reponse'
         ));
     }
 
@@ -31,7 +31,7 @@ class PlanifType extends AbstractType {
      * {@inheritdoc}
      */
     public function getBlockPrefix() {
-        return 'demandebundle_planif';
+        return 'demandebundle_reponse';
     }
 
 }

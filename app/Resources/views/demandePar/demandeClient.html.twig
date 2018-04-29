@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="">
+                    <br>
+                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste des demandeurs</b></h3>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
+                            <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44); color: white">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Nom du client</th>
+                                    <th>Demande envoyé par</th>
+                                    <th>Nombre de total de demandes</th>
+                                    <th>Nombre de demandes Traitées</th>
+                                    <th>Nombre de demandes en cours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set num = 0 %}
+                                {% for client in clients %}
+                                    {% set num = num+1 %}
+                                    <tr>
+                                        <td>{{num}}</td>
+                                        <td>{{client.entreprise}}</td>
+                                        <td>{{client}}</td>
+                                        <td><a href="{{path('demande_parClient', {'id': client.id})}}">{{client.listDemandes | length }} demande(s) trouvées.</a></td>
+                                        <td><label class="label label-success">{{client.ListTermine | length}}</label></td>
+                                        <td><label class="label label-warning">{{client.ListEnCours | length}}</label></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable();
+                TableManageButtons.init();
+            });
+        </script>
+    </div>
+{% endblock %}
+{# empty Twig template #}

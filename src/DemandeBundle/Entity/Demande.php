@@ -16,6 +16,7 @@ class Demande {
 
     public function __construct() {
         $this->setTraitement(false);
+        $this->setGerant(NULL);
     }
 
     public function __toString() {
@@ -82,6 +83,13 @@ class Demande {
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
      */
     private $user;
+
+    /**
+     * @var \stdClass
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
+     */
+    private $gerant;
 
     /**
      * @var text
@@ -455,7 +463,6 @@ class Demande {
         return $this->module;
     }
 
-
     /**
      * Set fini
      *
@@ -463,8 +470,7 @@ class Demande {
      *
      * @return Demande
      */
-    public function setFini($fini)
-    {
+    public function setFini($fini) {
         $this->fini = $fini;
 
         return $this;
@@ -475,8 +481,30 @@ class Demande {
      *
      * @return boolean
      */
-    public function getFini()
-    {
+    public function getFini() {
         return $this->fini;
     }
+
+    /**
+     * Set gerant
+     *
+     * @param \UserBundle\Entity\Utilisateur $gerant
+     *
+     * @return Demande
+     */
+    public function setGerant(\UserBundle\Entity\Utilisateur $gerant = null) {
+        $this->gerant = $gerant;
+
+        return $this;
+    }
+
+    /**
+     * Get gerant
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getGerant() {
+        return $this->gerant;
+    }
+
 }

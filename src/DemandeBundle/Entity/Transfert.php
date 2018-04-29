@@ -4,15 +4,13 @@ namespace DemandeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use UserBundle\Entity;
 
 /**
- * Integration
- * 
+ * Reponse
  * @ORM\Table()
  * @ORM\Entity
  */
-class Integration {
+class Transfert {
 
     /**
      * @var integer
@@ -27,7 +25,6 @@ class Integration {
      * @var \stdClass
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
-     * @Assert\NotBlank()
      */
     private $user;
 
@@ -35,31 +32,18 @@ class Integration {
      * @var \stdClass
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
-     * @Assert\NotBlank()
      */
-    private $chefProjet;
+    private $gerant;
 
     /**
-     * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $code;
-
-    /**
-     * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $libele;
-
-    /**
-     * @var \stdClass
+     * @var \DateTime
      *
+     * @ORM\Column(name="dateTransfert", type="datetime", nullable=true)
+     */
+    private $dateTransfert;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Demande")
-     * @Assert\NotBlank()
      */
     private $demande;
 
@@ -72,48 +56,29 @@ class Integration {
         return $this->id;
     }
 
+
     /**
-     * Set code
+     * Set dateTransfert
      *
-     * @param string $code
+     * @param \DateTime $dateTransfert
      *
-     * @return Integration
+     * @return Transfert
      */
-    public function setCode($code) {
-        $this->code = $code;
+    public function setDateTransfert($dateTransfert)
+    {
+        $this->dateTransfert = $dateTransfert;
 
         return $this;
     }
 
     /**
-     * Get code
+     * Get dateTransfert
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getCode() {
-        return $this->code;
-    }
-
-    /**
-     * Set libele
-     *
-     * @param string $libele
-     *
-     * @return Integration
-     */
-    public function setLibele($libele) {
-        $this->libele = $libele;
-
-        return $this;
-    }
-
-    /**
-     * Get libele
-     *
-     * @return string
-     */
-    public function getLibele() {
-        return $this->libele;
+    public function getDateTransfert()
+    {
+        return $this->dateTransfert;
     }
 
     /**
@@ -121,9 +86,10 @@ class Integration {
      *
      * @param \UserBundle\Entity\Utilisateur $user
      *
-     * @return Integration
+     * @return Transfert
      */
-    public function setUser(\UserBundle\Entity\Utilisateur $user = null) {
+    public function setUser(\UserBundle\Entity\Utilisateur $user = null)
+    {
         $this->user = $user;
 
         return $this;
@@ -134,39 +100,41 @@ class Integration {
      *
      * @return \UserBundle\Entity\Utilisateur
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
     /**
-     * Set chefProjet
+     * Set gerant
      *
-     * @param \UserBundle\Entity\Utilisateur $chefProjet
+     * @param \UserBundle\Entity\Utilisateur $gerant
      *
-     * @return Integration
+     * @return Transfert
      */
-    public function setChefProjet(\UserBundle\Entity\Utilisateur $chefProjet = null) {
-        $this->chefProjet = $chefProjet;
+    public function setGerant(\UserBundle\Entity\Utilisateur $gerant = null)
+    {
+        $this->gerant = $gerant;
 
         return $this;
     }
 
     /**
-     * Get chefProjet
+     * Get gerant
      *
      * @return \UserBundle\Entity\Utilisateur
      */
-    public function getChefProjet() {
-        return $this->chefProjet;
+    public function getGerant()
+    {
+        return $this->gerant;
     }
-
 
     /**
      * Set demande
      *
      * @param \DemandeBundle\Entity\Demande $demande
      *
-     * @return Integration
+     * @return Transfert
      */
     public function setDemande(\DemandeBundle\Entity\Demande $demande = null)
     {

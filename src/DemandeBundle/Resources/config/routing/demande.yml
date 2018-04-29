@@ -16,7 +16,7 @@ demande_recherche:
 demande_show:
     path:     /{id}/show
     defaults: { _controller: "DemandeBundle:Demande:show" }
-    methods:  GET
+    methods:  [GET, POST]
 
 demande_new:
     path:     /new
@@ -39,7 +39,7 @@ demande_moduleApp:
     methods:  [GET, POST]
     
     
-#Affichage des demande Par: Cote admin et traireur
+#Affichage des demande Par: Cote admin
 demande_parApp:
     path:     demande-par/application/{id}
     defaults: { _controller: "DemandeBundle:Demande:demandeParAppl" }
@@ -53,6 +53,16 @@ demande_parObj:
 demande_parUrg:
     path:     demande-par/urgence/
     defaults: { _controller: "DemandeBundle:Demande:demandeParUrg" }
+    methods:  [GET, POST]
+    
+demande_parTech:
+    path:     demande-par/technicien/{id}
+    defaults: { _controller: "DemandeBundle:Demande:demandeParTech" }
+    methods:  [GET, POST]
+    
+demande_parClient:
+    path:     demande-par/demandeur/{id}
+    defaults: { _controller: "DemandeBundle:Demande:demandeParClient" }
     methods:  [GET, POST]
     
 #Suivi du tritement des demandes
@@ -92,6 +102,11 @@ demande_abandonNew:
 demande_finir:
     path:     demande-terminees/{id}/
     defaults: { _controller: "DemandeBundle:Demande:demandefini" }
+    methods:  [GET, POST]
+    
+demande_start:
+    path:     demande-commencer/{id}/
+    defaults: { _controller: "DemandeBundle:Demande:demandeStart" }
     methods:  [GET, POST]
 
 #Pour un demandeur

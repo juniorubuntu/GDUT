@@ -1,0 +1,24 @@
+transfert_index:
+    path:     /
+    defaults: { _controller: "DemandeBundle:Transfert:index" }
+    methods:  GET
+
+transfert_show:
+    path:     /{id}/show
+    defaults: { _controller: "DemandeBundle:Transfert:show" }
+    methods:  GET
+
+transfert_new:
+    path:     /new
+    defaults: { _controller: "DemandeBundle:Transfert:new" }
+    methods:  [GET, POST]
+
+transfert_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DemandeBundle:Transfert:edit" }
+    methods:  [GET, POST]
+
+transfert_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DemandeBundle:Transfert:delete" }
+    methods:  DELETE

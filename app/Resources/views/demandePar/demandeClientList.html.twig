@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="">
+                    <br>
+                    <h3 class="text-center" style="color: white; background: #7e57c2;">Liste des demandes venant de  
+                        <b class="label label-info" style="color: black;
+                           font-weight: bold;"> {{client.entreprise}} 
+                        </b></h3>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
+                            <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
+                                <tr>
+                                    <th class="" style="color: blue; font-weight: unset;">Ticket</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Crée le</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Par</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Objet</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Application</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Module de l'appli</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Niveau d'urgence</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Affecté à</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Etat de trait.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set num = 0 %}
+                                {% for demande in client.listDemandes %}
+                                    {% set num = num+1 %}
+                                    <tr>
+                                        <td class="">
+                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><b class="btn btn-custom btn-purple">GDUT#{{ demande.id}}</b></a>
+                                        </td>
+                                        <td>{{ demande.user }}</td>
+                                        <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
+                                        <td>{{ demande.libele }}</td>
+                                        <td>{{ demande.application }}</td>
+                                        <td>{{ demande.module }}</td>
+                                        <td>{{ demande.niveauUrgence }}</td>
+                                        <td>{{ demande.gerant }}</td>
+                                        <td>
+                                            {% if demande.traitement == '1' %}
+                                                <label class="label label-success">Terminé</label>
+                                            {% elseif demande.traitement == '2' %}
+                                                <label class="label label-warning">En cours</label>
+                                            {% elseif demande.traitement == '0'%}
+                                                <label class="label label-danger">Non débuté</label>
+                                            {% elseif demande.traitement == '3'%}
+                                                <label class="label label-purple">Rejeté / Abandonné</label>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script>
+            function detailler(id) {
+
+                if ($('.appDemande_' + id).hasClass('hide')) {
+                    $('.appDemande_' + id).removeClass('hide');
+                    $('.ubuntu_' + id).removeClass('glyphicon-plus-sign');
+                    $('.ubuntu_' + id).addClass('glyphicon-minus-sign');
+
+                } else {
+                    $('.appDemande_' + id).addClass('hide');
+                    $('.ubuntu_' + id).addClass('glyphicon-plus-sign');
+                    $('.ubuntu_' + id).removeClass('glyphicon-minus-sign');
+                }
+            }
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable();
+                TableManageButtons.init();
+            });
+        </script>
+    </div>
+{% endblock %}
+{# empty Twig template #}

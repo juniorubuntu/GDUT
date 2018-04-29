@@ -15,7 +15,6 @@
                         <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                             <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                                 <tr>
-                                    <th class="" style="color: blue; font-weight: unset;">Détail</th>
                                     <th class="" style="color: blue; font-weight: unset;">Ticket</th>
                                     <th class="" style="color: blue; font-weight: unset;">Créé le</th>
                                     <th class="" style="color: blue; font-weight: unset;">Client</th>
@@ -30,16 +29,15 @@
                                 {% for demande in demandes %}
                                     <tr>
                                         <td class="">
-                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-list"></i> Voir</a>
+                                            <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"></i> <b class="btn btn-custom btn-purple">GDUT#{{ demande.id}}</b></a>
                                         </td>
-                                        <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
                                         <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
                                         <td>{{ demande.user.entreprise }}</td>
                                         <td>{{ demande.libele }}</td>
                                         <td>{{ demande.type }}</td>
                                         <td>{{ demande.niveauUrgence }}</td>
                                         <td>{{ demande.application }}</td>
-                                        <td>RAS</td>
+                                        <td>{{ demande.gerant }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

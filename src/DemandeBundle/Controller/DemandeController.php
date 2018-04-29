@@ -4,8 +4,7 @@ namespace DemandeBundle\Controller;
 
 use DemandeBundle\Entity\Demande;
 use DemandeBundle\Entity\Rejet;
-use DemandeBundle\Entity\Planif;
-use DemandeBundle\Entity\Integration;
+use DemandeBundle\Entity\Reponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -237,7 +236,7 @@ class DemandeController extends Controller {
      * Finds and displays a demande entity.
      *
      */
-    public function showAction(Demande $demande) {
+    public function showAction(Demande $demande, Request $request) {
         //$deleteForm = $this->createDeleteForm($demande);
 
         $user = $this->getUser();
@@ -247,23 +246,66 @@ class DemandeController extends Controller {
         $rejet->setDemande($demande);
         $rejetForm = $this->createForm('DemandeBundle\Form\RejetType', $rejet);
 
-        //Gestion de la planification
-        $planif = new Planif();
-        $planif->setUser($user);
-        $planif->setDemande($demande);
-        $planifForm = $this->createForm('DemandeBundle\Form\PlanifType', $planif);
+        //Gestion de la Reponse
+        $date = \DateTime::createFromFormat("y-m-d h:m:s", date('y-m-d h:m:s'));
+        $comment = new Reponse();
+        $comment->setDateEnvoie($date);
+        $comment->setUser($user);
+        $comment->setDemande($demande);
+        $commentForm = $this->createForm('DemandeBundle\Form\ReponseType', $comment);
 
-        //Gestion de l'intégration projet
-        $projet = new Integration();
-        $projet->setUser($user);
-        $projet->setDemande($demande);
-        $projetForm = $this->createForm('DemandeBundle\Form\IntegrationType', $projet);
+        //Gestion de l'affectation à un gérant
+        $affectForm = $this->createForm('DemandeBundle\Form\DemandeType', $demande);
+        $affectForm->remove('libele');
+        $affectForm->remove('fichier');
+        $affectForm->remove('user');
+        $affectForm->remove('application');
+        $affectForm->remove('module');
+        $affectForm->remove('type');
+        $affectForm->remove('niveauUrgence');
+        $affectForm->remove('personnesSupplementaires');
+        $affectForm->remove('description');
+        $affectForm->add('gerant');
+
+        $affectForm->handleRequest($request);
+
+        if ($affectForm->isSubmitted()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
+        }
+
+        //Gestion du transfert
+        $transfert = new \DemandeBundle\Entity\Transfert();
+        $transfert->setUser($user);
+        $transfert->setDemande($demande);
+        $transfertForm = $this->createForm('DemandeBundle\Form\TransfertType', $transfert);
+        $transfertForm->remove('user');
+        $transfertForm->handleRequest($request);
+        if ($transfertForm->isSubmitted()) {
+            $date = \DateTime::createFromFormat("y-m-d h:m:s", date('y-m-d h:m:s'));
+            $transfert->setDateTransfert($date);
+
+            $this->getDoctrine()->getManager()->persist($transfert);
+            $demande->setGerant($transfert->getGerant());
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('demande_nonTraite');
+        }
+
+        //Recherche des commentaires d'une demande
+        $em = $this->getDoctrine()->getManager();
+        $comments = $em->getRepository('DemandeBundle:Reponse')->findBy(array(
+            'demande' => $demande
+        ));
 
         return $this->render('demande/show.html.twig', array(
                     'demande' => $demande,
                     'form' => $rejetForm->createView(),
-                    'formPlanif' => $planifForm->createView(),
-                    'formProjet' => $projetForm->createView(),
+                    'formReponse' => $commentForm->createView(),
+                    'comments' => $comments,
+                    'affectForm' => $affectForm->createView(),
+                    'transfertForm' => $transfertForm->createView(),
         ));
     }
 
@@ -450,6 +492,107 @@ class DemandeController extends Controller {
             $application->setListDemandes($demandes);
             return $this->render('demandePar/demandeApplList.html.twig', array(
                         'application' => $application
+            ));
+        }
+    }
+
+    /**
+     * Affiche les demandes par technicien
+     * 
+     */
+    public function demandeParTechAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($id == 0) {
+            $users = $em->getRepository('UserBundle:Utilisateur')->findAll();
+            foreach ($users as $user) {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'gerant' => $user
+                ));
+                $encours = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'gerant' => $user,
+                            'traitement' => 2
+                ));
+                $termine = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'gerant' => $user,
+                            'fini' => true
+                ));
+                $user->setListDemandes($demandes);
+                $user->SetListTermine($termine);
+                $user->SetListEnCours($encours);
+            }
+            return $this->render('demandePar/demandeTech.html.twig', array(
+                        'users' => $users
+            ));
+        } else {
+            $user = $em->getRepository('UserBundle:Utilisateur')->find($id);
+
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'gerant' => $user
+            ));
+            $user->setListDemandes($demandes);
+            return $this->render('demandePar/demandeTechList.html.twig', array(
+                        'user' => $user
+            ));
+        }
+    }
+
+    /**
+     * Affiche les demandes par technicien
+     * 
+     */
+    public function demandeParClientAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($id == 0) {
+            $users = [];
+            $usersDem = $em->getRepository('UserBundle:Utilisateur')->findBy(array('level' => '1'));
+            $usersAdm = $em->getRepository('UserBundle:Utilisateur')->findBy(array('level' => '3'));
+            $users = array_merge($usersAdm, $usersDem);
+            foreach ($users as $user) {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'user' => $user
+                ));
+                $encours = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'user' => $user,
+                            'traitement' => 2
+                ));
+                $termine = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'user' => $user,
+                            'fini' => true
+                ));
+                $user->setListDemandes($demandes);
+                $user->SetListTermine($termine);
+                $user->SetListEnCours($encours);
+            }
+            return $this->render('demandePar/demandeClient.html.twig', array(
+                        'clients' => $users
+            ));
+        } else {
+            $user = $em->getRepository('UserBundle:Utilisateur')->find($id);
+
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'user' => $user
+            ));
+            $user->setListDemandes($demandes);
+            return $this->render('demandePar/demandeClientList.html.twig', array(
+                        'client' => $user
             ));
         }
     }
@@ -667,7 +810,7 @@ class DemandeController extends Controller {
     }
 
     /**
-     * Affiche les demandes Tritées
+     * Termine une demande et Affiche les demandes Tritées
      * 
      */
     public function demandefiniAction($id) {
@@ -703,7 +846,46 @@ class DemandeController extends Controller {
         $this->get('mailer')->send($message);
 //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
-        return $this->redirectToRoute('demande_Traite');
+        return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
+    }
+
+    /**
+     * Affiche les demandes Tritées
+     * 
+     */
+    public function demandeStartAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
+        $demande->setTraitement('2');
+        $em->flush();
+
+//Envoie des mails
+//gestion de l'entête
+        $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                ->setDisposition('inline');
+        $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+        $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+//envoie
+        $titre = 'Traitement du ticket: GDUT#' . $demande->getId();
+        $texte = 'Fin de traitement de votre ticket';
+        $message = \Swift_Message::newInstance()
+                ->setFrom('support@themis-it.com')
+                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                ->setCharset('utf-8')
+                ->setContentType('text/html')
+                ->setSubject($titre)
+                ->setBody($this->render('mails/mailPlan.html.twig', array(
+                            'contenu' => $texte,
+                            'titre' => $titre,
+                            'motif' => 'Le traitement de votre demande a été débuté, vous pouvez suivre le traitement au niveau du module concerné.'
+                )))
+                ->attach($attachment)
+        ;
+        $this->get('mailer')->send($message);
+//->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
+
+        return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
     }
 
     /**

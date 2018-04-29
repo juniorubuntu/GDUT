@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel-border panel-inverse">
+                <header class="">
+                    <br>
+                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste des techniciens </b></h3>
+                    <br>
+                    <br>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
+                            <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44); color: white">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>Nom du technicien</th>
+                                    <th>Rôle du technicien</th>
+                                    <th>Nombre de total de demandes</th>
+                                    <th>Nombre de demandes Traitées</th>
+                                    <th>Nombre de demandes en cours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set num = 0 %}
+                                {% for user in users %}
+                                    {% set num = num+1 %}
+                                    <tr>
+                                        <td>{{num}}</td>
+                                        <td>{{user}}</td>
+                                        <td>{{user.level}}</td>
+                                        <td><a href="{{path('demande_parTech', {'id': user.id})}}">{{user.listDemandes | length }} demande(s) trouvées.</a></td>
+                                        <td><label class="label label-success">{{user.ListTermine | length}}</label></td>
+                                        <td><label class="label label-warning">{{user.ListEnCours | length}}</label></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable();
+                TableManageButtons.init();
+            });
+        </script>
+    </div>
+{% endblock %}
+{# empty Twig template #}

@@ -39,7 +39,6 @@ class Utilisateur extends BaseUser {
      */
     private $sexe;
 
-
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -69,6 +68,33 @@ class Utilisateur extends BaseUser {
      * @Assert\NotBlank()
      */
     private $level;
+    private $listDemandes = [];
+    private $listEnCours = [];
+    private $listTermine = [];
+
+    function getListEnCours() {
+        return $this->listEnCours;
+    }
+
+    function getListTermine() {
+        return $this->listTermine;
+    }
+
+    function setListEnCours($listEnCours) {
+        $this->listEnCours = $listEnCours;
+    }
+
+    function setListTermine($listTermine) {
+        $this->listTermine = $listTermine;
+    }
+
+    function getListDemandes() {
+        return $this->listDemandes;
+    }
+
+    function setListDemandes($listDemandes) {
+        $this->listDemandes = $listDemandes;
+    }
 
     /**
      * Get id
@@ -233,7 +259,6 @@ class Utilisateur extends BaseUser {
         return $this->level;
     }
 
-
     /**
      * Set entreprise
      *
@@ -241,8 +266,7 @@ class Utilisateur extends BaseUser {
      *
      * @return Utilisateur
      */
-    public function setEntreprise($entreprise)
-    {
+    public function setEntreprise($entreprise) {
         $this->entreprise = $entreprise;
 
         return $this;
@@ -253,8 +277,8 @@ class Utilisateur extends BaseUser {
      *
      * @return string
      */
-    public function getEntreprise()
-    {
+    public function getEntreprise() {
         return $this->entreprise;
     }
+
 }
