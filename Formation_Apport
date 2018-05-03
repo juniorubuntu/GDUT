@@ -1,3 +1,5 @@
+NB: Une fois déploté, aller dans le Mailler de FosUser Bundle changer le $_SERVER['DOCUMENT_ROOT'] pour que le chemin du logo puisse être retrouvé
+
 Dans demande en cours coté Demandeur: 
 	1- Ajouter la durée du traitement
 	2- Demande cloturées : Mettre juste les demandes qui ont été planifiées et traitées

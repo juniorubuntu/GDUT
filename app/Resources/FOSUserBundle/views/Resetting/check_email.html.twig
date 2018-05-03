@@ -3,7 +3,12 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
-<p>
-{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-</p>
+    <div class="col-md-12 text-center" style="height: 700px; font-size: 16px; padding-top: 100px; color: lime">
+        <p>
+            {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+        </p>
+        <div class="col-md-12">
+            <a style="color: #2196F3 !important" href="{{path('homepage')}}" class="">Retourner à l'accueil</a>
+        </div>
+    </div>
 {% endblock %}

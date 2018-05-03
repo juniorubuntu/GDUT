@@ -1,12 +1,24 @@
 {% trans_default_domain 'FOSUserBundle' %}
-
-<div class="col-md-4 col-md-offset-3">
-{{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
-    </div>
-{{ form_end(form) }}
+<div class="col-md-4 col-md-offset-4" style="color:limegreen; padding-top: 50px; font-size: 16px">
+    <img src="{{asset('assets/images/users/profil.png')}}" alt="user-img" class="img-circle center-block">
+    <h3 class="center-block panel-info text-custom text-center">Réinitialisation du mot de Passe</h3>
+    <p class="text-center">
+        Pour réinitialiser votre mot de passe remplissez le formulaire ci-dessous.
+    </p>
 </div>
-<script src="/gdutnew/web/js/jquery-1.10.2.min.js"></script>
+<div class="col-md-4 col-md-offset-4" style="height: 700px; font-size: 16px; padding-top: 30px; color: white">
+    {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
+    {{ form_widget(form) }}
+    <br>
+    <div class="row col-md-12">
+        <input class="center-block btn btn-success" type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
+    </div>
+    {{ form_end(form) }}
+    <hr class="col-md-12">
+    <div class="col-md-12">
+        <a style="color: #2196F3 !important; text-decoration: none" href="{{path('homepage')}}" class="center-block">Retourner à l'accueil </a>
+    </div>
+</div>
+
+<script src="{{asset('assets/js/jquery.min.js')}}"></script>
 <script src="{{asset('form/formPerso.js')}}"></script>

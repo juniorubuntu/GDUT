@@ -1,13 +1,22 @@
 {% trans_default_domain 'FOSUserBundle' %}
 {% block subject %}
-{%- autoescape false -%}
-{{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
-{%- endautoescape -%}
+    {%- autoescape false -%}
+    {{ 'registration.email.subject'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+    {%- endautoescape -%}
 {% endblock %}
 
 {% block body_text %}
-{% autoescape false %}
-{{ 'registration.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
-{% endautoescape %}
+    {% autoescape false %}
+        Bonjour {{user.username | upper}},
+        Le service technique de Themis Technologies viens de vous créer un compte {{user.level}}
+        Ce compte vous permet de créer ou manipuler des tickets dans l’outils GDUT(Gestion des Demande Utilisateurs)
+        Pour valider votre compte utilisateur, merci de vous rendre sur {{confirmationUrl}}
+        Ce lien ne peut être utilisé qu'une seule fois pour valider votre compte.
+
+        Cordialement,
+        L'équipe,
+        Support Technique
+        Thémis-it Technologies et services
+    {% endautoescape %}
 {% endblock %}
 {% block body_html %}{% endblock %}

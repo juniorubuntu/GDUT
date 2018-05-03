@@ -25,7 +25,7 @@ class DemandeController extends Controller {
 
         $texte = '';
 
-        if ($userConnected->getLevel()->getRightToken() == 'ROLE_ADMIN' || $userConnected->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+        if ($userConnected->getLevel()->getRightToken() == 'ROLE_ADMIN') {
             $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
                     array(
                         'trash' => false
@@ -38,6 +38,13 @@ class DemandeController extends Controller {
                         'trash' => false
             ));
             $texte = 'mes demandes';
+        } else if ($userConnected->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'gerant' => $userConnected,
+                        'trash' => false
+            ));
+            $texte = 'les demandes utilisateurs qui vous sont affectées';
         }
         if (isset($_GET['creation'])) {
             return $this->render('demande/index.html.twig', array(
@@ -193,6 +200,13 @@ class DemandeController extends Controller {
                     }
                 }
                 $demandes = $retour;
+            } else if ($userConnected->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'id' => $text,
+                            'gerant' => $userConnected,
+                            'trash' => false
+                ));
             }
             return $this->render('demande/recherche.html.twig', array(
                         'demandes' => $demandes,
@@ -237,9 +251,24 @@ class DemandeController extends Controller {
      *
      */
     public function showAction(Demande $demande, Request $request) {
-        //$deleteForm = $this->createDeleteForm($demande);
 
         $user = $this->getUser();
+
+        //On teste l'accréditation avant d'ouvrir le ticktet
+        if ($user->getLevel()->getRightToken() == 'ROLE_DEMANDEUR') {
+            if (($demande->getUser() != $user) || $demande->getTrash() == 1) {
+                return $this->render('demande/erreur.html.twig', array(
+                            'code' => '#001'
+                ));
+            }
+        } else if ($user->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            if (($demande->getGerant() != $user) || $demande->getTrash() == 1) {
+                return $this->render('demande/erreur.html.twig', array(
+                            'code' => '#001'
+                ));
+            }
+        }
+
         //Gestion du rejet
         $rejet = new Rejet();
         $rejet->setUser($user);
@@ -472,28 +501,56 @@ class DemandeController extends Controller {
      */
     public function demandeParApplAction($id) {
         $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
 
         if ($id == 0) {
-            $applications = $em->getRepository('DemandeBundle:Application')->findAll();
-            foreach ($applications as $appli) {
-                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                        array(
-                            'trash' => false,
-                            'application' => $appli
+
+            if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+                $applications = $em->getRepository('DemandeBundle:Application')->findAll();
+                foreach ($applications as $appli) {
+                    $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                            array(
+                                'trash' => false,
+                                'application' => $appli,
+                                'gerant' => $userConnecte
+                    ));
+                    $appli->setListDemandes($demandes);
+                }
+                return $this->render('demandePar/demandeAppl.html.twig', array(
+                            'applications' => $applications
                 ));
-                $appli->setListDemandes($demandes);
+            } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+                $applications = $em->getRepository('DemandeBundle:Application')->findAll();
+                foreach ($applications as $appli) {
+                    $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                            array(
+                                'trash' => false,
+                                'application' => $appli,
+                    ));
+                    $appli->setListDemandes($demandes);
+                }
+                return $this->render('demandePar/demandeAppl.html.twig', array(
+                            'applications' => $applications
+                ));
             }
-            return $this->render('demandePar/demandeAppl.html.twig', array(
-                        'applications' => $applications
-            ));
         } else {
             $application = $em->getRepository('DemandeBundle:Application')->find($id);
 
-            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                    array(
-                        'trash' => false,
-                        'application' => $application
-            ));
+            if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'application' => $application
+                ));
+            } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'application' => $application,
+                            'gerant' => $userConnecte
+                ));
+            }
+
             $application->setListDemandes($demandes);
             return $this->render('demandePar/demandeApplList.html.twig', array(
                         'application' => $application
@@ -608,14 +665,23 @@ class DemandeController extends Controller {
      */
     public function demandeParObjAction() {
         $em = $this->getDoctrine()->getManager();
-
+        $userConnecte = $this->getUser();
         $types = $em->getRepository('DemandeBundle:TypeDemande')->findAll();
         foreach ($types as $type) {
-            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                    array(
-                        'trash' => false,
-                        'type' => $type
-            ));
+            if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'type' => $type,
+                            'gerant' => $userConnecte
+                ));
+            } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'type' => $type
+                ));
+            }
             $type->setListDemandes($demandes);
         }
         return $this->render('demandePar/demandeObjet.html.twig', array(
@@ -629,14 +695,24 @@ class DemandeController extends Controller {
      */
     public function demandeParUrgAction() {
         $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
 
         $urgences = $em->getRepository('DemandeBundle:Urgence')->findAll();
         foreach ($urgences as $urgence) {
-            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                    array(
-                        'trash' => false,
-                        'niveauUrgence' => $urgence
-            ));
+            if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'niveauUrgence' => $urgence
+                ));
+            } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                        array(
+                            'trash' => false,
+                            'niveauUrgence' => $urgence,
+                            'gerant' => $userConnecte
+                ));
+            }
             $urgence->setListDemandes($demandes);
         }
         return $this->render('demandePar/demandeUrg.html.twig', array(
@@ -645,34 +721,55 @@ class DemandeController extends Controller {
     }
 
     /**
-     * Affiche les demandes non Tritées
+     * Affiche les demandes non Traitées
      * 
      */
     public function demandeNonTraitAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                array(
-                    'trash' => false,
-                    'traitement' => '0'
-        ));
+        $userConnecte = $this->getUser();
+        if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'traitement' => '0'
+            ));
+        } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'traitement' => '0',
+                        'gerant' => $userConnecte
+            ));
+        }
         return $this->render('demande/demandeNonTrait.html.twig', array(
                     'demandes' => $demandes
         ));
     }
 
     /**
-     * Affiche les demandes Tritées
+     * Affiche les demandes Traitées
      * 
      */
     public function demandeTraitAction() {
         $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
 
-        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                array(
-                    'trash' => false,
-                    'fini' => true
-        ));
+        if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'fini' => true
+            ));
+        } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'fini' => true,
+                        'gerant' => $userConnecte
+            ));
+        }
+
         return $this->render('demande/demandeTrait.html.twig', array(
                     'demandes' => $demandes,
                     'texte' => 'les demandes utilisateurs'
@@ -685,12 +782,22 @@ class DemandeController extends Controller {
      */
     public function demandeEnCoursAction() {
         $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
 
-        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                array(
-                    'trash' => false,
-                    'traitement' => '2'
-        ));
+        if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'traitement' => '2'
+            ));
+        } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'traitement' => '2',
+                        'gerant' => $userConnecte
+            ));
+        }
         return $this->render('demande/demandeEnCours.html.twig', array(
                     'demandes' => array_reverse($demandes),
                     'texte' => 'les demandes utilisateurs'
@@ -704,11 +811,22 @@ class DemandeController extends Controller {
     public function demandeRejeteAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                array(
-                    'trash' => false,
-                    'valide' => false
-        ));
+        $userConnecte = $this->getUser();
+
+        if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'valide' => false
+            ));
+        } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'valide' => false,
+                        'gerant' => $userConnecte
+            ));
+        }
         return $this->render('demande/demandeRejete.html.twig', array(
                     'demandes' => array_reverse($demandes),
                     'texte' => 'les demandes utilisateurs'
@@ -721,12 +839,22 @@ class DemandeController extends Controller {
      */
     public function demandeAbandonAction() {
         $em = $this->getDoctrine()->getManager();
+        $userConnecte = $this->getUser();
 
-        $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                array(
-                    'trash' => false,
-                    'traitement' => '3'
-        ));
+        if ($userConnecte->getLevel()->getRightToken() == 'ROLE_ADMIN') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'traitement' => '3'
+            ));
+        } else if ($userConnecte->getLevel()->getRightToken() == 'ROLE_TRAITEUR') {
+            $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                    array(
+                        'trash' => false,
+                        'traitement' => '3',
+                        'gerant' => $userConnecte
+            ));
+        }
         return $this->render('demande/abandon.html.twig', array(
                     'demandes' => array_reverse($demandes),
                     'texte' => 'les demandes utilisateurs'

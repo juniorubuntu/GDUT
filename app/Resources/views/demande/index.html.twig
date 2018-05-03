@@ -7,7 +7,7 @@
                 <header class="">
                     <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste de toutes {{texte}}</b></h3>
                     {% if app.user.level.rightToken != "ROLE_TRAITEUR" %}
-                        <a style="margin-right: 2%" class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('demande_new')}}">Créer une demande</a>
+                        <a style="margin-right: 2%" class="btn btn-purple btn-custom waves-effect waves-light pull-right" href="{{path('demande_new')}}"><i class="glyphicon glyphicon-plus-sign"></i> Créer une demande</a>
                     {% endif %}
                     <br>
                     <br>
