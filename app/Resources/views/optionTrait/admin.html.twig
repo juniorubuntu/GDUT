@@ -1,0 +1,19 @@
+{% if (demande.traitement != '1') %}
+    {% if (demande.traitement == '2') %}
+        <a href="#abandon-modal" class="btn btn-custom btn-danger waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Abandonner</a>
+        <a href="#planif-modal" class="btn btn-inverse col-md-offset-1 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre à la demande</a>
+        <a href="#transfert-modal" class="btn btn-pink col-md-offset-1 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Transférer la demande à</a>
+        <a href="#fin-modal" class="btn btn-custom col-md-offset-1 btn-success waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Clôturer le traitement</a>
+    {% else%}
+        <a href="#rejet-modal" class="btn btn-primary btn-custom waves-effect waves-light" data-animation="slidetogether" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Rejéter la demande</a>
+        <a href="#planif-modal" class="btn btn-inverse col-md-offset-1 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre à la demande</a>
+        {% if demande.gerant is null  %}
+            <a href="#affect-modal" class="btn btn-purple col-md-offset-1 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Affecter la demande à</a>
+        {% else %}
+            <a href="#transfert-modal" class="btn btn-pink col-md-offset-1 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Transférer la demande à</a>
+        {% endif%}
+    {% endif %}
+{% else%}
+    <a href="#" onclick="alert('Fonctionnalité pas encore disponible. \nMerci de contacter le service Devs pour plus de détails.')" class="btn btn-custom btn-pink waves-effect waves-light" ><i class="glyphicon glyphicon-briefcase"></i> Archiver la demande</a>
+    <h5>Elle n'apparîtra plus dans les liste sauf celles des demsndes archivées.</h5>
+{% endif %}

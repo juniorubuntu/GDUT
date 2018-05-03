@@ -1,0 +1,10 @@
+{% if (demande.traitement != '1') %}
+    {% if (demande.traitement == '2') %}
+        <a href="#planif-modal" class="btn btn-inverse btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre à la demande</a>
+    {% else%}
+        <a href="#abandon-modal" class="btn btn-custom btn-danger waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Abandonner</a>
+        <a href="#planif-modal" class="btn btn-inverse col-md-offset-1 btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre à la demande</a>
+    {% endif %}
+{% else%}
+    <h5>Cette demande sera bientôt archivé par notre service support. Vous ne pourrez donc plus la consulter. Merci de sauvegarder les fichiers la concernant.</h5>
+{% endif %}

@@ -1,0 +1,12 @@
+{% if (demande.traitement != '1') %}
+    {% if (demande.traitement == '2') %}
+        <a href="#planif-modal" class="btn btn-inverse btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre à la demande</a>
+        <a href="#transfert-modal" class="btn btn-pink col-md-offset-1 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Transférer la demande à</a>
+        <a href="#fin-modal" class="btn btn-custom col-md-offset-1 btn-success waves-effect waves-light" data-animation="slide" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Clôturer le traitement</a>
+    {% else%}
+        <a href="#planif-modal" class="btn btn-inverse btn-custom waves-effect waves-light" data-animation="push" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Répondre à la demande</a>
+        <a href="#transfert-modal" class="btn btn-pink col-md-offset-1 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Transférer la demande à</a>
+    {% endif %}
+{% else%}
+    RAS
+{% endif %}

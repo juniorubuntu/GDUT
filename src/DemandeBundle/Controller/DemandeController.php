@@ -298,6 +298,10 @@ class DemandeController extends Controller {
         $comments = $em->getRepository('DemandeBundle:Reponse')->findBy(array(
             'demande' => $demande
         ));
+        $trait = '';
+        if (isset($_GET['traitement'])) {
+            $trait = $_GET['traitement'];
+        }
 
         return $this->render('demande/show.html.twig', array(
                     'demande' => $demande,
@@ -306,6 +310,7 @@ class DemandeController extends Controller {
                     'comments' => $comments,
                     'affectForm' => $affectForm->createView(),
                     'transfertForm' => $transfertForm->createView(),
+                    'trait' => $trait
         ));
     }
 
@@ -857,6 +862,12 @@ class DemandeController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $demande = $em->getRepository('DemandeBundle:Demande')->find($id);
+        if ($demande->getGerant() == NULL) {
+            return $this->redirectToRoute('demande_show', array(
+                        'id' => $demande->getId(),
+                        'traitement' => 'Refuse'
+            ));
+        }
         $demande->setTraitement('2');
         $em->flush();
 
