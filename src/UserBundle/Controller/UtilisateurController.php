@@ -105,7 +105,7 @@ class UtilisateurController extends BaseController {
                 //Flasbag message
                 $request->getSession()
                         ->getFlashBag()
-                        ->add('success', ' Compte Utilisateur créé avec succès');
+                        ->add('success', ' Compte utilisateur créé avec succès');
 
                 return $response;
             }
@@ -143,9 +143,6 @@ class UtilisateurController extends BaseController {
 
             return $this->redirectToRoute('utilisateur_show', array('id' => $utilisateur->getId()));
         }
-        $form . add('dateNaissance', \Symfony\Component\Form\Extension\Core\Type\DateType::class, array(
-                    'widget' => 'single_text',
-                    'html5' => false));
 
         return $this->render('utilisateur/new.html.twig', array(
                     'utilisateur' => $utilisateur,
@@ -185,7 +182,7 @@ class UtilisateurController extends BaseController {
         $editForm->remove('adresse');
         $editForm->remove('cni');
         $editForm->remove('username');
-        $editForm->remove('entreprise');
+        //$editForm->remove('entreprise');
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

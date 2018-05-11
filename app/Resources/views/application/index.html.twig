@@ -18,6 +18,8 @@
                                 <tr>
                                     <th class="" style="color: blue; font-weight: unset;">Actions</th>
                                     <th class="" style="color: blue; font-weight: unset;">Nom de l'application</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Catégorie</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Description</th>
                                     <th class="" style="color: blue; font-weight: unset;">Modules de l'application</th>
                                 </tr>
                             </thead>
@@ -38,7 +40,9 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td>{{ application.nom }} <b class="pull-right" style="color: green">{{application.listModules | length}} modules trouvé(s)</b></td>
+                                        <td>{{ application.nom }}<b class="pull-right" style="color: green"> | {{application.listModules | length}}modules</b></td>
+                                        <td>{{ application.categorie }}</td>
+                                        <td>{{ application.description }}</td>
                                         <td>
                                             <ol>
                                                 {% for module in application.listModules %}

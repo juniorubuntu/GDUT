@@ -12,6 +12,7 @@
         {% else %}
             <a href="#transfert-modal" class="btn btn-pink col-md-offset-1 btn-custom waves-effect waves-light" data-animation="door" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a">Transférer la demande à</a>
         {% endif%}
+        <a class="btn btn-custom btn-info col-md-offset-1" href="{{path('demande_edit', {'id': demande.id})}}"><i class="fa fa-edit"></i> Modifier la demande</a>
     {% endif %}
 {% else%}
     <a href="#" onclick="alert('Fonctionnalité pas encore disponible. \nMerci de contacter le service Devs pour plus de détails.')" class="btn btn-custom btn-pink waves-effect waves-light" ><i class="glyphicon glyphicon-briefcase"></i> Archiver la demande</a>

@@ -13,13 +13,20 @@
             {#
             {{ form_widget(form) }}
             #}
-
+            <br>
             <div class="col-md-6 col-md-offset-3">
 
                 {{ form_errors(edit_form) }}
 
                 {{ form_label(edit_form.nom, "Nom de l'application") }}
-                {{ form_widget(edit_form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: XXXXXXXXXXX', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+                {{ form_widget(edit_form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: GDUT', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+                {{ form_label(edit_form.categorie, "Catégorie") }}
+                {{ form_widget(edit_form.categorie, {'attr':{'class':'', 'style':'margin-bottom: 35px;'}}) }}
+
+                {{ form_label(edit_form.description, "Description") }}
+                {{ form_widget(edit_form.description, {'attr':{'class':'form-control', 'placeholder': 'Ex: Application de gestion des demandes utilisateurs', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
             </div>
         </div>
         <div class="col-md-6 col-md-offset-3">
@@ -49,5 +56,13 @@
         if (modif) {
             alert("Modification éffectuée avec succès. \n\nCliquez sur 'Ok' pour terminer.");
         }
+        
+        document.getElementById('demandebundle_application_categorie_1').style.marginLeft = '40px';
+
+        document.getElementById('demandebundle_application_categorie_0').style.marginRight = '8px';
+        document.getElementById('demandebundle_application_categorie_0').style.cursor = 'pointer';
+
+        document.getElementById('demandebundle_application_categorie_1').style.marginRight = '8px';
+        document.getElementById('demandebundle_application_categorie_1').style.cursor = 'pointer';
     </script>
 {% endblock %}

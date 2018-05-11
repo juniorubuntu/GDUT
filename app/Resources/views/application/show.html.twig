@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-12 col-md-offset-1 col-md-11 col-sm-12 col-xs-12">
         <div class="panel panel-border panel-custom" style="background: #ebeff2">
             <header class="panel-heading">
                 <h1 class="panel-title">Détail sur une application</h1>
@@ -15,6 +15,14 @@
                 <tr>
                     <th>Nom</th>
                     <td>{{ application.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Catégorie</th>
+                    <td>{{ application.categorie }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ application.description }}</td>
                 </tr>
             </tbody>
         </table>

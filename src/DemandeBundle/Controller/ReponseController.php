@@ -54,6 +54,32 @@ class ReponseController extends Controller {
             $em->persist($reponse);
             $em->flush();
 
+            //Envoie de la reponse par mail
+            //gestion de l'entête
+            $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                    ->setDisposition('inline');
+            $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+            $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+            //envoie
+            $titre = 'Réponse au ticket: GDUT#' . $demande->getId();
+            $texte = $reponse->getTexte();
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('support@themis-it.com')
+                    ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
+                    ->setCharset('utf-8')
+                    ->setContentType('text/html')
+                    ->setSubject($titre)
+                    ->setBody($this->render('mails/mailTrait.html.twig', array(
+                                'contenu' => $texte,
+                                'titre' => $titre
+                    )))
+                    ->attach($attachment)
+            ;
+            if ($reponse->getFichier() != '') {
+                $message->attach(\Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/Uploads/Fichier/' . $reponse->getFichier()));
+            }
+            $this->get('mailer')->send($message);
+
             return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
         }
 

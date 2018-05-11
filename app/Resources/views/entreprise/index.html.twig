@@ -4,11 +4,12 @@
     <div class="row">
         <div class="col-sm-12">
             <section class="panel panel-border panel-inverse">
-                <header class="col-md-8 col-md-offset-1">
-                    <h3><b>Gestion des modules </b></h3>
+                <header class="">
+                    <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste des entreprises affilées </b></h3>
+                    <br>
                 </header>
                 <div class="col-md-12">
-                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('module_new')}}">Ajouter une application</a>
+                    <a class="btn btn-primary btn-custom waves-effect waves-light pull-right" href="{{path('entreprise_new')}}">Ajouter une entreprise</a>
                     <hr>
                 </div>
                 <div class="panel-body">
@@ -18,13 +19,10 @@
                                 <tr>
                                     <th class="" style="color: blue; font-weight: unset;">Actions</th>
                                     <th class="" style="color: blue; font-weight: unset;">Nom</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Description</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Application</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Actif</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for module in modules %}
+                                {% for entreprise in entreprises %}
                                     <tr>
                                         <td>
                                             <div class="input-group-btn">
@@ -32,18 +30,15 @@
                                                     <span class="fa fa-caret-down"></span></button>
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a <a href="{{ path('module_show', { 'id': module.id }) }}"><i class="fa fa-eye"></i> Voir le module</a>
+                                                        <a <a href="{{ path('entreprise_show', { 'id': entreprise.id }) }}"><i class="fa fa-eye"></i> Voir le entreprise</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ path('module_edit', { 'id': module.id }) }}"><i class="fa fa-edit"></i> Editer le module</a>
+                                                        <a href="{{ path('entreprise_edit', { 'id': entreprise.id }) }}"><i class="fa fa-edit"></i> Editer le entreprise</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td>{{ module.nom }}</td>
-                                        <td>{{ module.description }}</td>
-                                        <td>{{ module.application }}</td>
-                                        <td>{% if module.actif %}Oui{% else %}Non{% endif %}</td>
+                                        <td>{{ entreprise.nom }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

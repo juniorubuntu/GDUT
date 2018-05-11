@@ -7,6 +7,11 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-12">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <center>{{ message }}</center>
+                </div>
+            {% endfor %}
             <section class="panel panel-border panel-inverse">
                 <header class="">
                     <h3 class="text-center" style="color: white; background: #7e57c2;"><b>Liste des comptes utilisateurs </b></h3>

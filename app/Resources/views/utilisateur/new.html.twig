@@ -8,6 +8,7 @@
                     <h1 class="panel-title">Enregistrement d'un nouvel utilisateur</h1>
                 </header>
                 <div class="panel-body purple" style="margin-bottom: 8%;">
+                    {{ form_errors(form) }}
                     {{ form_start(form, {'method': 'post', 'action': path('enseignant_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
                     <div class="row">
                         <div class="col-md-6">   

@@ -85,16 +85,23 @@
                 </tr>
                 <tr>
                     <td>Application concernée</td>
-                    <td>{{ demande.application }}</td>
+                    <td>
+                        Nom: <b>{{ demande.application }}</b>
+                        <br>
+                        Catégorie: <b>{{ demande.application.categorie }}</b>
+                        <br>
+                        Description: {{ demande.application.description }}
+                    </td>
                 </tr>
                 <tr>
                     <td>Module de l'application</td>
-                    <td>{{ demande.module }}</td>
+                    <td>{{ demande.module }} ({{ demande.module.description }})</td>
                 </tr>
                 <tr>
                     <td>Niveau d'urgence</td>
                     <td>{{ demande.niveauUrgence }}</td>
                 </tr>
+
                 <tr>
                     <td>Personnes supplementaires</td>
                     <td>{{ demande.personnesSupplementaires }}</td>
@@ -103,12 +110,22 @@
                     <td>Fichier joint</td>
                     <td>
                         {% if demande.fichier != '' %}
-                            <a target="blank" href="{{asset('Uploads/Fichier/'~demande.fichier)}}"><i class="fa fa-download"> </i> Télécharger</a></span>
+                            <a target="blank" href="{{asset('Uploads/Fichier/'~demande.fichier)}}"><i class="fa fa-download"> </i> {{demande.fichier}}</a></span>
                         {% else %}
                             Aucun
                         {% endif %}
                     </td>
                 </tr>
+                {% if rejet != '' %}
+                    <tr>
+                        <td>Etat de traitement : <b style="color: red">Réjetée</b></td>
+                        <td>
+                            <u style='color: lightcoral'>Motif:</u>
+                            <br>
+                            {{ rejet }}
+                        </td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
         <a  style="" class="btn btn-success col-md-4 col-md-offset-4" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">

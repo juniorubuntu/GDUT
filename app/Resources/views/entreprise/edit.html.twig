@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-border panel-custom" >
+                <header class="panel-heading text-center">
+                    <h1 class="panel-title">Modification du nom d'une entreprise</h1>
+                </header>
+                <div class="panel-body purple" style="margin-bottom: 6%;">
+                    {{ form_start(edit_form) }}
+                    <div class="login-wrap col-md-12" style="input{ margin-top: 12%}">
+                        {# <p>Informations personnelles</p> #}
+                        {#
+                        {{ form_widget(form) }}
+                        #}
+
+                        <div class="col-md-8 col-md-offset-2">
+
+                            {{ form_errors(edit_form) }}
+
+                            {{ form_label(edit_form.nom, "Nom de l'entreprise") }}
+                            {{ form_widget(edit_form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: Thémis-It Technologies', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <button type="submit" class="btn col-md-2 btn-custom btn-primary btn-rounded waves-effect waves-lightr" value="">Modifier</button>
+                        {{ form_end(edit_form) }}
+                        {{ form_start(delete_form) }}
+                        <button class="btn btn-danger col-md-offset-4 btn-custom btn-rounded waves-effect waves-lightr" type="submit">Supprimer</button>
+                        <a class="btn col-md-offset-1 btn-custom btn-inverse btn-rounded waves-effect waves-lightr" href="{{ path('entreprise_index') }}">Retour à la liste</a>
+                        {{ form_end(delete_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function getQueryVariable(variable)
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return(false);
+        }
+        var modif = getQueryVariable('modif');
+        if (modif) {
+            alert("Modification éffectuée avec succès. \n\nCliquez sur 'Ok' pour terminer.");
+        }
+    </script>
+{% endblock %}

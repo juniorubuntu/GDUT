@@ -11,7 +11,7 @@
     <div class="container">
         <form class="form-signin" action="{{ path("fos_user_security_check") }}" style=" 
               max-width: 432px;
-              ;background: rgba(43, 11, 61, 0.15);
+              ;background: rgba(43, 11, 61, 0.33);
               " method="post">
             {% if csrf_token %}
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
@@ -43,17 +43,21 @@
                 <button type="submit" id="_submit" class="btn btn-lg btn-login btn-block" name="_submit" value="{{ 'security.login.submit'|trans }}"><i class="fa fa-check"></i>
                 </button>
                 <div class="registration">
-                    Pas de compte ?
+
+                    <span class="pull-left">Pas de compte ? Contacter</span>  <a class="pull-right" style="color: lime" href="mailto:support@themis-it.com">support@themis-it.com</a>
+                    {#
                     <a class="" href="{{path('fos_user_registration_register')}}">
                         S'enregistrer
                     </a>
+                    #}
+                    <br>
                 </div>
-                <label class="checkbox">
+                <label class="checkbox" style="color: lime">
                     <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-                    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                    <label for="remember_me"><b>{{ 'security.login.remember_me'|trans }}</b></label>
 
                     <span class="pull-right">
-                        <a href="{{path('fos_user_resetting_request')}}"> Mot de passe oublié?</a>
+                        <b><a style="color: lime" href="{{path('fos_user_resetting_request')}}"> Mot de passe oublié?</a></b>
 
                     </span>
                 </label>

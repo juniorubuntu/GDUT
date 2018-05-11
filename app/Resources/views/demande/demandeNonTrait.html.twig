@@ -23,6 +23,7 @@
                                     <th class="" style="color: blue; font-weight: unset;">Type de demande</th>
                                     <th class="" style="color: blue; font-weight: unset;">Niveau d'urgence</th>
                                     <th class="" style="color: blue; font-weight: unset;">Application concernée</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Affectée à</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -32,12 +33,13 @@
                                             <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><i class="fa fa-cogs"></i> Traiter</a>
                                         </td>
                                         <td class="text-custom"><b>GDUT#{{ demande.id}}</b></td>
-                                        <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                                        <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
                                         <td>{{ demande.user.entreprise }}</td>
                                         <td>{{ demande.libele }}</td>
                                         <td>{{ demande.type }}</td>
                                         <td>{{ demande.niveauUrgence }}</td>
                                         <td>{{ demande.application }}</td>
+                                        <td>{% if demande.gerant != null %} {{ demande.gerant }} {% else %} Non défini{% endif%}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -72,7 +74,7 @@
             </section>
         </div>
         <script>
-            
+
             $('#exampleModal').modal('show');
         </script>
     </div>

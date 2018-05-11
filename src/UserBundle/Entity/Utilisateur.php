@@ -58,8 +58,8 @@ class Utilisateur extends BaseUser {
     private $adresse;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="DemandeBundle\Entity\Entreprise")
+     * @Assert\NotBlank()
      */
     private $entreprise;
 
@@ -262,11 +262,11 @@ class Utilisateur extends BaseUser {
     /**
      * Set entreprise
      *
-     * @param string $entreprise
+     * @param \DemandeBundle\Entity\Entreprise $entreprise
      *
      * @return Utilisateur
      */
-    public function setEntreprise($entreprise) {
+    public function setEntreprise(\DemandeBundle\Entity\Entreprise $entreprise = null) {
         $this->entreprise = $entreprise;
 
         return $this;
@@ -275,7 +275,7 @@ class Utilisateur extends BaseUser {
     /**
      * Get entreprise
      *
-     * @return string
+     * @return \DemandeBundle\Entity\Entreprise
      */
     public function getEntreprise() {
         return $this->entreprise;

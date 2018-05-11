@@ -102,6 +102,10 @@
                                 <div class="form-group">
                                     {{ form_label(edit_form.level) }}
                                     {{ form_widget(edit_form.level,{'attr':{'class':'form-control btn dropdown-toggle btn-default btn-custom'}}) }}
+                                    <br>
+                                    <br>
+                                    {{ form_label(edit_form.entreprise) }}
+                                    {{ form_widget(edit_form.entreprise,{'attr':{'class':'form-control btn dropdown-toggle btn-inverse btn-custom'}}) }}
                                 </div>
                             </div>
                         </div>
@@ -128,14 +132,14 @@
         </div>
     </div>
     <script>
-                document.getElementById('userbundle_utilisateur_telephone').type = 'number';
+        document.getElementById('userbundle_utilisateur_telephone').type = 'number';
 
-                document.getElementById('userbundle_utilisateur_sexe_1').style.marginLeft = '40px';
+        document.getElementById('userbundle_utilisateur_sexe_1').style.marginLeft = '40px';
 
-                document.getElementById('userbundle_utilisateur_sexe_0').style.marginRight = '8px';
-                document.getElementById('userbundle_utilisateur_sexe_0').style.cursor = 'pointer';
+        document.getElementById('userbundle_utilisateur_sexe_0').style.marginRight = '8px';
+        document.getElementById('userbundle_utilisateur_sexe_0').style.cursor = 'pointer';
 
-                document.getElementById('userbundle_utilisateur_sexe_1').style.marginRight = '8px';
-                document.getElementById('userbundle_utilisateur_sexe_1').style.cursor = 'pointer';
-            </script>
+        document.getElementById('userbundle_utilisateur_sexe_1').style.marginRight = '8px';
+        document.getElementById('userbundle_utilisateur_sexe_1').style.cursor = 'pointer';
+    </script>
 {% endblock %}

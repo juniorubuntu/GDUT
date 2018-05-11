@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-border panel-custom" >
+                <header class="panel-heading text-center">
+                    <h1 class="panel-title">Ajout d'une entreprise</h1>
+                </header>
+                <div class="panel-body purple" style="margin-bottom: 6%;">
+                    {{ form_start(form) }}
+                    <div class="login-wrap col-md-12" style="input{ margin-top: 12%}">
+                        {# <p>Informations personnelles</p> #}
+                        {#
+                        {{ form_widget(form) }}
+                        #}
+
+                        <div class="col-md-8 col-md-offset-2">
+                            {{ form_errors(form) }}
+
+                            {{ form_label(form.nom, "Nom de l'entreprise") }}
+                            {{ form_widget(form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: Thémis-it Technologies', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+
+                            <input class="btn btn-custom btn-success" type="submit" value="Ajouter" />
+                            {{ form_end(form) }}
+
+                            <a class="btn btn-custom btn-inverse pull-right" href="{{ path('entreprise_index') }}">Retourner  à la liste</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

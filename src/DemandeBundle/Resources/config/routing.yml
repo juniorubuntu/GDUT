@@ -30,3 +30,7 @@ demande_reponse:
 demande_transfert:
     resource: "@DemandeBundle/Resources/config/routing/transfert.yml"
     prefix:   /transfert
+
+demande_entreprise:
+    resource: "@DemandeBundle/Resources/config/routing/entreprise.yml"
+    prefix:   /entreprise

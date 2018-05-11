@@ -17,7 +17,6 @@
                                 <tr>
                                     <th>N°</th>
                                     <th>Nom du client</th>
-                                    <th>Demande envoyé par</th>
                                     <th>Nombre de total de demandes</th>
                                     <th>Nombre de demandes Traitées</th>
                                     <th>Nombre de demandes en cours</th>
@@ -29,11 +28,10 @@
                                     {% set num = num+1 %}
                                     <tr>
                                         <td>{{num}}</td>
-                                        <td>{{client.entreprise}}</td>
                                         <td>{{client}}</td>
-                                        <td><a href="{{path('demande_parClient', {'id': client.id})}}">{{client.listDemandes | length }} demande(s) trouvées.</a></td>
-                                        <td><label class="label label-success">{{client.ListTermine | length}}</label></td>
-                                        <td><label class="label label-warning">{{client.ListEnCours | length}}</label></td>
+                                        <td><a href="{{path('demande_parClient', {'id': client.id})}}">{{client.nbrDemandes }} demande(s) trouvées.</a></td>
+                                        <td><label class="label label-success">{{client.nbrTermine }}</label></td>
+                                        <td><label class="label label-warning">{{client.nbrEnCours }}</label></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

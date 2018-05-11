@@ -3,6 +3,7 @@
 namespace DemandeBundle\Controller;
 
 use DemandeBundle\Entity\Demande;
+use DemandeBundle\Entity\Entreprise;
 use DemandeBundle\Entity\Rejet;
 use DemandeBundle\Entity\Reponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -112,7 +113,7 @@ class DemandeController extends Controller {
                 $texte = 'Votre ticket a été créé avec succès, vous serez informé par mail de la suite du traitement.';
                 $message = \Swift_Message::newInstance()
                         ->setFrom('support@themis-it.com')
-                        ->setTo(array($userConnected->getEmail(), 'dev@themis-it.com'))
+                        ->setTo(array($userConnected->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
                         ->setCharset('utf-8')
                         ->setContentType('text/html')
                         ->setSubject($titre)
@@ -123,6 +124,9 @@ class DemandeController extends Controller {
                         )))
                         ->attach($attachment)
                 ;
+                if ($demande->getFichier() != '') {
+                    $message->attach(\Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/Uploads/Fichier/' . $demande->getFichier()));
+                }
                 $this->get('mailer')->send($message);
                 //->attach(Swift_Attachment::fromPath('/path/to/a/file.zip'))
 
@@ -284,6 +288,18 @@ class DemandeController extends Controller {
         $commentForm = $this->createForm('DemandeBundle\Form\ReponseType', $comment);
 
         //Gestion de l'affectation à un gérant
+        $file = '';
+        $ancien = '';
+        if ($demande->getFichier() != "") {
+            $ancien = $demande->getFichier();
+            if (file_exists('Uploads/Fichier/' . $demande->getFichier())) {
+                $file = new \Symfony\Component\HttpFoundation\File\File('Uploads/Fichier/' . $demande->getFichier());
+            } else {
+                $file = null;
+            }
+        }
+        $demande->setFichier($file);
+
         $affectForm = $this->createForm('DemandeBundle\Form\DemandeType', $demande);
         $affectForm->remove('libele');
         $affectForm->remove('fichier');
@@ -300,6 +316,30 @@ class DemandeController extends Controller {
 
         if ($affectForm->isSubmitted()) {
             $this->getDoctrine()->getManager()->flush();
+
+            //Envoie des mails
+            //gestion de l'entête
+            $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                    ->setDisposition('inline');
+            $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+            $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+
+            //envoie
+            $titre = 'Affectation du ticket: GDUT#' . $demande->getId();
+            $texte = 'Bonjour ' . $demande->getGerant() . ' Ce ticket vous a été affecté pour traitement. Bien vouloir vous rendre sur votre espace GDUT pour plus de détails';
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('support@themis-it.com')
+                    ->setTo(array($demande->getGerant()->getEmail(), 'support@themis-it.com'))
+                    ->setCharset('utf-8')
+                    ->setContentType('text/html')
+                    ->setSubject($titre)
+                    ->setBody($this->render('mails/mailPlan.html.twig', array(
+                                'contenu' => $texte,
+                                'titre' => $titre
+                    )))
+                    ->attach($attachment)
+            ;
+            $this->get('mailer')->send($message);
 
             return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
         }
@@ -319,6 +359,30 @@ class DemandeController extends Controller {
             $demande->setGerant($transfert->getGerant());
             $this->getDoctrine()->getManager()->flush();
 
+            //Envoie des mails
+            //gestion de l'entête
+            $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                    ->setDisposition('inline');
+            $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+            $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+
+            //envoie
+            $titre = 'Transfert du ticket: GDUT#' . $demande->getId();
+            $texte = 'Bonjour ' . $transfert->getGerant() . ' Ce ticket vous a été transféré par ' . $transfert->getUser() . ' pour traitement. Bien vouloir vous rendre sur votre espace GDUT pour plus de détails';
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('support@themis-it.com')
+                    ->setTo(array($demande->getGerant()->getEmail(), 'support@themis-it.com'))
+                    ->setCharset('utf-8')
+                    ->setContentType('text/html')
+                    ->setSubject($titre)
+                    ->setBody($this->render('mails/mailPlan.html.twig', array(
+                                'contenu' => $texte,
+                                'titre' => $titre
+                    )))
+                    ->attach($attachment)
+            ;
+            $this->get('mailer')->send($message);
+
             return $this->redirectToRoute('demande_nonTraite');
         }
 
@@ -332,6 +396,20 @@ class DemandeController extends Controller {
             $trait = $_GET['traitement'];
         }
 
+        //on remet l'ancien fichier
+        $demande->setFichier($ancien);
+
+
+        //On vérifie si c'est un rejet
+        $rejet = '';
+        $demandeRejet = $em->getRepository('DemandeBundle:Rejet')->findBy(
+                array(
+                    'demande' => $demande
+        ));
+        if ($demandeRejet != null) {
+            $rejet = $demandeRejet[0]->getMotif();
+        }
+
         return $this->render('demande/show.html.twig', array(
                     'demande' => $demande,
                     'form' => $rejetForm->createView(),
@@ -339,7 +417,8 @@ class DemandeController extends Controller {
                     'comments' => $comments,
                     'affectForm' => $affectForm->createView(),
                     'transfertForm' => $transfertForm->createView(),
-                    'trait' => $trait
+                    'trait' => $trait,
+                    'rejet' => $rejet
         ));
     }
 
@@ -352,10 +431,12 @@ class DemandeController extends Controller {
 
         $userConnecte = $this->getUser();
 
-        if (($demande->getUser() != $userConnecte) || $demande->getTrash() != 1) {
-            return $this->render('demande/erreur.html.twig', array(
-                        'code' => '#001'
-            ));
+        if ($userConnecte->getLevel()->getRightToken() != 'ROLE_ADMIN') {
+            if ((($demande->getUser() != $userConnecte) || $demande->getTrash() != 1)) {
+                return $this->render('demande/erreur.html.twig', array(
+                            'code' => '#001'
+                ));
+            }
         }
 
         //Verification si le la demande n'a pas encore de fichier
@@ -406,7 +487,7 @@ class DemandeController extends Controller {
                 $demande->setDateEnvoie($date);
                 $demande->setTrash(false);
                 $this->getDoctrine()->getManager()->flush();
-                return $this->redirectToRoute('demande_index');
+                return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
             }
 
 
@@ -476,7 +557,7 @@ class DemandeController extends Controller {
         $texte = 'Votre ticket a été abandonné';
         $message = \Swift_Message::newInstance()
                 ->setFrom('support@themis-it.com')
-                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
                 ->setCharset('utf-8')
                 ->setContentType('text/html')
                 ->setSubject($titre)
@@ -615,46 +696,60 @@ class DemandeController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         if ($id == 0) {
-            $users = [];
-            $usersDem = $em->getRepository('UserBundle:Utilisateur')->findBy(array('level' => '1'));
-            $usersAdm = $em->getRepository('UserBundle:Utilisateur')->findBy(array('level' => '3'));
-            $users = array_merge($usersAdm, $usersDem);
-            foreach ($users as $user) {
-                $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
-                        array(
-                            'trash' => false,
-                            'user' => $user
-                ));
-                $encours = $em->getRepository('DemandeBundle:Demande')->findBy(
-                        array(
-                            'trash' => false,
-                            'user' => $user,
-                            'traitement' => 2
-                ));
-                $termine = $em->getRepository('DemandeBundle:Demande')->findBy(
-                        array(
-                            'trash' => false,
-                            'user' => $user,
-                            'fini' => true
-                ));
-                $user->setListDemandes($demandes);
-                $user->SetListTermine($termine);
-                $user->SetListEnCours($encours);
+
+            $entreprises = $em->getRepository('DemandeBundle:Entreprise')->findAll();
+            foreach ($entreprises as $entreprise) {
+                $userEntreprise = $em->getRepository('UserBundle:Utilisateur')->findBy(array('entreprise' => $entreprise));
+                $nbreDemande = 0;
+                $nbreDemandeEncours = 0;
+                $nbreDemandeTermine = 0;
+                foreach ($userEntreprise as $user) {
+                    $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
+                            array(
+                                'trash' => false,
+                                'user' => $user
+                    ));
+                    $nbreDemande+= count($demandes);
+                    $encours = $em->getRepository('DemandeBundle:Demande')->findBy(
+                            array(
+                                'trash' => false,
+                                'user' => $user,
+                                'traitement' => 2
+                    ));
+                    $nbreDemandeEncours += count($encours);
+                    $termine = $em->getRepository('DemandeBundle:Demande')->findBy(
+                            array(
+                                'trash' => false,
+                                'user' => $user,
+                                'fini' => true
+                    ));
+                    $nbreDemandeTermine += count($termine);
+                }
+                $entreprise->setNbrDemandes($nbreDemande);
+                $entreprise->SetNbrTermine($nbreDemandeTermine);
+                $entreprise->SetNbrEnCours($nbreDemandeEncours);
             }
             return $this->render('demandePar/demandeClient.html.twig', array(
-                        'clients' => $users
+                        'clients' => $entreprises
             ));
         } else {
-            $user = $em->getRepository('UserBundle:Utilisateur')->find($id);
-
+            $entreprise = $em->getRepository('DemandeBundle:Entreprise')->find($id);
+            $listDemande = [];
+            $demande = new Demande();
             $demandes = $em->getRepository('DemandeBundle:Demande')->findBy(
                     array(
-                        'trash' => false,
-                        'user' => $user
+                        'trash' => false
             ));
-            $user->setListDemandes($demandes);
+
+            foreach ($demandes as $demande) {
+                if ($demande->getUser()->getEntreprise() == $entreprise) {
+                    $listDemande[] = $demande;
+                }
+            }
+
+            $entreprise->setListDemandes($listDemande);
             return $this->render('demandePar/demandeClientList.html.twig', array(
-                        'client' => $user
+                        'client' => $entreprise
             ));
         }
     }
@@ -965,7 +1060,7 @@ class DemandeController extends Controller {
         $texte = 'Fin de traitement de votre ticket';
         $message = \Swift_Message::newInstance()
                 ->setFrom('support@themis-it.com')
-                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
                 ->setCharset('utf-8')
                 ->setContentType('text/html')
                 ->setSubject($titre)
@@ -1010,7 +1105,7 @@ class DemandeController extends Controller {
         $texte = 'Fin de traitement de votre ticket';
         $message = \Swift_Message::newInstance()
                 ->setFrom('support@themis-it.com')
-                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
                 ->setCharset('utf-8')
                 ->setContentType('text/html')
                 ->setSubject($titre)

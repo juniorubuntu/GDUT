@@ -33,6 +33,20 @@ class Application {
      * @Assert\NotBlank()
      */
     private $nom;
+
+    /**
+     * @var text
+     * 
+     * @ORM\Column(type="text", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $categorie;
     //garde la liste des demande associées
     private $listDemandes = [];
 
@@ -85,4 +99,52 @@ class Application {
         return $this->nom;
     }
 
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Application
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set categorie
+     *
+     * @param string $categorie
+     *
+     * @return Application
+     */
+    public function setCategorie($categorie)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * Get categorie
+     *
+     * @return string
+     */
+    public function getCategorie()
+    {
+        return $this->categorie;
+    }
 }

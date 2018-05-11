@@ -8,7 +8,7 @@
                     <br>
                     <h3 class="text-center" style="color: white; background: #7e57c2;">Liste des demandes venant de  
                         <b class="label label-info" style="color: black;
-                           font-weight: bold;"> {{client.entreprise}} 
+                           font-weight: bold;"> {{client}} 
                         </b></h3>
                     <br>
                     <br>
@@ -37,8 +37,8 @@
                                         <td class="">
                                             <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><b class="btn btn-custom btn-purple">GDUT#{{ demande.id}}</b></a>
                                         </td>
-                                        <td>{{ demande.user }}</td>
                                         <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
+                                        <td>{{ demande.user }}</td>
                                         <td>{{ demande.libele }}</td>
                                         <td>{{ demande.application }}</td>
                                         <td>{{ demande.module }}</td>

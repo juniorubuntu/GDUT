@@ -61,7 +61,7 @@ class RejetController extends Controller {
             $texte = 'Votre ticket a été rejeté.';
             $message = \Swift_Message::newInstance()
                     ->setFrom('support@themis-it.com')
-                    ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com'))
+                    ->setTo(array($demande->getUser()->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
                     ->setCharset('utf-8')
                     ->setContentType('text/html')
                     ->setSubject($titre)
