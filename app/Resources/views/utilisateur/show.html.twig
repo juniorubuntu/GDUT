@@ -6,14 +6,10 @@
             <header class="panel-heading">
                 <h1 class="panel-title">Détail sur un utilisateur</h1>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered col-md-10 col-md-offset-1">
             <tbody>
                 <tr>
-                    <th>Id</th>
-                    <td>{{ utilisateur.id }}</td>
-                </tr>
-                <tr>
-                    <th>Nom</th>
+                    <th>Nom complet</th>
                     <td>{{ utilisateur.nom }}</td>
                 </tr>
                 <tr>
@@ -43,10 +39,10 @@
             </tbody>
         </table>
     </div>
-    <table>
+    <table class="table">
         <tr>
             <td>
-                <a class="btn btn-default" href="{{ path('utilisateur_index') }}">Retour à la liste</a>
+                <a class="btn btn-default col-md-offset-1" href="{{ path('utilisateur_index') }}">Retour à la liste</a>
             </td>
             <td>&nbsp;&nbsp;</td>
             <td>
@@ -55,9 +51,8 @@
             <td>&nbsp;&nbsp;</td>
             <td>
                 {% if app.user.username != utilisateur.username %}
-                    <input data-toggle="modal" data-target=".modaldel" class="btn btn-danger" type="button" value="Supprimer">
-
                     {#
+                    <input data-toggle="modal" data-target=".modaldel" class="btn btn-danger" type="button" value="Supprimer">
                     {{ form_start(delete_form) }}
                     <div class="modal fade modaldel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
                         <div class="modal-dialog modal-md">

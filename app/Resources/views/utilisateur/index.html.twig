@@ -24,12 +24,12 @@
                         <table   class="table table-hover panel panel-inverse table-bordered table-responsive table-striped" id="datatable">
                             <thead class="panel-heading">
                                 <tr>
-                                    <th class="" style="color: blue; font-weight: unset;">Actions</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Nom et prénom</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Rôle de l'utilisateur</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Nom complet</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Téléphone</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Rôle</th>
                                     <th class="" style="color: blue; font-weight: unset;">Email</th>
                                     <th class="" style="color: blue; font-weight: unset;">Entreprise</th>
-                                    <th class="" style="color: blue; font-weight: unset;">Activer / Désactiver</th>
+                                    <th class="" style="color: blue; font-weight: unset;">Act. / Désact.</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,9 +37,10 @@
                                     <tr>
 
                                         <td>
-                                            {% if app.user.username != utilisateur.username %}
-                                                <div class="input-group-btn">
-                                                    <button  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                                            <span style="color: #2b0b3d"><b>{{ utilisateur.nom |upper }}</b></span>
+                                                    {% if app.user.username != utilisateur.username %}
+                                                <span class="input-group pull-right">
+                                                    <button  class="btn btn-purple dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
                                                         <li>
@@ -54,11 +55,11 @@
                                                         </li>
                                                         #}
                                                     </ul>
-                                                </div>
+                                                </span>
                                             {% endif %}
                                         </td>
-                                        <td>{{ utilisateur.nom }}</td>
-                                        <td>{{ utilisateur.level }}</td>
+                                        <td>{{ utilisateur.telephone }}</td>
+                                        <td><span style="color: #2b0b3d">{{ utilisateur.level }}</span></td>
                                         <td>{{ utilisateur.email }}</td>
                                         <td>{{ utilisateur.entreprise }}</td>
                                         <td>

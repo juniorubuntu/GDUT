@@ -103,10 +103,6 @@
                 </tr>
 
                 <tr>
-                    <td>Personnes supplementaires</td>
-                    <td>{{ demande.personnesSupplementaires }}</td>
-                </tr>
-                <tr>
                     <td>Fichier joint</td>
                     <td>
                         {% if demande.fichier != '' %}
@@ -120,12 +116,12 @@
                     <tr>
                         <td>Etat de traitement : <b style="color: red">Réjetée</b></td>
                         <td>
-                            <u style='color: lightcoral'>Motif:</u>
-                            <br>
-                            {{ rejet }}
-                        </td>
-                    </tr>
-                {% endif %}
+                <u style='color: lightcoral'>Motif:</u>
+                <br>
+                {{ rejet }}
+                </td>
+                </tr>
+            {% endif %}
             </tbody>
         </table>
         <a  style="" class="btn btn-success col-md-4 col-md-offset-4" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -134,7 +130,7 @@
         <br>
         <div class="col-md-8 col-md-offset-2" style=" margin-bottom: 20px; background: transparent; padding: 5px">
             <div class="collapse" id="collapseExample">
-                <div class="">
+                <div style="overflow:scroll; max-height:400px;" class="">
                     <table class="table table-striped">
                         <thead class="hidden">
                             <tr>
@@ -146,18 +142,18 @@
                                 <tr>
                                     <td>
                                         <p style="font-size: 16px;
-                                           font-family: cursive;
-                                           color: indigo
+                                           font-family: ubuntu;
+                                           color: rgba(75, 0, 130, 0.82)
                                            "><i class="fa fa-commenting"></i> {{comment}}</p>
-                                        <i class="pull-right" style="color: lightseagreen">
+                                        <div class="pull-right" style="color: lightseagreen; font-family: ubuntu">
                                             {% if comment.fichier != '' %}
                                                 <a target="blank" href="{{asset('Uploads/Fichier/'~comment.fichier)}}"><i class="fa fa-paperclip"> </i> {{comment.fichier}}</a></span>
                                             {% else %}
-                                                Aucun fichier
+
                                             {% endif %}
                                             <br>
-                                            <span style="color: lightslategrey">{{comment.user}}, le {{comment.dateEnvoie | date('d-m-Y à h:m')}}</span>
-                                        </i>
+                                            <span style="color: lightslategrey; font-family: ubuntu">{{comment.user}}, le {{comment.dateEnvoie | date('d/m/Y')}}</span>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -166,152 +162,153 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 panel panel-border panel-custom" style="background: #ebeff2">
-            <header class="panel-heading">
-                <h1 class="panel-title">Options de Traitement de la demande</h1>
-            </header>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 panel-footer">
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    {% if app.user.level.rightToken == "ROLE_ADMIN" %}
-                        {% include 'optionTrait/admin.html.twig' %}
-                    {% elseif app.user.level.rightToken == "ROLE_TRAITEUR"%}
-                        {% include 'optionTrait/traiteur.html.twig' %}
-                    {% else%}
-                        {% include 'optionTrait/demandeur.html.twig' %}
-                    {% endif %}
+    </div>
+    <div class="col-md-12 panel panel-border panel-custom" style="background: #ebeff2">
+        <header class="panel-heading">
+            <h1 class="panel-title">Options de Traitement de la demande</h1>
+        </header>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 panel-footer">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {% if app.user.level.rightToken == "ROLE_ADMIN" %}
+                    {% include 'optionTrait/admin.html.twig' %}
+                {% elseif app.user.level.rightToken == "ROLE_TRAITEUR"%}
+                    {% include 'optionTrait/traiteur.html.twig' %}
+                {% else%}
+                    {% include 'optionTrait/demandeur.html.twig' %}
                 {% endif %}
-            </div>
-            <div id="rejet-modal" class="modal-demo" style="font-family: 15px;">
-                <button type="button" class="close" onclick="Custombox.close();">
-                    <span>×</span><span class="sr-only">Close</span>
-                </button>
-                <div class="panel panel-custom">
-                    <h4 style="background: blueviolet" class="custom-modal-title panel-title text-center">Formulaire du rejet de la demande</h4>
-                    <div class="" style="padding: 2%; width: 100%">
-                        {{ form_errors(form) }}
-                        {{ form_start(form) }}
-                        <span class="pull-left">{{ form_label(form.user, "Le rejeteur", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(form.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
-                        <br>
-                        <span class="pull-left">{{ form_label(form.demande, "Objet de la demande", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(form.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
-                        <br>
-                        <span class="pull-left">{{ form_label(form.motif, "Motif du rejet", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(form.motif, {'attr':{'class':'form-control', 'placeholder': 'Ex: Demande mal formulée, Merci de bien vouloir la reformuler.'}}) }}
-                        <br>
-                        <span class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>rejet</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
-                        <br>
-                        <hr>
-                        <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
-                        <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
-                        {{ form_end(form) }}
-                    </div>
-                </div>
-            </div>
-            <div id="planif-modal" class="modal-demo">
-                <button type="button" class="close" onclick="Custombox.close();">
-                    <span>×</span><span class="sr-only">Close</span>
-                </button>
-                <div class="panel panel-custom">
-                    <h4 style="background: green" class="custom-modal-title panel-title text-center">Formulaire de reponse à une demande</h4>
-                    <div class="" style="padding: 2%; width: 100%">
-                        {{ form_errors(formReponse) }}
-                        {{ form_start(formReponse) }}
-                        <span class="pull-left">{{ form_label(formReponse.user, "Utilisateur", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(formReponse.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
-                        <br>
-                        <span class="pull-left">{{ form_label(formReponse.demande, "Libelé de la demande", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(formReponse.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
-                        <hr>
-                        <span class="pull-left">{{ form_label(formReponse.texte, "Votre commentaire", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(formReponse.texte, {'attr':{'class':'form-control', 'placeholder': 'Contenu de votre réponse.'}}) }}
-                        <br>
-                        <span class="pull-left">{{ form_label(formReponse.fichier, "Joindre un fichier", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(formReponse.fichier, {'attr':{'class':'form-control'}}) }}
-
-                        <hr>
-                        <span style="margin-bottom: 5%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Réponse</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
-                        <hr>
-                        <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
-                        <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
-                        {{ form_end(formReponse) }}
-                    </div>
-                </div>
-            </div>
-
-            <div id="affect-modal" class="modal-demo">
-                <button type="button" class="close" onclick="Custombox.close();">
-                    <span>×</span><span class="sr-only">Close</span>
-                </button>
-                <div class="panel panel-custom">
-                    <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Formulaire d'affectation d'une demande à un traiteur</h4>
-                    <div class="" style="padding: 2%; width: 100%">
-                        {{ form_errors(affectForm) }}
-                        {{ form_start(affectForm) }}
-                        <span class="pull-left">{{ form_label(affectForm.gerant, "Nom du traiteur", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(affectForm.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple', 'style': 'font-size: 17px; text-tra'}}) }}
-                        <br>
-                        <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé au <span class="alert-success">traiteur</span> pour lui informer de votre <b>affectation de la demande</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
-                        <hr>
-                        <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
-                        <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
-                        {{ form_end(affectForm) }}
-                    </div>
-                </div>
-            </div>
-
-            <div id="transfert-modal" class="modal-demo">
-                <button type="button" class="close" onclick="Custombox.close();">
-                    <span>×</span><span class="sr-only">Close</span>
-                </button>
-                <div class="panel panel-custom">
-                    <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Formulaire de transfert d'une demande à un autre traiteur</h4>
-                    <div class="" style="padding: 2%; width: 100%">
-                        {{ form_errors(transfertForm) }}
-                        {{ form_start(transfertForm) }}
-                        <span class="pull-left">{{ form_label(transfertForm.gerant, "Nom du futur traiteur", {'attr':{'class':'pull-left'}}) }}</span>
-                        {{ form_widget(transfertForm.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple', 'style': 'font-size: 17px; text-tra'}}) }}
-                        <br>
-                        <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé au <span class="alert-success">nouveau traiteur</span> pour lui informer de votre <b>Transfert</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
-                        <hr>
-                        <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
-                        <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
-                        {{ form_end(transfertForm) }}
-                    </div>
-                </div>
-            </div>
+            {% endif %}
         </div>
-        <div id="abandon-modal" class="modal-demo">
+        <div id="rejet-modal" class="modal-demo" style="font-family: 15px;">
             <button type="button" class="close" onclick="Custombox.close();">
                 <span>×</span><span class="sr-only">Close</span>
             </button>
             <div class="panel panel-custom">
-                <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Confirmation de l'abandon d'une demande</h4>
+                <h4 style="background: blueviolet" class="custom-modal-title panel-title text-center">Formulaire du rejet de la demande</h4>
                 <div class="" style="padding: 2%; width: 100%">
-                    <h1 class="panel-title"><b>Confirmer l'abandon ?</b></h1>
+                    {{ form_errors(form) }}
+                    {{ form_start(form) }}
+                    <span class="pull-left">{{ form_label(form.user, "Le rejeteur", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(form.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
                     <br>
+                    <span class="pull-left">{{ form_label(form.demande, "Objet de la demande", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(form.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
                     <br>
-                    <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Abandon</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                    <span class="pull-left">{{ form_label(form.motif, "Motif du rejet", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(form.motif, {'attr':{'class':'form-control', 'placeholder': 'Ex: Demande mal formulée, Merci de bien vouloir la reformuler.'}}) }}
+                    <br>
+                    <span class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>rejet</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                    <br>
                     <hr>
-                    <a class="btn btn-custom btn-primary pull-left" href="{{path('demande_abandonNew', {'id': demande.id})}}">Valider</a>
+                    <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
                     <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div id="planif-modal" class="modal-demo">
+            <button type="button" class="close" onclick="Custombox.close();">
+                <span>×</span><span class="sr-only">Close</span>
+            </button>
+            <div class="panel panel-custom">
+                <h4 style="background: green" class="custom-modal-title panel-title text-center">Formulaire de reponse à une demande</h4>
+                <div class="" style="padding: 2%; width: 100%">
+                    {{ form_errors(formReponse) }}
+                    {{ form_start(formReponse) }}
+                    <span class="pull-left">{{ form_label(formReponse.user, "Utilisateur", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(formReponse.user, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
+                    <br>
+                    <span class="pull-left">{{ form_label(formReponse.demande, "Libelé de la demande", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(formReponse.demande, {'attr':{'class':'form-control', 'disabled':'disabled'}}) }}
+                    <hr>
+                    <span class="pull-left">{{ form_label(formReponse.texte, "Votre commentaire", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(formReponse.texte, {'attr':{'class':'form-control', 'placeholder': 'Contenu de votre réponse.'}}) }}
+                    <br>
+                    <span class="pull-left">{{ form_label(formReponse.fichier, "Joindre un fichier", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(formReponse.fichier, {'attr':{'class':'form-control'}}) }}
+
+                    <hr>
+                    <span style="margin-bottom: 5%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Réponse</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                    <hr>
+                    <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
+                    <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                    {{ form_end(formReponse) }}
+                </div>
+            </div>
+        </div>
+
+        <div id="affect-modal" class="modal-demo">
+            <button type="button" class="close" onclick="Custombox.close();">
+                <span>×</span><span class="sr-only">Close</span>
+            </button>
+            <div class="panel panel-custom">
+                <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Formulaire d'affectation d'une demande à un traiteur</h4>
+                <div class="" style="padding: 2%; width: 100%">
+                    {{ form_errors(affectForm) }}
+                    {{ form_start(affectForm) }}
+                    <span class="pull-left">{{ form_label(affectForm.gerant, "Nom du traiteur", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(affectForm.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple', 'style': 'font-size: 17px; text-tra'}}) }}
+                    <br>
+                    <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé au <span class="alert-success">traiteur</span> pour lui informer de votre <b>affectation de la demande</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                    <hr>
+                    <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
+                    <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                    {{ form_end(affectForm) }}
+                </div>
+            </div>
+        </div>
+
+        <div id="transfert-modal" class="modal-demo">
+            <button type="button" class="close" onclick="Custombox.close();">
+                <span>×</span><span class="sr-only">Close</span>
+            </button>
+            <div class="panel panel-custom">
+                <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Formulaire de transfert d'une demande à un autre traiteur</h4>
+                <div class="" style="padding: 2%; width: 100%">
+                    {{ form_errors(transfertForm) }}
+                    {{ form_start(transfertForm) }}
+                    <span class="pull-left">{{ form_label(transfertForm.gerant, "Nom du futur traiteur", {'attr':{'class':'pull-left'}}) }}</span>
+                    {{ form_widget(transfertForm.gerant, {'attr':{'class':'form-control btn btn-custom btn-purple', 'style': 'font-size: 17px; text-tra'}}) }}
+                    <br>
+                    <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé au <span class="alert-success">nouveau traiteur</span> pour lui informer de votre <b>Transfert</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                    <hr>
+                    <input type="submit" class="btn btn-custom btn-primary pull-left" value="Valider">
+                    <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+                    {{ form_end(transfertForm) }}
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        var fichier = document.getElementById('demandebundle_reponse_fichier');
-        fichier.name = 'fichier';
-
-        $('[name="demandebundle_rejet"]').attr('action', '{{path('rejet_new', {'id': demande.id})}}');
-        $('[name="demandebundle_reponse"]').attr('action', '{{path('reponse_new', {'id': demande.id})}}');
-        {#$('[name="demandebundle_integration"]').attr('action', '{{path('integration_new', {'id': demande.id})}}');#}
-        {#$('.gerant').load('{{path('planif_traiteur')}}');#}
-    </script>
-    <div class="col-md-12" style="margin-bottom: 8%">
-        <br>
-        <b> <a class="pull-left" style="margin-left: 10px" href="{{ path('demande_index') }}">Retourner à la liste</a></b>
+    <div id="abandon-modal" class="modal-demo">
+        <button type="button" class="close" onclick="Custombox.close();">
+            <span>×</span><span class="sr-only">Close</span>
+        </button>
+        <div class="panel panel-custom">
+            <h4 style="background: #6666ff" class="custom-modal-title panel-title text-center">Confirmation de l'abandon d'une demande</h4>
+            <div class="" style="padding: 2%; width: 100%">
+                <h1 class="panel-title"><b>Confirmer l'abandon ?</b></h1>
+                <br>
+                <br>
+                <span style="margin-bottom: 5%; margin-top: 3%" class="pull-left">Un mail sera envoyé à <span class="alert-success">{{demande.user.email}}</span> pour lui informer de votre <b>Abandon</b> et une copie du mail à votre service support pour <b>archivage.</b></span>
+                <hr>
+                <a class="btn btn-custom btn-primary pull-left" href="{{path('demande_abandonNew', {'id': demande.id})}}">Valider</a>
+                <a class="btn btn-custom btn-danger" onclick="Custombox.close();">Annuler</a>
+            </div>
+        </div>
     </div>
+</div>
+<script>
+    var fichier = document.getElementById('demandebundle_reponse_fichier');
+    fichier.name = 'fichier';
+
+    $('[name="demandebundle_rejet"]').attr('action', '{{path('rejet_new', {'id': demande.id})}}');
+    $('[name="demandebundle_reponse"]').attr('action', '{{path('reponse_new', {'id': demande.id})}}');
+    {#$('[name="demandebundle_integration"]').attr('action', '{{path('integration_new', {'id': demande.id})}}');#}
+    {#$('.gerant').load('{{path('planif_traiteur')}}');#}
+</script>
+<div class="col-md-12" style="margin-bottom: 8%">
+    <br>
+    {#<b> <a class="" style="margin-left: 40px" href="{{ path('demande_index') }}">Retourner à la liste</a></b>#}
+</div>
 </div>
 
 {% if trait == 'Refuse'%}

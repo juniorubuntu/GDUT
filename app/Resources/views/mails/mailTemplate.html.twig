@@ -1,10 +1,26 @@
-<br>
-<img style="float: left; width: 25%" src="cid:logo"/>
-<br>
-<h4>{{titre}}</h4>
-<hr>
-<p style="font-family: monospace; font-size: 14px">{{contenu}}</p>
-<h4>Description du ticket</h4>
-<p>{{message}}</p>
-<hr>
-<i>Ne pas répondre, ceci est un mail automatique. Vous pouvez néanmoins nous écrire à <a href="mailto:support@themis-it.com">support-dev@themis-it.com</a></i>
+<html>
+    <head>
+        <title>Mail de reception de la demande</title>
+    </head>
+    <body>
+    <center><img style="" src="cid:logo"/></center>
+    <br>
+    <center> Cher {{user | upper}} ({{user.entreprise}}), </center>
+    <br>
+    Merci d'avoir contacté notre équipe technique. Un courriel vous sera envoyé lorsque votre demande sera traitée.
+    <br>
+    Voici les détails de votre demande d’aide:
+    <br>
+    <b>Sujet:</b> {{titre}}
+    <br>
+    <b>État:</b> Ouvert
+    <br>
+    <b>Description:</b> {{message}} 
+    <br>
+    Vous pouvez consulter ou modifier votre demande d’aide dans votre espace client.
+    <br>
+    <b>SAV Thémis,</b>
+    <hr>
+    <i>Ne pas répondre, ceci est un mail automatique. Vous pouvez néanmoins nous écrire à <a href="mailto:support@themis-it.com">support-dev@themis-it.com</a></i>
+</body>
+</html>

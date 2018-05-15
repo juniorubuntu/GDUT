@@ -14,7 +14,6 @@ class DemandeType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('libele')
                 ->add('description')
-                ->add('personnesSupplementaires')
                 ->add('type')
                 ->add('niveauUrgence')
                 ->add('application')

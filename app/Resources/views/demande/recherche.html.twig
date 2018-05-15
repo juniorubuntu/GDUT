@@ -12,12 +12,12 @@
     </div>
     {% if search is defined %}
         <h3 style="margin-top: 12%; color: white; background: rgba(12, 64, 6, 0.69);" class=" text-center"><b>RESULTATS TROUVES</b></h3>
-        <div class="col-md-12" style="margin-bottom: 8%">
+        <div class="col-md-12" style="margin-bottom: 8%; margin-left: 10px">
             <table  class="records_list table table-hover panel panel-inverse panel-purple table-bordered table-striped" id="datatable">
                 <thead class="panel-heading" style="background: rgba(126, 87, 194, 0.44);">
                     <tr>
                         <th class="" style="color: blue; font-weight: unset;">Ticket</th>
-                        <th class="" style="color: blue; font-weight: unset;">Date envoie</th>
+                        <th class="" style="color: blue; font-weight: unset;">Créé le</th>
                         <th class="" style="color: blue; font-weight: unset;">Entreprise</th>
                         <th class="" style="color: blue; font-weight: unset;">Objet</th>
                         <th class="" style="color: blue; font-weight: unset;">Type de demande</th>
@@ -31,7 +31,7 @@
                             <td class="">
                                 <a class="text-purple" href="{{ path('demande_show', { 'id': demande.id }) }}"><b class="btn btn-custom btn-purple">GDUT#{{ demande.id}}</b></a>
                             </td>
-                            <td>{{ demande.dateEnvoie | date('D, d-M-Y') }}</td>
+                            <td>{{ demande.dateEnvoie | date('d-m-Y') }}</td>
                             <td>{{ demande.user.entreprise }}</td>
                             <td>{{ demande.libele }}</td>
                             <td>{{ demande.type }}</td>

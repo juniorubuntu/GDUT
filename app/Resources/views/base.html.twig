@@ -53,7 +53,7 @@
                                font-family: SHSN; 
                                font-stretch:100%;
                                font-style:normal;
-                               
+
                                font-variant-caps:normal;
                                " href="{{path('homepage')}}" class="logo"><i class="icon-magnet icon-c-logo"></i><span style="color: #7e57c2;">GDUT</span></a>
                             <!-- Image Logo here -->
@@ -216,19 +216,24 @@
                                         </ul>
                                     </li>
                                     #}
+                                     {#
                                     <li class="hidden-xs">
                                         <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="icon-size-fullscreen"></i></a>
                                     </li>
+                                    #}
                                     <li class="hidden-xs">
                                         {# <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="icon-settings"></i></a> #}
                                     </li>
                                     <li class="dropdown top-menu-item-xs">
-                                        <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true"><img src="{{asset('assets/images/users/profil.png')}}" alt="user-img" class="img-circle"> </a>
+                                        <a href="" style="font-size: 16px; font-family: ubuntu;" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
+                                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                                <span style="color: #3b97d3">{{ app.user.nom }}</span>
+                                            {% endif %} 
+                                            <img src="{{asset('assets/images/users/profil.png')}}" alt="user-img" class="img-circle"> 
+                                        </a>
                                         <ul class="dropdown-menu">
                                             <li><a title="Cliquez pour modifier mos informations" href="{{path('fos_user_profile_show')}}"><i class="glyphicon glyphicon-user m-r-10 text-custom"></i> 
-                                                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                                        {{ app.user.nom }}
-                                                    {% endif %}
+                                                    Profil
                                                 </a></li>
                                                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                                     {% if app.user.level.rightToken == "ROLE_ADMIN" %}

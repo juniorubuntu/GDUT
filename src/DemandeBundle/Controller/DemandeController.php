@@ -48,15 +48,16 @@ class DemandeController extends Controller {
             $texte = 'les demandes utilisateurs qui vous sont affectées';
         }
         if (isset($_GET['creation'])) {
+
+            $flashBack = $this->get('session')->getFlashBag();
+            $flashBack->add("success", "Un mail a été envoyé au demandeur. Vous allez recevoir un mail de confirmation");
+
             return $this->render('demande/index.html.twig', array(
                         'demandes' => array_reverse($demandes),
                         'creation' => 'ok',
                         'texte' => $texte
             ));
         }
-
-        $flashBack = $this->get('session')->getFlashBag();
-        $flashBack->add("success", "Un mail a été envoyé au demandeur. Vous allez recevoir un mail de confirmation");
 
 
         return $this->render('demande/index.html.twig', array(
@@ -91,6 +92,9 @@ class DemandeController extends Controller {
                 $demande->setTrash(true);
                 $em->persist($demande);
                 $em->flush();
+
+                $flashBack = $this->get('session')->getFlashBag();
+                $flashBack->add("success", "Demande enregistrée dans brouillon avec succès.");
                 return $this->redirectToRoute('demande_enPrepa');
             } else if ($trash == '2') {
                 $date = \DateTime::createFromFormat("y-m-d h:m:s", date('y-m-d h:m:s'));
@@ -109,7 +113,7 @@ class DemandeController extends Controller {
                 $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
                 $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
                 //envoie
-                $titre = 'Creation du ticket: GDUT#' . $demande->getId() . ' ' . $demande->getLibele();
+                $titre = 'GDUT#' . $demande->getId() . ': ' . $demande->getLibele();
                 $texte = 'Votre ticket a été créé avec succès, vous serez informé par mail de la suite du traitement.';
                 $message = \Swift_Message::newInstance()
                         ->setFrom('support@themis-it.com')
@@ -119,6 +123,7 @@ class DemandeController extends Controller {
                         ->setSubject($titre)
                         ->setBody($this->render('mails/mailTemplate.html.twig', array(
                                     'contenu' => $texte,
+                                    'user' => $userConnected,
                                     'titre' => $titre,
                                     'message' => $demande->getDescription()
                         )))
@@ -481,13 +486,47 @@ class DemandeController extends Controller {
             if ($trash == '1') {
                 $demande->setTrash(true);
                 $this->getDoctrine()->getManager()->flush();
+
+                $flashBack = $this->get('session')->getFlashBag();
+                $flashBack->add("success", "Demande enregistrée dans brouillon avec succès.");
+
+
                 return $this->redirectToRoute('demande_enPrepa');
             } else if ($trash == '2') {
                 $date = \DateTime::createFromFormat("y-m-d h:m:s", date('y-m-d h:m:s'));
                 $demande->setDateEnvoie($date);
                 $demande->setTrash(false);
                 $this->getDoctrine()->getManager()->flush();
-                return $this->redirectToRoute('demande_show', array('id' => $demande->getId()));
+
+                //Envoie des mails
+                //gestion de l'entête
+                $attachment = \Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/images/logo.png')
+                        ->setDisposition('inline');
+                $attachment->getHeaders()->addTextHeader('Content-ID', '<logo>');
+                $attachment->getHeaders()->addTextHeader('X-Attachment-Id', 'logo');
+                //envoie
+                $titre = 'GDUT#' . $demande->getId() . ': ' . $demande->getLibele();
+                $texte = 'Votre ticket a été créé avec succès, vous serez informé par mail de la suite du traitement.';
+                $message = \Swift_Message::newInstance()
+                        ->setFrom('support@themis-it.com')
+                        ->setTo(array($userConnected->getEmail(), 'dev@themis-it.com', 'support@themis-it.com'))
+                        ->setCharset('utf-8')
+                        ->setContentType('text/html')
+                        ->setSubject($titre)
+                        ->setBody($this->render('mails/mailTemplate.html.twig', array(
+                                    'contenu' => $texte,
+                                    'user' => $userConnected,
+                                    'titre' => $titre,
+                                    'message' => $demande->getDescription()
+                        )))
+                        ->attach($attachment)
+                ;
+                if ($demande->getFichier() != '') {
+                    $message->attach(\Swift_Attachment::fromPath($this->get('kernel')->getRootDir() . '/../web/Uploads/Fichier/' . $demande->getFichier()));
+                }
+                $this->get('mailer')->send($message);
+
+                return $this->redirectToRoute('demande_index', array('creation' => 'success'));
             }
 
 

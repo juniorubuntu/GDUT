@@ -19,8 +19,9 @@
                 {{ form_errors(form) }}
 
                 {{ form_label(form.nom, "Intitulé du niveau") }}
-                {{ form_widget(form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: XXXXXXXXXXX', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
-
+                {{ form_widget(form.nom, {'attr':{'class':'form-control', 'placeholder': 'Ex: Aucune', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
+                <span style="color: red">{{ form_errors(form.nom) }}</span>
+                
                 {{ form_label(form.description, "Description") }}
                 {{ form_widget(form.description, {'attr':{'class':'form-control', 'style': 'background: ; color: black;margin-bottom: 35px;'}}) }}
             </div>

@@ -59,11 +59,6 @@
                             <legend class="panel-title">
                                 Autres informations
                             </legend>
-                            {{ form_label(edit_form.personnesSupplementaires, "Personnes supplémentaires") }}
-                            {{ form_widget(edit_form.personnesSupplementaires, {'attr':{'class':'form-control', 'data-role':'tagsinput', 'placeholder': 'Choisissez les personnes à identifier', 'style': 'background: ; color: black;margin-bottom: 25px;'}}) }}
-
-                            <br>
-                            <br>
                             {{ form_label(edit_form.fichier, "Ajouter un fichier ['.rar', '.jpg', '.jpeg', '.png', '.pdf', '.docx', '.xls', '.odt', '.zip', '.tar.gz']") }}
                             {{ form_widget(edit_form.fichier, {'attr':{'class':'form-control bootstrap-filestyle', 'title':'Joindre un fichier à votre demande ?', 'style': '; color: black;'}}) }}
 
@@ -123,7 +118,7 @@
             function trashed(id) {
                 document.getElementById('trash').value = id;
             }
-            
+
             var lien = "{{path('demande_moduleApp', {'id': 'APPL'})}}";
             id = document.getElementById('demandebundle_demande_application').value;
             lien = lien.replace('APPL', id);
